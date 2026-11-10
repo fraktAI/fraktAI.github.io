@@ -1,0 +1,2505 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biała Lista VAT — Weryfikator Rachunków</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #00b4cc;
+    --accent2: #7c3aed;
+    --green: #00c896;
+    --red: #ff4d6a;
+    --yellow: #d97706;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --shadow: rgba(0,0,0,0.4);
+    --grid-color: rgba(0,200,220,0.04);
+    --orb-opacity: 0.15;
+    --font-body: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+  :root.light {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #e8eef5;
+    --border: #c8d6e5;
+    --accent: #0077aa;
+    --accent2: #6d28d9;
+    --green: #059669;
+    --red: #dc2626;
+    --yellow: #d97706;
+    --text: #1e293b;
+    --muted: #64748b;
+    --shadow: rgba(0,0,0,0.08);
+    --grid-color: rgba(0,119,170,0.04);
+    --orb-opacity: 0.06;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { transition: background-color 0.3s; }
+  body, .card, .tabs, .result-item, .jpk-stat, .jpk-contractors,
+  textarea, input, select, .drop-zone, .preview-box {
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+    transition: background-image 0.3s;
+  }
+
+  .glow-orb {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: var(--orb-opacity);
+    transition: opacity 0.3s;
+  }
+  .glow-orb-1 { background: var(--accent2); top: -200px; right: -200px; }
+  .glow-orb-2 { background: var(--accent); bottom: -300px; left: -200px; }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    animation: fadeDown 0.5s ease;
+  }
+
+  .badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    animation: fadeDown 0.6s ease 0.1s both;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    margin-top: 12px;
+    font-size: 15px;
+    animation: fadeDown 0.6s ease 0.2s both;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.6s ease 0.3s both;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .tab.tab-locked {
+    opacity: 0.45;
+    cursor: not-allowed;
+    position: relative;
+  }
+  .tab.tab-locked:hover { opacity: 0.6; }
+  .tab-lock-icon { font-size: 10px; margin-left: 2px; }
+
+  .tab.active {
+    background: var(--surface2);
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    animation: fadeIn 0.5s ease 0.4s both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-label {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    resize: vertical;
+    min-height: 140px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,229,255,0.08);
+  }
+
+  textarea::placeholder { color: var(--muted); }
+
+  /* Date row */
+  .row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field label {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  input[type="date"] {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    color-scheme: dark;
+  }
+
+  input[type="date"]:focus {
+    border-color: var(--accent);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--accent), #00b4d8);
+    color: #0a0e17;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0,229,255,0.25);
+  }
+
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .btn-secondary {
+    padding: 12px 20px;
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* File drop zone */
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+  }
+
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.04);
+  }
+
+  .drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .drop-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+  }
+
+  .drop-zone h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .drop-zone p {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .file-hint {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* Preview of loaded accounts */
+  .preview-box {
+    margin-top: 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    max-height: 120px;
+    overflow-y: auto;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .progress-wrap.visible { display: block; }
+
+  .progress-bar-track {
+    background: var(--surface2);
+    border-radius: 100px;
+    height: 6px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 100px;
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    margin-top: 8px;
+    text-align: right;
+  }
+
+  /* Results */
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .results-title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .stats {
+    display: flex;
+    gap: 10px;
+  }
+
+  .stat-pill {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+  }
+  .stat-pill:hover { transform: translateY(-1px); filter: brightness(1.15); }
+  .stat-pill.ok  { background: rgba(0,200,150,0.12); color: var(--green); border: 1px solid rgba(0,200,150,0.2); }
+  .stat-pill.err { background: rgba(255,77,106,0.12); color: var(--red);   border: 1px solid rgba(255,77,106,0.2); }
+  .stat-pill.warn{ background: rgba(255,193,7,0.12);  color: var(--yellow);border: 1px solid rgba(255,193,7,0.25); }
+
+  .stat-pill.active.ok   { background: rgba(0,200,150,0.28); box-shadow: 0 0 0 2px var(--green); }
+  .stat-pill.active.err  { background: rgba(255,77,106,0.28); box-shadow: 0 0 0 2px var(--red); }
+  .stat-pill.active.warn { background: rgba(255,193,7,0.28);  box-shadow: 0 0 0 2px var(--yellow); }
+
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 9px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    animation: fadeIn 0.2s ease;
+  }
+  .filter-bar-clear {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-bar-clear:hover { color: var(--accent); border-color: var(--accent); }
+
+  #cache-bar {
+    margin-top: 12px;
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  #cache-bar .cache-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  #cache-bar .cache-clear {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  #cache-bar .cache-clear:hover { color: var(--red); border-color: var(--red); }
+
+  /* Result items */
+  .result-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+    animation: slideIn 0.3s ease both;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .result-item.found { border-left: 3px solid var(--green); }
+  .result-item.not-found { border-left: 3px solid var(--red); }
+  .result-item.error { border-left: 3px solid var(--yellow); }
+
+  .result-header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    gap: 12px;
+  }
+
+  .result-account {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text);
+    word-break: break-all;
+  }
+
+  .result-badge {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-found { background: rgba(0,200,150,0.15); color: var(--green); }
+  .badge-not-found { background: rgba(255,77,106,0.15); color: var(--red); }
+  .badge-error { background: rgba(255,193,7,0.15); color: var(--yellow); }
+
+  .result-details {
+    display: none;
+    padding: 0 18px 16px;
+    border-top: 1px solid var(--border);
+    margin-top: 0;
+  }
+
+  .result-details.open { display: block; }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .detail-row {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  .detail-key {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .detail-val {
+    font-size: 13px;
+    font-weight: 600;
+    word-break: break-word;
+  }
+
+  .status-czynny { color: var(--green); }
+  .status-zwolniony { color: var(--yellow); }
+  .status-niezarejestrowany { color: var(--red); }
+
+  .accounts-list {
+    margin-top: 14px;
+  }
+
+  .accounts-list h4 {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .account-chip {
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    margin: 3px;
+  }
+
+  .account-chip.matched {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .chevron {
+    color: var(--muted);
+    transition: transform 0.2s;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .result-header.open .chevron { transform: rotate(180deg); }
+
+  /* Export btn */
+  .export-btn {
+    padding: 8px 16px;
+    background: rgba(124,58,237,0.15);
+    color: #a78bfa;
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .export-btn:hover { background: rgba(124,58,237,0.25); }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--muted);
+  }
+
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 15px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .info-note {
+    background: rgba(0,180,204,0.06);
+    border: 1px solid rgba(0,180,204,0.18);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .info-note span:first-child { flex-shrink: 0; }
+
+  .jpk-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .jpk-stat {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .jpk-stat-val {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .jpk-stat-label {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .jpk-contractors {
+    margin-top: 14px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .jpk-contractor-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 180px;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    align-items: center;
+  }
+
+  .jpk-contractor-row:last-child { border-bottom: none; }
+
+  .jpk-contractor-row.header {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  .jpk-nip { color: var(--accent); }
+  .jpk-name { color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .jpk-acct { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Result item with contractor name */
+  .result-contractor {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: var(--font-mono);
+  }
+
+  .result-left { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+
+  @media (max-width: 600px) {
+    .jpk-contractor-row { grid-template-columns: 1fr; }
+    .jpk-contractor-row.header { display: none; }
+    .row { flex-direction: column; align-items: stretch; }
+    .btn-primary { width: 100%; justify-content: center; }
+  }
+
+  /* ---- Top bar: theme toggle + changelog ---- */
+  .topbar {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topbar-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .topbar-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  .theme-icon { font-size: 14px; transition: transform 0.4s; }
+  .topbar-btn:hover .theme-icon { transform: rotate(20deg); }
+
+  /* ---- Changelog modal ---- */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    width: min(600px, 92vw);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(16px) scale(0.97);
+    transition: transform 0.25s;
+    box-shadow: 0 24px 64px var(--shadow);
+  }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+  .modal-header {
+    padding: 24px 28px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-header h2 { font-size: 20px; font-weight: 800; }
+  .modal-close {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { color: var(--text); border-color: var(--accent); }
+
+  .modal-body {
+    padding: 20px 28px 28px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .changelog-version {
+    margin-bottom: 24px;
+  }
+  .changelog-version:last-child { margin-bottom: 0; }
+
+  .version-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .version-num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    background: rgba(0,180,204,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(0,180,204,0.25);
+    border-radius: 6px;
+    padding: 3px 10px;
+  }
+  .version-date {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+  }
+  .version-label {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .label-new { background: rgba(5,150,105,0.15); color: var(--green); }
+  .label-fix { background: rgba(220,38,38,0.12); color: var(--red); }
+  .label-improve { background: rgba(124,58,237,0.15); color: #a78bfa; }
+
+  .changelog-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .changelog-items li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .changelog-items li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+    top: 2px;
+  }
+
+  /* ---- Demo restriction modal ---- */
+  .demo-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .demo-modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .demo-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--yellow);
+    border-radius: 20px;
+    width: min(480px, 92vw);
+    padding: 32px 32px 28px;
+    text-align: center;
+    transform: scale(0.94) translateY(12px);
+    transition: transform 0.25s;
+    box-shadow: 0 24px 64px var(--shadow);
+  }
+  .demo-modal-overlay.open .demo-modal { transform: scale(1) translateY(0); }
+
+  .demo-modal-icon { font-size: 44px; margin-bottom: 14px; }
+  .demo-modal h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+  .demo-modal p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 6px; }
+  .demo-modal .period-badge {
+    display: inline-block;
+    background: rgba(217,119,6,0.12);
+    border: 1px solid rgba(217,119,6,0.3);
+    color: var(--yellow);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 14px;
+    border-radius: 100px;
+    margin: 12px 0 20px;
+  }
+  .demo-modal-close {
+    padding: 11px 28px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .demo-modal-close:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Footer ---- */
+  .footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 32px 24px 40px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+  .footer-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-copy {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+  }
+  .footer-copy strong { color: var(--text); }
+  .footer-links {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+  }
+  .footer-links a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
+    cursor: pointer;
+  }
+  .footer-links a:hover { opacity: 0.7; }
+  .footer-disclaimer {
+    font-size: 11px;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+<div class="glow-orb glow-orb-1"></div>
+<div class="glow-orb glow-orb-2"></div>
+
+<!-- Top bar -->
+<div class="topbar">
+  <button class="topbar-btn" onclick="openChangelog()">
+    <span>📋</span> Changelog
+  </button>
+  <button class="topbar-btn" id="theme-btn" onclick="toggleTheme()">
+    <span class="theme-icon" id="theme-icon">☀️</span>
+    <span id="theme-label">Tryb jasny</span>
+  </button>
+</div>
+
+<!-- Changelog modal -->
+<div class="modal-overlay" id="changelog-modal" onclick="closeChangelog(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>📋 Changelog</h2>
+      <button class="modal-close" onclick="closeChangelogBtn()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="changelog-version">
+        <div class="version-tag">
+          <span class="version-num">v1.6</span>
+          <span class="version-date">03/2026</span>
+          <span class="version-label label-new">Nowość</span>
+        </div>
+        <ul class="changelog-items">
+          <li>Cache odpowiedzi API w <code style="font-family:var(--font-mono);font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px">localStorage</code> — wyniki NIP, rachunków bankowych i NIP+konto są zapamiętywane i nie wymagają ponownego odpytania API</li>
+          <li>Cache wygasa automatycznie o północy — weryfikacje historyczne na konkretny dzień są przechowywane osobno</li>
+          <li>Błędy sieciowe nie są cachowane — ponowna próba zawsze trafia do API</li>
+          <li>Pasek stanu cache pod wynikami: liczba rekordów, zajętość i czas do wygaśnięcia</li>
+          <li>Przycisk ręcznego czyszczenia cache</li>
+        </ul>
+      </div>
+
+      <div class="changelog-version">
+        <div class="version-tag">
+          <span class="version-num">v1.5</span>
+          <span class="version-date">03/2026</span>
+          <span class="version-label label-improve">Poprawka</span>
+        </div>
+        <ul class="changelog-items">
+          <li>Weryfikacja JPK przepisana na endpoint wsadowy <code style="font-family:var(--font-mono);font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px">/api/search/nips</code> — wiele NIP-ów weryfikowanych w jednym zapytaniu zamiast osobnych requestów dla każdego</li>
+          <li>Znacząca redukcja liczby zapytań do API — mniejsze zużycie limitu przy dużych plikach JPK</li>
+          <li>Równoległe zapytania wsadowe — weryfikacja nawet dużych plików JPK przebiega w kilka sekund</li>
+          <li>Pasek postępu pokazuje liczbę przetworzonych NIP-ów i numer aktualnego zapytania</li>
+        </ul>
+      </div>
+
+      <div class="changelog-version">
+        <div class="version-tag">
+          <span class="version-num">v1.4</span>
+          <span class="version-date">03/2026</span>
+          <span class="version-label label-fix">Poprawka</span>
+        </div>
+        <ul class="changelog-items">
+          <li>Naprawiono błąd weryfikacji na wskazany dzień — pola daty były blokowane przez atrybut <code style="font-family:var(--font-mono);font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px">max</code> i wysyłały pustą wartość do API, które zwracało wyniki dla daty bieżącej</li>
+          <li>Domyślna data weryfikacji jest teraz zawsze ustawiana w dozwolonym zakresie</li>
+          <li>Dodano filtrowanie wyników po statusie — kliknięcie pillsów znaleziono / nie znaleziono / błędy zawęża listę</li>
+          <li>Wielowątkowość (5 równoległych requestów) dla wszystkich trybów weryfikacji</li>
+        </ul>
+      </div>
+
+      <div class="changelog-version">
+        <div class="version-tag">
+          <span class="version-num">v1.3</span>
+          <span class="version-date">03/2026</span>
+          <span class="version-label label-improve">Poprawka</span>
+        </div>
+        <ul class="changelog-items">
+          <li>Przełącznik trybu ciemnego / jasnego z zapamiętywaniem preferencji</li>
+          <li>Dodano Changelog z historią wersji</li>
+          <li>Stopka z informacją o prawach autorskich © Dawid Frączek</li>
+        </ul>
+      </div>
+
+      <div class="changelog-version">
+        <div class="version-tag">
+          <span class="version-num">v1.2</span>
+          <span class="version-date">03/2026</span>
+          <span class="version-label label-fix">Poprawka</span>
+        </div>
+        <ul class="changelog-items">
+          <li>Naprawiono parsowanie pliku JPK_V7M — poprawne odczytywanie tagów <code style="font-family:var(--font-mono);font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px">&lt;NrDostawcy&gt;</code> i <code style="font-family:var(--font-mono);font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px">&lt;NazwaDostawcy&gt;</code></li>
+          <li>Zmiana metody weryfikacji JPK: zamiast NIP + rachunek → weryfikacja statusu VAT po samym NIP (<code style="font-family:var(--font-mono);font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px">/api/search/nip</code>)</li>
+          <li>W wynikach JPK: wyświetlanie statusu VAT, nazwy z rejestru MF, REGON, adresu oraz rachunków z Białej Listy</li>
+          <li>Automatyczne ustawianie daty weryfikacji na ostatni dzień miesiąca z pliku JPK</li>
+        </ul>
+      </div>
+
+      <div class="changelog-version">
+        <div class="version-tag">
+          <span class="version-num">v1.1</span>
+          <span class="version-date">03/2026</span>
+          <span class="version-label label-new">Nowość</span>
+        </div>
+        <ul class="changelog-items">
+          <li>Dodano zakładkę <strong>JPK_VAT</strong> — import pliku XML i weryfikacja dostawców</li>
+          <li>W wynikach wyświetlana nazwa kontrahenta i NIP przy każdym rachunku</li>
+          <li>Eksport CSV rozszerzony o kolumny: status VAT, nazwa z rejestru MF, REGON</li>
+          <li>Poprawiono renderowanie wyników dla trybu NIP + konto: ID zapytania i data dla celów dokumentacyjnych</li>
+        </ul>
+      </div>
+
+      <div class="changelog-version">
+        <div class="version-tag">
+          <span class="version-num">v1.0</span>
+          <span class="version-date">03/2026</span>
+          <span class="version-label label-new">Nowość</span>
+        </div>
+        <ul class="changelog-items">
+          <li>Pierwsze wydanie aplikacji</li>
+          <li>Weryfikacja rachunków bankowych przez API MF (<code style="font-family:var(--font-mono);font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px">wl-api.mf.gov.pl</code>)</li>
+          <li>Tryb: lista rachunków (do 30 naraz, automatyczne paginowanie dla większych zbiorów)</li>
+          <li>Tryb: weryfikacja NIP + numer rachunku</li>
+          <li>Import pliku Excel (.xlsx / .xls / .csv) z wyborem kolumny</li>
+          <li>Wyniki: szczegóły podmiotu (nazwa, NIP, REGON, status VAT, adres, rachunki)</li>
+          <li>Eksport wyników do CSV z kodowaniem UTF-8 BOM</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Demo restriction modal -->
+<div class="demo-modal-overlay" id="demo-modal">
+  <div class="demo-modal">
+    <div class="demo-modal-icon">🔒</div>
+    <h3>Wersja Demo</h3>
+    <p>Wczytany plik JPK pochodzi z okresu:</p>
+    <div class="period-badge" id="demo-period">—</div>
+    <p>W wersji demo możliwy jest import pliku JPK za <strong>dowolny miesiąc 2026</strong>. Aby odblokować obsługę wszystkich okresów, przejdź na pełną wersję aplikacji.</p>
+    <br>
+    <button class="demo-modal-close" onclick="closeDemoModal()">Rozumiem</button>
+  </div>
+</div>
+
+<div class="container">
+  <header>
+    <div class="badge">Ministerstwo Finansów · API v1.6</div>
+    <h1>Biała Lista <span>VAT</span></h1>
+    <p class="subtitle">Weryfikuj rachunki bankowe i numery NIP w Rejestrze Podatników VAT</p>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab tab-locked" onclick="showTabLockedAlert()">📋 Rachunki bankowe <span class="tab-lock-icon">🔒</span></button>
+    <button class="tab tab-locked" onclick="showTabLockedAlert()">🏢 NIP + konto <span class="tab-lock-icon">🔒</span></button>
+    <button class="tab tab-locked" onclick="showTabLockedAlert()">📊 Import Excel <span class="tab-lock-icon">🔒</span></button>
+    <button class="tab active" onclick="switchTab('jpk')">🗂 JPK_VAT</button>
+  </div>
+
+  <!-- Tab: rachunki bankowe (hidden in demo) -->
+  <div class="tab-panel" id="panel-rachunki">
+    <div class="card">
+      <div class="card-label">Numery rachunków bankowych (jeden na linię lub oddzielone przecinkami)</div>
+      <textarea id="accounts-input" placeholder="Przykład:&#10;49154011272060033616200002&#10;17105000997698000014500957&#10;lub: 49154011272060033616200002, 17105000997698000014500957"></textarea>
+
+      <div class="row">
+        <div class="field">
+          <label>Data weryfikacji</label>
+          <input type="date" id="date-rachunki" max="2027-01-25">
+        </div>
+        <button class="btn-primary" onclick="checkAccounts()" id="btn-rachunki">
+          <span>🔍</span> Weryfikuj rachunki
+        </button>
+      </div>
+
+      <div class="info-note">
+        <span>ℹ️</span>
+        <span>API przyjmuje maksymalnie 30 rachunków na zapytanie. Większe listy będą podzielone automatycznie. Numery można wkleić bez spacji i myślników.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: NIP + konto -->
+  <div class="tab-panel" id="panel-nip">
+    <div class="card">
+      <div class="card-label">NIP i numer rachunku (jeden zestaw na linię, oddzielone spacją lub tabulatorem)</div>
+      <textarea id="nip-input" placeholder="Przykład:&#10;1111111111 49154011272060033616200002&#10;5260250274 17105000997698000014500957"></textarea>
+
+      <div class="row">
+        <div class="field">
+          <label>Data weryfikacji</label>
+          <input type="date" id="date-nip" max="2027-01-25">
+        </div>
+        <button class="btn-primary" onclick="checkNip()" id="btn-nip">
+          <span>🔍</span> Weryfikuj NIP + konto
+        </button>
+      </div>
+
+      <div class="info-note">
+        <span>ℹ️</span>
+        <span>Wynik wskaże czy rachunek jest przypisany do podatnika o podanym NIP i czy podmiot jest czynnym podatnikiem VAT.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Excel -->
+  <div class="tab-panel" id="panel-excel">
+    <div class="card">
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" accept=".xlsx,.xls,.csv" id="excel-input" onchange="handleFile(event)">
+        <div class="drop-icon">📂</div>
+        <h3>Przeciągnij plik lub kliknij, aby wybrać</h3>
+        <p>Obsługiwane formaty: .xlsx, .xls, .csv</p>
+        <div class="file-hint">Plik powinien zawierać kolumnę z numerami rachunków bankowych</div>
+      </div>
+
+      <div id="excel-preview" style="display:none">
+        <div class="card-label" style="margin-top:16px;">Podgląd wczytanych danych</div>
+        <div class="preview-box" id="preview-content"></div>
+        <div style="margin-top: 12px; font-size: 13px; color: var(--muted);">
+          Wybierz kolumnę zawierającą numery rachunków:
+          <select id="col-select" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-family:var(--font-mono);font-size:12px;margin-left:8px;outline:none;cursor:pointer;"></select>
+        </div>
+
+        <div class="row" style="margin-top:16px;">
+          <div class="field">
+            <label>Data weryfikacji</label>
+            <input type="date" id="date-excel" max="2027-01-25">
+          </div>
+          <button class="btn-primary" onclick="checkExcel()" id="btn-excel">
+            <span>🔍</span> Weryfikuj z pliku
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: JPK_VAT -->
+  <div class="tab-panel active" id="panel-jpk">
+    <div class="card">
+      <div class="card-label">Plik JPK_VAT (XML) — wczytaj plik eksportu z systemu księgowego</div>
+      <div class="drop-zone" id="drop-zone-jpk">
+        <input type="file" accept=".xml" id="jpk-input" onchange="handleJpkFile(event)">
+        <div class="drop-icon">🗂</div>
+        <h3>Przeciągnij plik JPK lub kliknij, aby wybrać</h3>
+        <p>Obsługiwane formaty: JPK_VAT3, JPK_V7M, JPK_V7K (.xml)</p>
+        <div class="file-hint">Plik powinien być standardowym plikiem JPK_VAT wygenerowanym z systemu ERP/FK</div>
+      </div>
+
+      <div id="jpk-preview" style="display:none">
+        <div style="margin-top:20px;">
+          <div class="jpk-summary" id="jpk-summary"></div>
+        </div>
+
+        <div class="row" style="margin-top:16px;">
+          <div class="field">
+            <label>Data weryfikacji (domyślnie: data złożenia JPK)</label>
+            <input type="date" id="date-jpk" max="2027-01-25">
+          </div>
+          <button class="btn-primary" onclick="checkJpk()" id="btn-jpk">
+            <span>🔍</span> Weryfikuj kontrahentów z JPK
+          </button>
+        </div>
+
+        <div class="info-note" style="margin-top:12px;">
+          <span>ℹ️</span>
+          <span>Weryfikacja sprawdza status VAT każdego dostawcy po NIP przez API Ministerstwa Finansów. Wynik pokazuje czy kontrahent jest <strong>czynnym podatnikiem VAT</strong> na wybrany dzień. Dla każdego dostawcy pobierane są też numery rachunków bankowych zarejestrowanych w białej liście.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-bar"></div>
+    </div>
+    <div class="progress-label" id="progress-label">Pobieranie danych...</div>
+  </div>
+
+  <!-- Results -->
+  <div id="results-section" style="display:none">
+    <div class="results-header">
+      <div class="results-title">Wyniki weryfikacji</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <div class="stats" id="stats"></div>
+        <button class="export-btn" onclick="exportResults()">⬇ Eksportuj CSV</button>
+      </div>
+    </div>
+    <div id="results-list"></div>
+  </div>
+
+  <!-- Cache status bar -->
+  <div id="cache-bar" style="display:none"></div>
+</div>
+
+<script>
+// ---- State ----
+let allResults = [];
+let excelData = [];
+let excelHeaders = [];
+let activeFilter = null; // 'found' | 'not_found' | 'error' | null
+
+// ---- Demo limits ----
+const DEMO_MAX_DATE = '2027-01-25';
+
+function isDemoDateBlocked(date) {
+  return date > DEMO_MAX_DATE;
+}
+
+function showDemoDateAlert() {
+  document.getElementById('demo-period').textContent = 'wybrany okres';
+  const modal = document.getElementById('demo-modal');
+  modal.querySelector('h3').textContent = 'Wersja Demo';
+  modal.querySelector('p').innerHTML = 'W wersji demo weryfikacja jest dostępna wyłącznie dla dat do <strong>25 stycznia 2027</strong>. Aby odblokować pełny zakres dat, przejdź na pełną wersję aplikacji.';
+  modal.querySelector('.period-badge').style.display = 'none';
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function showTabLockedAlert() {
+  const modal = document.getElementById('demo-modal');
+  modal.querySelector('h3').textContent = 'Wersja Demo';
+  modal.querySelector('p').innerHTML = 'Ta funkcja jest dostępna wyłącznie w pełnej wersji aplikacji. W wersji demo aktywna jest tylko weryfikacja przez <strong>import pliku JPK_VAT</strong>.';
+  modal.querySelector('.period-badge').style.display = 'none';
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// ---- Helpers ----
+function getToday() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function setDefaultDates() {
+  const today = getToday();
+  const clamped = today > DEMO_MAX_DATE ? DEMO_MAX_DATE : today;
+  ['date-rachunki', 'date-nip', 'date-excel', 'date-jpk'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = clamped;
+  });
+}
+
+function cleanAccount(s) {
+  return s.replace(/[\s\-]/g, '');
+}
+
+function parseAccounts(text) {
+  return text
+    .split(/[\n,;]+/)
+    .map(s => cleanAccount(s.trim()))
+    .filter(s => s.length > 0);
+}
+
+function formatAccount(acc) {
+  // Format as PL IBAN with spaces every 4 digits
+  if (acc.length === 26) {
+    return acc.replace(/(.{2})(.{4})(.{4})(.{4})(.{4})(.{4})(.{4})/, '$1 $2 $3 $4 $5 $6 $7');
+  }
+  return acc;
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    const panels = ['rachunki', 'nip', 'excel', 'jpk'];
+    t.classList.toggle('active', panels[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+function chunkArray(arr, size) {
+  const chunks = [];
+  for (let i = 0; i < arr.length; i += size) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks;
+}
+
+function setProgress(pct, label) {
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = label;
+}
+
+function showProgress(show) {
+  document.getElementById('progress-wrap').classList.toggle('visible', show);
+}
+
+// ---- Cache (localStorage, wygasa o północy) ----
+const CACHE_KEY_PREFIX = 'bialalistavat_cache_';
+
+function cacheGetKey(type, id, date) {
+  return CACHE_KEY_PREFIX + type + '_' + id + '_' + date;
+}
+
+function cacheTodayExpiry() {
+  const now = new Date();
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+  return midnight.getTime();
+}
+
+function cacheGet(type, id, date) {
+  try {
+    const raw = localStorage.getItem(cacheGetKey(type, id, date));
+    if (!raw) return null;
+    const entry = JSON.parse(raw);
+    if (Date.now() > entry.expires) {
+      localStorage.removeItem(cacheGetKey(type, id, date));
+      return null;
+    }
+    return entry.data;
+  } catch(e) { return null; }
+}
+
+function cacheSet(type, id, date, data) {
+  // Nie cachujemy błędów sieciowych — tylko poprawne odpowiedzi API
+  if (data && data.error && String(data.error).startsWith('Błąd sieci')) return;
+  try {
+    const entry = { data, expires: cacheTodayExpiry() };
+    localStorage.setItem(cacheGetKey(type, id, date), JSON.stringify(entry));
+  } catch(e) {
+    // localStorage pełny — wyczyść stare wpisy i spróbuj ponownie
+    cachePurgeExpired();
+    try { localStorage.setItem(cacheGetKey(type, id, date), JSON.stringify({ data, expires: cacheTodayExpiry() })); } catch(e2) {}
+  }
+}
+
+function cachePurgeExpired() {
+  const now = Date.now();
+  const toDelete = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key.startsWith(CACHE_KEY_PREFIX)) continue;
+    try {
+      const entry = JSON.parse(localStorage.getItem(key));
+      if (now > entry.expires) toDelete.push(key);
+    } catch(e) { toDelete.push(key); }
+  }
+  toDelete.forEach(k => localStorage.removeItem(k));
+  return toDelete.length;
+}
+
+function cacheGetStats() {
+  let total = 0, expired = 0, bytes = 0;
+  const now = Date.now();
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key.startsWith(CACHE_KEY_PREFIX)) continue;
+    total++;
+    const val = localStorage.getItem(key);
+    bytes += (key.length + (val ? val.length : 0)) * 2;
+    try {
+      const entry = JSON.parse(val);
+      if (now > entry.expires) expired++;
+    } catch(e) { expired++; }
+  }
+  return { total, expired, valid: total - expired, kb: Math.round(bytes / 1024) };
+}
+
+function cacheClearAll() {
+  const toDelete = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith(CACHE_KEY_PREFIX)) toDelete.push(key);
+  }
+  toDelete.forEach(k => localStorage.removeItem(k));
+  return toDelete.length;
+}
+
+
+
+// ---- Concurrency pool (max N parallel requests) ----
+const BASE = 'https://wl-api.mf.gov.pl';
+const CONCURRENCY = 5;
+
+async function runPool(tasks, concurrency, onProgress) {
+  const results = new Array(tasks.length);
+  let idx = 0;
+  let done = 0;
+
+  async function worker() {
+    while (idx < tasks.length) {
+      const i = idx++;
+      results[i] = await tasks[i]();
+      done++;
+      if (onProgress) onProgress(done, tasks.length);
+    }
+  }
+
+  const workers = Array.from({ length: Math.min(concurrency, tasks.length) }, worker);
+  await Promise.all(workers);
+  return results;
+}
+
+async function fetchBankAccounts(accounts, date) {
+  const results = {};
+
+  // Wczytaj z cache co możliwe
+  const uncached = [];
+  for (const acc of accounts) {
+    const hit = cacheGet('acc', acc, date);
+    if (hit !== null) results[acc] = hit;
+    else uncached.push(acc);
+  }
+
+  if (uncached.length === 0) return results;
+
+  const chunks = chunkArray(uncached, 30);
+  await runPool(chunks.map(chunk => async () => {
+    const url = `${BASE}/api/search/bank-accounts/${chunk.join(',')}?date=${date}`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.result && data.result.entries) {
+        for (const entry of data.result.entries) {
+          const val = { identifier: entry.identifier, subjects: entry.subjects || [], error: entry.error || null };
+          results[entry.identifier] = val;
+          cacheSet('acc', entry.identifier, date, val);
+        }
+      }
+      // Zapisz "nie znaleziono" dla kont bez odpowiedzi
+      for (const acc of chunk) {
+        if (!(acc in results)) {
+          const val = { identifier: acc, subjects: [], error: null };
+          results[acc] = val;
+          cacheSet('acc', acc, date, val);
+        }
+      }
+    } catch(e) {
+      for (const acc of chunk) {
+        results[acc] = { identifier: acc, subjects: [], error: { message: 'Błąd sieci: ' + e.message } };
+      }
+    }
+  }), CONCURRENCY);
+
+  return results;
+}
+
+async function fetchNipCheck(nip, account, date) {
+  const cacheId = nip + '_' + account;
+  const hit = cacheGet('nipcheck', cacheId, date);
+  if (hit !== null) return hit;
+
+  const url = `${BASE}/api/check/nip/${nip}/bank-account/${account}?date=${date}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const val = { nip, account, result: data.result, error: null };
+    cacheSet('nipcheck', cacheId, date, val);
+    return val;
+  } catch(e) {
+    return { nip, account, result: null, error: e.message };
+  }
+}
+
+async function fetchNipStatus(nip, date) {
+  const url = `${BASE}/api/search/nip/${nip}?date=${date}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    return { nip, subject: data.result ? data.result.subject : null, error: null };
+  } catch(e) {
+    return { nip, subject: null, error: e.message };
+  }
+}
+
+// Batch: sprawdza do 30 NIP-ów w jednym requeście — /api/search/nips/{nips}?date=
+// Zwraca mapę nip → { subject, error }
+async function fetchNipsBatch(nips, date) {
+  const results = {};
+
+  // Wczytaj z cache co możliwe
+  const uncached = [];
+  for (const nip of nips) {
+    const hit = cacheGet('nip', nip, date);
+    if (hit !== null) results[nip] = hit;
+    else uncached.push(nip);
+  }
+
+  if (uncached.length === 0) return results;
+
+  const chunks = chunkArray(uncached, 30);
+  await runPool(chunks.map(chunk => async () => {
+    const url = `${BASE}/api/search/nips/${chunk.join(',')}?date=${date}`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.result && data.result.entries) {
+        for (const entry of data.result.entries) {
+          if (entry.error) {
+            const val = { subject: null, error: entry.error.message || 'Błąd API' };
+            results[entry.identifier] = val;
+            cacheSet('nip', entry.identifier, date, val);
+          } else {
+            const subject = entry.subjects && entry.subjects.length > 0 ? entry.subjects[0] : null;
+            const val = { subject, error: null };
+            results[entry.identifier] = val;
+            cacheSet('nip', entry.identifier, date, val);
+          }
+        }
+      }
+      // Zapisz "nie znaleziono" dla NIP-ów bez odpowiedzi
+      for (const nip of chunk) {
+        if (!(nip in results)) {
+          const val = { subject: null, error: null };
+          results[nip] = val;
+          cacheSet('nip', nip, date, val);
+        }
+      }
+    } catch(e) {
+      for (const nip of chunk) {
+        results[nip] = { subject: null, error: 'Błąd sieci: ' + e.message };
+      }
+    }
+  }), CONCURRENCY);
+
+  return results;
+}
+
+// ---- Tab: Rachunki ----
+async function checkAccounts() {
+  const text = document.getElementById('accounts-input').value.trim();
+  const date = document.getElementById('date-rachunki').value;
+  if (!text) { alert('Wklej numery rachunków bankowych.'); return; }
+  if (!date) { alert('Wybierz datę weryfikacji.'); return; }
+  if (isDemoDateBlocked(date)) { showDemoDateAlert(); return; }
+
+  const accounts = parseAccounts(text);
+  if (accounts.length === 0) { alert('Nie znaleziono poprawnych numerów rachunków.'); return; }
+
+  const btn = document.getElementById('btn-rachunki');
+  btn.disabled = true;
+  showProgress(true);
+  setProgress(10, `Weryfikuję ${accounts.length} rachunków...`);
+
+  try {
+    const raw = await fetchBankAccounts(accounts, date);
+    setProgress(90, 'Przetwarzam wyniki...');
+
+    allResults = accounts.map(acc => {
+      const r = raw[acc] || raw[acc.replace(/\s/g, '')];
+      if (!r) return { type: 'account', account: acc, status: 'not_found', subjects: [] };
+      if (r.error) return { type: 'account', account: acc, status: 'error', error: r.error, subjects: [] };
+      if (r.subjects && r.subjects.length > 0) return { type: 'account', account: acc, status: 'found', subjects: r.subjects };
+      return { type: 'account', account: acc, status: 'not_found', subjects: [] };
+    });
+
+    setProgress(100, 'Gotowe!');
+    renderResults();
+  } catch(e) {
+    alert('Błąd: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => showProgress(false), 800);
+  }
+}
+
+// ---- Tab: NIP ----
+async function checkNip() {
+  const text = document.getElementById('nip-input').value.trim();
+  const date = document.getElementById('date-nip').value;
+  if (!text) { alert('Wklej pary NIP + numer rachunku.'); return; }
+  if (!date) { alert('Wybierz datę weryfikacji.'); return; }
+  if (isDemoDateBlocked(date)) { showDemoDateAlert(); return; }
+
+  const pairs = text.split('\n').map(line => {
+    const parts = line.trim().split(/[\s\t,;]+/);
+    return parts.length >= 2 ? { nip: parts[0].replace(/\D/g,''), account: cleanAccount(parts[1]) } : null;
+  }).filter(Boolean);
+
+  if (pairs.length === 0) { alert('Nie znaleziono poprawnych par NIP + numer rachunku.'); return; }
+
+  const btn = document.getElementById('btn-nip');
+  btn.disabled = true;
+  showProgress(true);
+
+  allResults = new Array(pairs.length);
+  let done = 0;
+
+  const tasks = pairs.map((pair, i) => async () => {
+    const r = await fetchNipCheck(pair.nip, pair.account, date);
+    done++;
+    setProgress(Math.round((done / pairs.length) * 92) + 4, `Sprawdzam ${done} z ${pairs.length}...`);
+    return {
+      type: 'nip_check',
+      account: pair.account,
+      nip: pair.nip,
+      status: r.error ? 'error' : (r.result && r.result.accountAssigned === 'TAK') ? 'found' : 'not_found',
+      accountAssigned: r.result ? r.result.accountAssigned : null,
+      error: r.error
+    };
+  });
+
+  allResults = await runPool(tasks, CONCURRENCY);
+
+  setProgress(100, 'Gotowe!');
+  renderResults();
+  btn.disabled = false;
+  setTimeout(() => showProgress(false), 800);
+}
+
+// ---- Tab: Excel ----
+function handleFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const wb = XLSX.read(e.target.result, { type: 'array' });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+      if (rows.length < 2) { alert('Plik jest pusty lub zawiera tylko nagłówek.'); return; }
+
+      excelHeaders = (rows[0] || []).map((h, i) => h || `Kolumna ${i+1}`);
+      excelData = rows.slice(1).filter(r => r.some(c => c));
+
+      // Populate column selector
+      const sel = document.getElementById('col-select');
+      sel.innerHTML = excelHeaders.map((h, i) => `<option value="${i}">${h}</option>`).join('');
+
+      // Show preview
+      const preview = document.getElementById('preview-content');
+      preview.innerHTML = excelData.slice(0, 8).map(row =>
+        '<div>' + (row || []).join(' | ') + '</div>'
+      ).join('') + (excelData.length > 8 ? `<div style="color:var(--muted)">... i ${excelData.length - 8} więcej wierszy</div>` : '');
+
+      document.getElementById('excel-preview').style.display = 'block';
+    } catch(err) {
+      alert('Błąd wczytywania pliku: ' + err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// Drag & drop
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+dz.addEventListener('drop', e => {
+  e.preventDefault();
+  dz.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    const input = document.getElementById('excel-input');
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    handleFile({ target: { files: [file] } });
+  }
+});
+
+async function checkExcel() {
+  if (!excelData.length) { alert('Najpierw wczytaj plik.'); return; }
+  const colIdx = parseInt(document.getElementById('col-select').value);
+  const date = document.getElementById('date-excel').value;
+  if (!date) { alert('Wybierz datę weryfikacji.'); return; }
+  if (isDemoDateBlocked(date)) { showDemoDateAlert(); return; }
+
+  const accounts = excelData
+    .map(row => cleanAccount(String(row[colIdx] || '').trim()))
+    .filter(a => a.length >= 10);
+
+  if (accounts.length === 0) { alert('Nie znaleziono rachunków w wybranej kolumnie.'); return; }
+
+  const btn = document.getElementById('btn-excel');
+  btn.disabled = true;
+  showProgress(true);
+  setProgress(10, `Weryfikuję ${accounts.length} rachunków z pliku...`);
+
+  try {
+    const raw = await fetchBankAccounts(accounts, date);
+    setProgress(90, 'Przetwarzam wyniki...');
+
+    allResults = accounts.map(acc => {
+      const r = raw[acc];
+      if (!r) return { type: 'account', account: acc, status: 'not_found', subjects: [] };
+      if (r.error) return { type: 'account', account: acc, status: 'error', error: r.error, subjects: [] };
+      if (r.subjects && r.subjects.length > 0) return { type: 'account', account: acc, status: 'found', subjects: r.subjects };
+      return { type: 'account', account: acc, status: 'not_found', subjects: [] };
+    });
+
+    setProgress(100, 'Gotowe!');
+    renderResults();
+  } catch(e) {
+    alert('Błąd: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => showProgress(false), 800);
+  }
+}
+
+// ---- Cache bar UI ----
+function renderCacheBar() {
+  const bar = document.getElementById('cache-bar');
+  const stats = cacheGetStats();
+  if (stats.valid === 0) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+
+  const midnight = new Date();
+  midnight.setDate(midnight.getDate() + 1);
+  midnight.setHours(0, 0, 0, 0);
+  const hoursLeft = Math.round((midnight - Date.now()) / 3600000);
+
+  bar.innerHTML = `
+    <div class="cache-dot"></div>
+    <span>Cache aktywny:</span>
+    <strong>${stats.valid} rekordów</strong>
+    <span style="color:var(--border)">·</span>
+    <span>~${stats.kb} KB</span>
+    <span style="color:var(--border)">·</span>
+    <span>wygasa za ~${hoursLeft}h (o północy)</span>
+    <button class="cache-clear" onclick="clearCacheUI()">🗑 Wyczyść cache</button>
+  `;
+}
+
+function clearCacheUI() {
+  const n = cacheClearAll();
+  const bar = document.getElementById('cache-bar');
+  bar.innerHTML = `<span style="color:var(--green)">✓ Usunięto ${n} rekordów z cache.</span>`;
+  setTimeout(() => { bar.style.display = 'none'; }, 2500);
+}
+
+
+function renderResults() {
+  activeFilter = null;
+  const section = document.getElementById('results-section');
+  const list = document.getElementById('results-list');
+  const stats = document.getElementById('stats');
+
+  section.style.display = 'block';
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const found    = allResults.filter(r => r.status === 'found').length;
+  const notFound = allResults.filter(r => r.status === 'not_found').length;
+  const errors   = allResults.filter(r => r.status === 'error').length;
+
+  stats.innerHTML = `
+    <div class="stat-pill ok"  id="pill-found"     onclick="toggleFilter('found')"    title="Filtruj: znalezione">✓ ${found} znaleziono</div>
+    <div class="stat-pill err" id="pill-not_found"  onclick="toggleFilter('not_found')" title="Filtruj: nie znalezione">✗ ${notFound} nie znaleziono</div>
+    ${errors ? `<div class="stat-pill warn" id="pill-error" onclick="toggleFilter('error')" title="Filtruj: błędy">⚠ ${errors} błędów</div>` : ''}
+  `;
+
+  list.innerHTML = '';
+  if (allResults.length === 0) {
+    list.innerHTML = '<div class="empty-state"><div class="icon">🔎</div><p>Brak wyników</p></div>';
+    return;
+  }
+
+  renderList(allResults);
+  renderCacheBar();
+}
+
+function toggleFilter(status) {
+  activeFilter = activeFilter === status ? null : status;
+
+  // Update pill active states
+  ['found', 'not_found', 'error'].forEach(s => {
+    const pill = document.getElementById('pill-' + s);
+    if (pill) pill.classList.toggle('active', activeFilter === s);
+  });
+
+  applyFilter();
+}
+
+function applyFilter() {
+  const list = document.getElementById('results-list');
+  const filtered = activeFilter ? allResults.filter(r => r.status === activeFilter) : allResults;
+
+  // Show/hide filter bar
+  let bar = document.getElementById('filter-bar');
+  if (activeFilter) {
+    const labels = { found: 'znaleziono', not_found: 'nie znaleziono', error: 'błędy' };
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.className = 'filter-bar';
+      bar.id = 'filter-bar';
+      list.before(bar);
+    }
+    bar.innerHTML = `
+      <span>🔎 Filtr aktywny:</span>
+      <strong>${labels[activeFilter]}</strong>
+      <span style="color:var(--border)">·</span>
+      <span>${filtered.length} z ${allResults.length} wyników</span>
+      <button class="filter-bar-clear" onclick="toggleFilter('${activeFilter}')">✕ Usuń filtr</button>
+    `;
+  } else {
+    if (bar) bar.remove();
+  }
+
+  list.innerHTML = '';
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty-state"><div class="icon">🔎</div><p>Brak wyników dla tego filtra</p></div>';
+    return;
+  }
+  renderList(filtered);
+}
+
+function renderList(results) {
+  const list = document.getElementById('results-list');
+  results.forEach((r, i) => {
+    const item = document.createElement('div');
+    item.className = `result-item ${r.status === 'found' ? 'found' : r.status === 'not_found' ? 'not-found' : 'error'}`;
+    item.style.animationDelay = (i * 0.04) + 's';
+
+    let badge = '';
+    if (r.type === 'jpk_check') {
+      if (r.status === 'found')     badge = '<span class="result-badge badge-found">✓ Czynny podatnik VAT</span>';
+      else if (r.status === 'not_found') badge = `<span class="result-badge badge-not-found">✗ ${r.vatStatus || 'Nie znaleziono'}</span>`;
+      else badge = '<span class="result-badge badge-error">⚠ Błąd API</span>';
+    } else {
+      if (r.status === 'found') badge = '<span class="result-badge badge-found">✓ Na białej liście</span>';
+      else if (r.status === 'not_found') badge = '<span class="result-badge badge-not-found">✗ Brak na liście</span>';
+      else badge = '<span class="result-badge badge-error">⚠ Błąd API</span>';
+    }
+
+    let detailsHtml = '';
+
+    if (r.type === 'jpk_check') {
+      const statusClass = r.vatStatus === 'Czynny' ? 'status-czynny' :
+                          r.vatStatus === 'Zwolniony' ? 'status-zwolniony' : 'status-niezarejestrowany';
+      const accountsHtml = r.subjectAccounts && r.subjectAccounts.length
+        ? `<div class="accounts-list" style="margin-top:14px;">
+            <h4>Rachunki bankowe podmiotu (z rejestru MF)</h4>
+            ${r.subjectAccounts.map(a => `<span class="account-chip">${formatAccount(a)}</span>`).join('')}
+           </div>` : '';
+      const invoicesHtml = r.invoices && r.invoices.length
+        ? `<div class="accounts-list" style="margin-top:14px;">
+            <h4>Faktury z JPK (${r.invoices.length})</h4>
+            ${r.invoices.slice(0,10).map(inv =>
+              `<span class="account-chip">${escHtml(inv.num)}${inv.date ? ' · ' + inv.date : ''}${inv.netto ? ' · netto: ' + inv.netto : ''}</span>`
+            ).join('')}
+            ${r.invoices.length > 10 ? `<span style="font-size:11px;color:var(--muted);margin-left:4px">+${r.invoices.length-10} więcej</span>` : ''}
+           </div>` : '';
+      detailsHtml = `
+        <div class="detail-grid">
+          <div class="detail-row"><div class="detail-key">Nazwa (z JPK)</div><div class="detail-val">${escHtml(r.contractorName)}</div></div>
+          ${r.subjectName ? `<div class="detail-row"><div class="detail-key">Nazwa (z rejestru MF)</div><div class="detail-val">${escHtml(r.subjectName)}</div></div>` : ''}
+          <div class="detail-row"><div class="detail-key">NIP</div><div class="detail-val">${r.nip}</div></div>
+          ${r.subjectRegon ? `<div class="detail-row"><div class="detail-key">REGON</div><div class="detail-val">${r.subjectRegon}</div></div>` : ''}
+          <div class="detail-row"><div class="detail-key">Status VAT</div><div class="detail-val ${statusClass}">${r.vatStatus || (r.error ? 'Błąd zapytania' : 'Brak w rejestrze')}</div></div>
+          ${r.subjectAddress ? `<div class="detail-row"><div class="detail-key">Adres</div><div class="detail-val">${escHtml(r.subjectAddress)}</div></div>` : ''}
+          ${r.error ? `<div class="detail-row"><div class="detail-key">Błąd</div><div class="detail-val" style="color:var(--red)">${r.error}</div></div>` : ''}
+        </div>
+        ${accountsHtml}
+        ${invoicesHtml}
+      `;
+    } else if (r.type === 'nip_check') {
+      detailsHtml = `
+        <div class="detail-grid">
+          ${r.contractorName ? `<div class="detail-row"><div class="detail-key">Nazwa kontrahenta</div><div class="detail-val">${escHtml(r.contractorName)}</div></div>` : ''}
+          <div class="detail-row"><div class="detail-key">NIP</div><div class="detail-val">${r.nip || '—'}</div></div>
+          <div class="detail-row"><div class="detail-key">Numer rachunku</div><div class="detail-val" style="font-family:var(--font-mono);font-size:12px">${formatAccount(r.account)}</div></div>
+          <div class="detail-row"><div class="detail-key">Rachunek przypisany</div><div class="detail-val ${r.accountAssigned === 'TAK' ? 'status-czynny' : 'status-niezarejestrowany'}">${r.accountAssigned || (r.error ? 'Błąd' : 'N/D')}</div></div>
+          ${r.error ? `<div class="detail-row"><div class="detail-key">Błąd</div><div class="detail-val" style="color:var(--red)">${r.error}</div></div>` : ''}
+        </div>
+      `;
+    } else if (r.subjects && r.subjects.length > 0) {
+      detailsHtml = r.subjects.map(s => {
+        const statusClass = s.statusVat === 'Czynny' ? 'status-czynny' :
+                            s.statusVat === 'Zwolniony' ? 'status-zwolniony' : 'status-niezarejestrowany';
+        const accountsHtml = (s.accountNumbers || []).map(a => {
+          const isMatched = cleanAccount(a) === r.account;
+          return `<span class="account-chip ${isMatched ? 'matched' : ''}">${formatAccount(a)}</span>`;
+        }).join('');
+
+        return `
+          <div class="detail-grid">
+            <div class="detail-row"><div class="detail-key">Nazwa</div><div class="detail-val">${s.name || '—'}</div></div>
+            <div class="detail-row"><div class="detail-key">NIP</div><div class="detail-val">${s.nip || '—'}</div></div>
+            <div class="detail-row"><div class="detail-key">REGON</div><div class="detail-val">${s.regon || '—'}</div></div>
+            <div class="detail-row"><div class="detail-key">Status VAT</div><div class="detail-val ${statusClass}">${s.statusVat || '—'}</div></div>
+            ${s.krs ? `<div class="detail-row"><div class="detail-key">KRS</div><div class="detail-val">${s.krs}</div></div>` : ''}
+            ${s.workingAddress ? `<div class="detail-row"><div class="detail-key">Adres</div><div class="detail-val">${s.workingAddress}</div></div>` : ''}
+          </div>
+          ${accountsHtml ? `<div class="accounts-list"><h4>Rachunki bankowe podmiotu</h4>${accountsHtml}</div>` : ''}
+        `;
+      }).join('<hr style="border:none;border-top:1px solid var(--border);margin:14px 0">');
+    } else if (r.error) {
+      detailsHtml = `<div style="padding-top:12px;color:var(--yellow);font-size:13px">⚠ ${r.error.message || JSON.stringify(r.error)}</div>`;
+    } else {
+      detailsHtml = `<div style="padding-top:12px;color:var(--muted);font-size:13px">Rachunek nie figuruje w rejestrze podatników VAT dla podanej daty.</div>`;
+    }
+
+    const showChevron = r.subjects?.length > 0 || r.type === 'nip_check' || r.type === 'jpk_check' || r.error;
+
+    item.innerHTML = `
+      <div class="result-header" onclick="toggleDetails(this)">
+        <div class="result-left">
+          <div class="result-account">${formatAccount(r.account)}</div>
+          ${r.contractorName ? `<div class="result-contractor">${escHtml(r.contractorName)}${r.nip ? ' · NIP: ' + r.nip : ''}</div>` : (r.nip && r.type === 'nip_check' ? `<div class="result-contractor">NIP: ${r.nip}</div>` : '')}
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-shrink:0">
+          ${badge}
+          ${showChevron ? '<span class="chevron">▼</span>' : ''}
+        </div>
+      </div>
+      <div class="result-details">
+        ${detailsHtml}
+      </div>
+    `;
+
+    list.appendChild(item);
+  });
+}
+
+function toggleDetails(header) {
+  header.classList.toggle('open');
+  const details = header.nextElementSibling;
+  if (details) details.classList.toggle('open');
+}
+
+// ---- Export CSV ----
+function exportResults() {
+  if (!allResults.length) return;
+  const rows = [['Numer rachunku', 'Status', 'Rachunek przypisany / Status VAT', 'Nazwa kontrahenta (JPK)', 'Nazwa (rejestr MF)', 'NIP', 'REGON', 'Status VAT', 'Adres']];
+  for (const r of allResults) {
+    if (r.type === 'jpk_check') {
+      rows.push([
+        '',
+        r.status === 'found' ? 'Czynny VAT' : r.status === 'error' ? 'Błąd' : (r.vatStatus || 'Nie znaleziono'),
+        r.vatStatus || '',
+        r.contractorName || '',
+        r.subjectName || '',
+        r.nip || '',
+        r.subjectRegon || '',
+        r.vatStatus || '',
+        r.subjectAddress || ''
+      ]);
+    } else if (r.type === 'nip_check') {
+      rows.push([r.account, r.status === 'found' ? 'Przypisany' : r.status === 'error' ? 'Błąd' : 'Nieprzypisany',
+        r.accountAssigned || '', r.contractorName || '', '', r.nip || '', '', '', '']);
+    } else if (r.subjects && r.subjects.length > 0) {
+      for (const s of r.subjects) {
+        rows.push([r.account, 'Znaleziono', 'TAK', s.name || '', s.name || '', s.nip || '', s.regon || '', s.statusVat || '', s.workingAddress || '']);
+      }
+    } else {
+      rows.push([r.account, r.status === 'error' ? 'Błąd' : 'Nie znaleziono', 'NIE', '', '', '', '', '', '']);
+    }
+  }
+
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `biala-lista-vat-${getToday()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ---- Tab: JPK_VAT ----
+let jpkContractors = []; // [{nip, name, account, invoiceDate, invoiceNum}]
+let jpkMeta = {};
+
+function handleJpkFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      parseJpkXml(e.target.result);
+    } catch(err) {
+      alert('Błąd parsowania JPK: ' + err.message);
+    }
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function parseJpkXml(xmlText) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xmlText, 'application/xml');
+
+  if (doc.querySelector('parsererror')) throw new Error('Nieprawidłowy plik XML');
+
+  // Namespace-agnostic helper: get text content of first matching local tag name
+  const byLocal = (parent, localName) =>
+    [...parent.getElementsByTagName('*')].find(e => e.localName === localName);
+
+  const textOf = (parent, localName) => {
+    const el = byLocal(parent, localName);
+    return el ? el.textContent.trim() : '';
+  };
+
+  // --- Meta: rok i miesiąc z <Naglowek> ---
+  // JPK_V7M/V7K: tagi <Rok>, <Miesiac>
+  // JPK_VAT3:    tagi <OkresOd> (RRRR-MM-DD) lub <KodFormularza> + brak Rok/Miesiac
+  const naglowek = byLocal(doc.documentElement, 'Naglowek');
+  let rok      = naglowek ? textOf(naglowek, 'Rok')     : '';
+  let miesiac  = naglowek ? textOf(naglowek, 'Miesiac') : '';
+  const dataWyt  = naglowek ? textOf(naglowek, 'DataWytworzeniaJPK') : '';
+
+  // Fallback dla JPK_VAT3 — rok i miesiąc z OkresOd (format RRRR-MM-DD)
+  if (!rok || !miesiac) {
+    const okresOd = naglowek ? (textOf(naglowek, 'OkresOd') || textOf(naglowek, 'DataOd')) : '';
+    if (okresOd && okresOd.match(/\d{4}-\d{2}/)) {
+      const parts = okresOd.split('-');
+      rok     = rok     || parts[0];
+      miesiac = miesiac || String(parseInt(parts[1]));
+    }
+  }
+
+  // NIP podatnika — w <Podmiot1> / <OsobaFizyczna> lub <OsobaNiefizyczna>
+  const podmiot = byLocal(doc.documentElement, 'Podmiot1');
+  const nipPodatnika = podmiot ? (textOf(podmiot, 'NIP') || textOf(podmiot, 'Nip')) : '';
+
+  jpkMeta = { rok, miesiac, nipPodatnika, dataWyt };
+
+  // Ustal domyślną datę weryfikacji = ostatni dzień miesiąca z JPK
+  let defaultDate = getToday();
+  if (rok && miesiac) {
+    const y = rok.substring(0, 4);
+    const m = String(parseInt(miesiac)).padStart(2, '0');
+    const lastDay = new Date(parseInt(y), parseInt(m), 0).getDate();
+    defaultDate = `${y}-${m}-${String(lastDay).padStart(2, '0')}`;
+  } else if (dataWyt && dataWyt.match(/\d{4}-\d{2}-\d{2}/)) {
+    defaultDate = dataWyt.match(/(\d{4}-\d{2}-\d{2})/)[1];
+  }
+
+  // ---- DEMO RESTRICTION: only January and February 2026 ----
+  const rokNum    = parseInt(rok)    || 0;
+  const miesiacNum = parseInt(miesiac) || 0;
+  const isAllowed = rokNum === 2026 && miesiacNum >= 1 && miesiacNum <= 12;
+  if (!isAllowed) {
+    showDemoAlert(rok, miesiac);
+    return;
+  }
+  // ---- END DEMO RESTRICTION ----
+
+  document.getElementById('date-jpk').value = defaultDate;
+
+  // --- Zbierz kontrahentów z ZakupWiersz (zakupy — wymagają WL) ---
+  // Tagi wg schematu JPK_V7M(2): <NrDostawcy>, <NazwaDostawcy>, <DowodZakupu>, <DataZakupu>
+  // Tagi wg JPK_VAT3:            <NIPSprzedawcy>, <NazwaSprzedawcy>, <NrFaktury>, <DataWystawienia>
+  // Tagi wg starszych schematów:  <NIPDostawcy>, <NazwaDostawcy>, <NrFaktury>, <DataFaktury>
+  const contractorMap = {}; // klucz = NIP (tylko NIP, nie ma rachunków)
+
+  // Obsługa JPK_VAT3 — wiersze zakupów mogą być w <ZakupWiersz> lub bezpośrednio pod <Zakup>
+  // JPK_VAT3 używa tagów: NIPSprzedawcy, NazwaSprzedawcy, NrFaktury, DataWystawienia
+  const zakupRows = [...doc.getElementsByTagName('*')]
+    .filter(e => e.localName === 'ZakupWiersz' || e.localName === 'PozycjaCtrl');
+
+  for (const row of zakupRows) {
+    const nip  = (
+      textOf(row, 'NrDostawcy') ||
+      textOf(row, 'NIPDostawcy') ||
+      textOf(row, 'NipDostawcy') ||
+      textOf(row, 'NIPSprzedawcy') ||
+      textOf(row, 'NipSprzedawcy')
+    ).replace(/\D/g, '');
+    const name = textOf(row, 'NazwaDostawcy') || textOf(row, 'NazwaSprzedawcy') || '(brak nazwy)';
+    const inv  = textOf(row, 'DowodZakupu')   || textOf(row, 'NrFaktury') || textOf(row, 'NumerFaktury') || textOf(row, 'NrDokumentu');
+    const date = textOf(row, 'DataZakupu')    || textOf(row, 'DataWystawienia') || textOf(row, 'DataFaktury');
+    const nettoK42 = textOf(row, 'K_42') || textOf(row, 'K_40') || textOf(row, 'P_42') || textOf(row, 'P_40');
+    const vatK43   = textOf(row, 'K_43') || textOf(row, 'K_41') || textOf(row, 'K_46') || textOf(row, 'K_48') ||
+                     textOf(row, 'P_43') || textOf(row, 'P_41') || textOf(row, 'P_46') || textOf(row, 'P_48');
+
+    if (!nip || nip.length < 10) continue;
+
+    if (!contractorMap[nip]) {
+      contractorMap[nip] = { nip, name: name.replace(/^"|"$/g, ''), invoices: [] };
+    }
+    if (inv) contractorMap[nip].invoices.push({
+      num: inv, date, netto: nettoK42, vat: vatK43
+    });
+  }
+
+  // JPK_VAT3: jeśli nie znaleziono wierszy przez ZakupWiersz/PozycjaCtrl,
+  // spróbuj odczytać z elementów <Zakup> (stary format JPK_VAT(3))
+  if (Object.keys(contractorMap).length === 0) {
+    const zakupNodes = [...doc.getElementsByTagName('*')]
+      .filter(e => e.localName === 'Zakup');
+    for (const row of zakupNodes) {
+      const nip  = (
+        textOf(row, 'NIPSprzedawcy') ||
+        textOf(row, 'NipSprzedawcy') ||
+        textOf(row, 'NIPDostawcy') ||
+        textOf(row, 'NrDostawcy')
+      ).replace(/\D/g, '');
+      const name = textOf(row, 'NazwaSprzedawcy') || textOf(row, 'NazwaDostawcy') || '(brak nazwy)';
+      const inv  = textOf(row, 'NrFaktury') || textOf(row, 'NumerFaktury') || textOf(row, 'DowodZakupu');
+      const date = textOf(row, 'DataWystawienia') || textOf(row, 'DataZakupu') || textOf(row, 'DataFaktury');
+      const nettoK42 = textOf(row, 'K_42') || textOf(row, 'K_40') || textOf(row, 'P_42') || textOf(row, 'P_40');
+      const vatK43   = textOf(row, 'K_43') || textOf(row, 'K_41') || textOf(row, 'P_43') || textOf(row, 'P_41');
+
+      if (!nip || nip.length < 10) continue;
+
+      if (!contractorMap[nip]) {
+        contractorMap[nip] = { nip, name: name.replace(/^"|"$/g, ''), invoices: [] };
+      }
+      if (inv) contractorMap[nip].invoices.push({
+        num: inv, date, netto: nettoK42, vat: vatK43
+      });
+    }
+  }
+
+  jpkContractors = Object.values(contractorMap);
+
+  renderJpkPreview();
+  document.getElementById('jpk-preview').style.display = 'block';
+}
+
+function renderJpkPreview() {
+  const totalInvoices = jpkContractors.reduce((s, c) => s + c.invoices.length, 0);
+  const periodLabel = jpkMeta.rok && jpkMeta.miesiac
+    ? `${jpkMeta.miesiac.padStart ? String(jpkMeta.miesiac).padStart(2,'0') : jpkMeta.miesiac}/${jpkMeta.rok}`
+    : '—';
+
+  document.getElementById('jpk-summary').innerHTML = `
+    <div class="jpk-stat">
+      <div class="jpk-stat-val">${jpkContractors.length}</div>
+      <div class="jpk-stat-label">Dostawców (unikalnych NIP)</div>
+    </div>
+    <div class="jpk-stat">
+      <div class="jpk-stat-val">${totalInvoices}</div>
+      <div class="jpk-stat-label">Faktur zakupowych</div>
+    </div>
+    <div class="jpk-stat">
+      <div class="jpk-stat-val" style="font-size:16px">${periodLabel}</div>
+      <div class="jpk-stat-label">Okres JPK</div>
+    </div>
+    ${jpkMeta.nipPodatnika ? `<div class="jpk-stat"><div class="jpk-stat-val" style="font-size:14px">${jpkMeta.nipPodatnika}</div><div class="jpk-stat-label">NIP podatnika</div></div>` : ''}
+    <div style="grid-column:1/-1;">
+      <div class="jpk-contractors">
+        <div class="jpk-contractor-row header">
+          <div>NIP dostawcy</div><div>Nazwa</div><div>Faktur</div>
+        </div>
+        ${jpkContractors.slice(0, 100).map(c => `
+          <div class="jpk-contractor-row">
+            <div class="jpk-nip">${c.nip}</div>
+            <div class="jpk-name">${escHtml(c.name)}</div>
+            <div class="jpk-acct">${c.invoices.length}</div>
+          </div>
+        `).join('')}
+        ${jpkContractors.length > 100 ? `<div class="jpk-contractor-row"><div style="color:var(--muted);font-size:11px;grid-column:1/-1">... i ${jpkContractors.length - 100} więcej</div></div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function checkJpk() {
+  if (!jpkContractors.length) { alert('Najpierw wczytaj plik JPK.'); return; }
+  const date = document.getElementById('date-jpk').value;
+  if (!date) { alert('Wybierz datę weryfikacji.'); return; }
+  if (isDemoDateBlocked(date)) { showDemoDateAlert(); return; }
+
+  const btn = document.getElementById('btn-jpk');
+  btn.disabled = true;
+  showProgress(true);
+
+  const totalNips = jpkContractors.length;
+  const allNips = jpkContractors.map(c => c.nip);
+
+  // Sprawdź ile jest w cache
+  const cachedNips   = allNips.filter(nip => cacheGet('nip', nip, date) !== null);
+  const uncachedNips = allNips.filter(nip => cacheGet('nip', nip, date) === null);
+  const totalChunks  = Math.ceil(uncachedNips.length / 30) || 0;
+
+  if (cachedNips.length > 0 && uncachedNips.length === 0) {
+    setProgress(50, `Wszystkie ${totalNips} NIP-ów z cache — brak zapytań do API...`);
+  } else if (cachedNips.length > 0) {
+    setProgress(2, `${cachedNips.length} NIP-ów z cache · ${uncachedNips.length} do pobrania w ${totalChunks} zapytaniach...`);
+  } else {
+    setProgress(2, `Weryfikuję ${totalNips} NIP-ów w ${totalChunks} zapytaniach wsadowych (po 30)...`);
+  }
+
+  try {
+    // Wczytaj z cache
+    const batchResults = {};
+    for (const nip of cachedNips) {
+      batchResults[nip] = cacheGet('nip', nip, date);
+    }
+
+    // Pobierz pozostałe wsadowo
+    if (uncachedNips.length > 0) {
+      const chunks = chunkArray(uncachedNips, 30);
+      let doneChunks = 0;
+
+      await runPool(chunks.map(chunk => async () => {
+        const url = `${BASE}/api/search/nips/${chunk.join(',')}?date=${date}`;
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
+          if (data.result && data.result.entries) {
+            for (const entry of data.result.entries) {
+              if (entry.error) {
+                const val = { subject: null, error: entry.error.message || 'Błąd API' };
+                batchResults[entry.identifier] = val;
+                cacheSet('nip', entry.identifier, date, val);
+              } else {
+                const subject = entry.subjects && entry.subjects.length > 0 ? entry.subjects[0] : null;
+                const val = { subject, error: null };
+                batchResults[entry.identifier] = val;
+                cacheSet('nip', entry.identifier, date, val);
+              }
+            }
+          }
+          for (const nip of chunk) {
+            if (!(nip in batchResults)) {
+              const val = { subject: null, error: null };
+              batchResults[nip] = val;
+              cacheSet('nip', nip, date, val);
+            }
+          }
+        } catch(e) {
+          for (const nip of chunk) {
+            batchResults[nip] = { subject: null, error: 'Błąd sieci: ' + e.message };
+          }
+        }
+        doneChunks++;
+        const fetched = Math.min(doneChunks * 30, uncachedNips.length);
+        const pct = Math.round(((cachedNips.length + fetched) / totalNips) * 94) + 4;
+        const cacheInfo = cachedNips.length > 0 ? ` · ${cachedNips.length} z cache` : '';
+        setProgress(pct, `Pobrano ${fetched}/${uncachedNips.length} z API${cacheInfo} (zapytanie ${doneChunks}/${totalChunks})...`);
+      }), CONCURRENCY);
+    }
+
+    // Zbuduj wyniki w oryginalnej kolejności kontrahentów
+    allResults = jpkContractors.map(c => {
+      const r = batchResults[c.nip] || { subject: null, error: 'Brak odpowiedzi' };
+      const s = r.subject;
+      const vatStatus = s ? s.statusVat : null;
+      return {
+        type: 'jpk_check',
+        account: '',
+        nip: c.nip,
+        contractorName: c.name,
+        invoices: c.invoices,
+        vatStatus,
+        subjectName: s ? s.name : null,
+        subjectRegon: s ? s.regon : null,
+        subjectAddress: s ? (s.workingAddress || s.residenceAddress) : null,
+        subjectAccounts: s ? (s.accountNumbers || []) : [],
+        status: r.error ? 'error' : (vatStatus === 'Czynny' ? 'found' : 'not_found'),
+        error: r.error
+      };
+    });
+
+    const cacheMsg = cachedNips.length > 0 ? ` (${cachedNips.length} z cache, ${uncachedNips.length} z API)` : '';
+    setProgress(100, `Gotowe! Zweryfikowano ${totalNips} NIP-ów${cacheMsg}.`);
+    renderResults();
+  } catch(e) {
+    alert('Błąd: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => showProgress(false), 1800);
+  }
+}
+
+// Drag & drop for JPK
+document.addEventListener('DOMContentLoaded', () => {
+  const dzj = document.getElementById('drop-zone-jpk');
+  if (dzj) {
+    dzj.addEventListener('dragover', e => { e.preventDefault(); dzj.classList.add('drag-over'); });
+    dzj.addEventListener('dragleave', () => dzj.classList.remove('drag-over'));
+    dzj.addEventListener('drop', e => {
+      e.preventDefault();
+      dzj.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) handleJpkFile({ target: { files: [file] } });
+    });
+  }
+});
+
+// ---- Demo restriction modal ----
+const MIESIAC_PL = ['', 'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
+  'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
+
+function showDemoAlert(rok, miesiac) {
+  const m = parseInt(miesiac) || 0;
+  const label = (m >= 1 && m <= 12) ? `${MIESIAC_PL[m]} ${rok}` : `${miesiac}/${rok}`;
+  const modal = document.getElementById('demo-modal');
+  modal.querySelector('h3').textContent = 'Wersja Demo';
+  modal.querySelector('p').innerHTML = 'Wczytany plik JPK pochodzi z okresu:';
+  modal.querySelector('.period-badge').style.display = 'inline-block';
+  modal.querySelector('.period-badge').textContent = label;
+  modal.querySelectorAll('p')[1].innerHTML = 'W wersji demo możliwy jest import pliku JPK za <strong>dowolny miesiąc 2026</strong>. Aby odblokować obsługę wszystkich okresów, przejdź na pełną wersję aplikacji.';
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  const input = document.getElementById('jpk-input');
+  if (input) input.value = '';
+  document.getElementById('jpk-preview').style.display = 'none';
+}
+
+function closeDemoModal() {
+  document.getElementById('demo-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ---- Theme toggle ----
+function applyTheme(mode) {
+  const root = document.documentElement;
+  const btn = document.getElementById('theme-label');
+  const icon = document.getElementById('theme-icon');
+  if (mode === 'light') {
+    root.classList.add('light');
+    if (btn) btn.textContent = 'Tryb ciemny';
+    if (icon) icon.textContent = '🌙';
+  } else {
+    root.classList.remove('light');
+    if (btn) btn.textContent = 'Tryb jasny';
+    if (icon) icon.textContent = '☀️';
+  }
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.classList.contains('light');
+  const next = isLight ? 'dark' : 'light';
+  applyTheme(next);
+  try { localStorage.setItem('bialalistavat-theme', next); } catch(e) {}
+}
+
+// ---- Changelog modal ----
+function openChangelog() {
+  document.getElementById('changelog-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeChangelogBtn() {
+  document.getElementById('changelog-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeChangelog(e) {
+  if (e.target === document.getElementById('changelog-modal')) closeChangelogBtn();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeChangelogBtn(); closeDemoModal(); }
+});
+
+// ---- Init ----
+setDefaultDates();
+
+// Restore saved theme
+(function() {
+  const saved = localStorage.getItem('bialalistavat-theme');
+  if (saved === 'light') applyTheme('light');
+})();
+</script>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-copy">© <strong>Dawid Frączek</strong> · Biała Lista VAT Weryfikator · 2026</div>
+    <div class="footer-links">
+      <a onclick="openChangelog()">Changelog v1.6</a>
+      <span style="color:var(--border)">·</span>
+      <a href="https://wl-api.mf.gov.pl/" target="_blank" rel="noopener">API MF</a>
+      <span style="color:var(--border)">·</span>
+      <a href="https://www.podatki.gov.pl/vat/biala-lista-podatnikow-vat/" target="_blank" rel="noopener">Biała Lista VAT</a>
+    </div>
+    <div class="footer-disclaimer">Aplikacja korzysta z oficjalnego API Ministerstwa Finansów. Wyniki mają charakter informacyjny — dla celów prawnych i podatkowych zaleca się weryfikację bezpośrednio w systemie MF.</div>
+  </div>
+</footer>
+</body>
+</html>
