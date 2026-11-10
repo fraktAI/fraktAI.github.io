@@ -3,7 +3,7 @@
 Wersja demonstracyjna kalkulatora, który porównuje wynagrodzenie „na rękę” i koszt pracodawcy
 **przed i po zmianie formy współpracy** (umowa o pracę, zlecenie, B2B).
 
-**Demo online:** `[https://<twoj-login>.github.io/<nazwa-repozytorium>/](https://fraktai.github.io/kalkulator/index.html)`
+**Demo online:** `https://fraktai.github.io/kalkulator/index.html`
 
 ## Co potrafi wersja demo
 - umowa o pracę, umowa zlecenie, B2B (skala podatkowa lub podatek liniowy 19%),
