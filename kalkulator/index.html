@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kalkulator zmiany formy współpracy</title>
+<meta name="description" content="Demo kalkulatora zmiany formy współpracy (UoP, zlecenie, B2B) – szacunek zmiany wynagrodzenia na rękę.">
+<title>Kalkulator zmiany formy współpracy – DEMO</title>
 <style>
 :root{--in:#fff;--card:#fff;--card2:#fcfcfe;--th:#f8fafc;--tot:#f1f5f9;--bd:#cbd5e1;--keyc:#312e81;--bigb:#c7d2fe;--dis1:#f1f3f6;--dis2:#eaedf1;--hd:linear-gradient(120deg,#1e1b4b,#312e81 45%,#4338ca);--nb:#fef2f2;--nbb:#fecaca;--nc:#991b1b;--ib:#f0fdf4;--ibb:#bbf7d0;--ic:#166534;--rowl:#eef2f7;--calc:#f1f5f9;--ink:#0f172a;--muted:#64748b;--acc:#4338ca;--acc2:#6366f1;--soft:#eef2ff;--bg:#f1f5f9;--bad:#dc2626;--ok:#15803d;--line:#e2e8f0;--r:14px;--sh:0 1px 2px rgba(15,23,42,.06),0 4px 16px rgba(15,23,42,.05)}
 html[data-theme=dark]{--ink:#f5f5f5;--muted:#a3a3a3;--acc:#ef4444;--acc2:#f87171;--soft:#2a1010;--bg:#0a0a0a;--bad:#ff6b6b;--ok:#4ade80;--line:#2b2b2b;--in:#1a1a1a;--card:#141414;--card2:#191919;--th:#1c1c1c;--tot:#1f1f1f;--bd:#3a3a3a;--keyc:#fca5a5;--bigb:#7f1d1d;--dis1:#161616;--dis2:#1d1d1d;--hd:linear-gradient(120deg,#000,#1a0505 50%,#b91c1c);--nb:#2a1010;--nbb:#5b1d1d;--nc:#fecaca;--ib:#0f2417;--ibb:#14532d;--ic:#bbf7d0;--rowl:#232323;--sh:0 1px 2px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.4);color-scheme:dark}
@@ -67,65 +68,28 @@ summary{cursor:pointer;font-weight:600;color:var(--acc)}
 .st{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px 18px;margin-top:12px}
 .sec{grid-column:1/-1;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--acc);font-weight:700;margin-top:10px}
 footer{text-align:center;color:#94a3b8;font-size:12px;padding:16px 24px 28px}
-@media print{@page{size:A4 portrait;margin:8mm}
-html,body{background:#fff;font-size:10.5px}
-header{padding:8px 12px;background:#312e81!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}header h1{font-size:15px}header p{font-size:10px}
-header button,.no-print,details,button,footer{display:none!important}
-main{padding:8px 0 0;max-width:none}
-.card{box-shadow:none;break-inside:avoid;padding:10px 12px;margin-bottom:8px;border-radius:8px}
-.cols{grid-template-columns:1fr 1fr!important;gap:8px}.person{flex-wrap:nowrap;gap:8px}.person label{min-width:0;flex:1}
-.cols .card{margin-bottom:8px}
-h2{font-size:13px;margin-bottom:6px}.lead{display:none}
-.work{padding:8px;margin-bottom:6px}.work .top{margin-bottom:6px}
-.grid{grid-template-columns:1fr 1fr;gap:6px}
-.f{font-size:9.5px}
-input.in,select.in{height:24px;padding:2px 6px;font-size:10.5px;box-shadow:none;border:1px solid #bbb;background:#fff;-webkit-appearance:none;appearance:none;background-image:none}
-.dis{background:#f1f3f6!important}
-.hero{grid-template-columns:1fr 1fr;gap:8px}
-.kpi{padding:8px 10px}.kpi .v{font-size:18px}.kpi .t{font-size:9.5px}.kpi .s{font-size:10px}
-table{font-size:10px}th,td{padding:4px 6px}th{font-size:8.5px}
-.tw{overflow:visible}.tw table{min-width:0}
-*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.badge{font-size:11px;background:#ef4444;color:#fff;border-radius:6px;padding:2px 8px;vertical-align:middle;letter-spacing:.08em}
 </style>
 </head>
 <body>
 <header>
-  <div><h1>Kalkulator zmiany formy współpracy</h1><p>Porównaj „na rękę” i koszt pracodawcy – obecnie i po zmianie formy lub wynagrodzenia</p></div>
+  <div><h1>Kalkulator zmiany formy współpracy <span class="badge">DEMO</span></h1><p>Sprawdź, jak zmieni się „na rękę” i koszt pracodawcy po zmianie formy współpracy</p></div>
   <span class="sp"></span>
-  <button id="bTheme" title="Przełącz styl jasny/ciemny">Styl ciemny</button><button id="bEx">Wczytaj przykład</button><button id="bPrint">Drukuj</button><button id="bClr">Wyczyść</button>
+  <button id="bTheme">Styl ciemny</button><button id="bEx">Wczytaj przykład</button><button id="bClr">Wyczyść</button>
 </header>
 <main>
-  <div class="note no-print" style="margin-top:0"><b>Zastrzeżenie:</b> narzędzie do porównań i szacunków, nie porada podatkowa. Kwoty miesięczne w zł; wyniki liczone jak dla stałego miesiąca przez cały rok.</div>
-
-  <section class="card">
-    <h3>Twoje ustawienia podatkowe</h3>
-    <div class="person">
-      <label>Wiek do 26 lat (ulga dla młodych)<select class="in" data-p="mlody"></select></label>
-      <label>Złożone PIT-2 (kwota zmniejszająca 3 600 zł)<select class="in" data-p="pit2"></select></label>
-      <label>Podwyższone koszty uzyskania (dojazd)<select class="in" data-p="kupPodw"></select></label>
-    </div>
-  </section>
-
+  <div class="note" style="margin:0 0 20px"><b>Wersja demonstracyjna.</b> Uproszczona: umowa o pracę, zlecenie i B2B (skala / liniowy), jedna współpraca po każdej stronie, kwoty do 25 000 zł. Pełna wersja (wiele współprac, ryczałt, kontrakty menadżerskie, PPK, wyrównanie „na rękę”, raporty, druk) – <b>napisz do autora: <a href=" https://fraktai.github.io/"> szczegóły tutaj</a></b>.<br><small>Narzędzie do porównań i szacunków, nie porada podatkowa.</small></div>
+  <section class="card"><h3>Ustawienia</h3><div class="person"><label>Złożone PIT-2 (kwota zmniejszająca)<select class="in" id="pit2"></select></label></div></section>
   <div class="cols">
-    <section class="card"><h2>Obecnie</h2><p class="lead">Wszystkie Twoje obecne współprace (np. umowa o pracę + działalność).</p><div id="listO"></div><button data-add="obecne">+ Dodaj współpracę</button></section>
-    <section class="card"><h2>Docelowo</h2><p class="lead">Jak ma wyglądać współpraca po zmianie.</p><div id="listD"></div><button data-add="docel">+ Dodaj współpracę</button></section>
+    <section class="card"><h2>Obecnie</h2><div id="fO"></div></section>
+    <section class="card"><h2>Docelowo</h2><div id="fD"></div></section>
   </div>
-
   <section class="card" id="result"></section>
-
-  <section class="card no-print">
-    <details><summary>Parametry obliczeń (stawki 2026 – do weryfikacji)</summary>
-      <p class="lead" style="margin-top:8px">Domyślne wartości jak w arkuszu Excel. Zmiany zapisują się w przeglądarce. Procenty wpisuj bez znaku %, np. 9,76.</p>
-      <div class="st" id="stawki"></div>
-      <p><button id="bReset">Przywróć domyślne stawki</button></p>
-    </details>
-  </section>
 </main>
-<footer>Narzędzie do porównań i szacunków, nie porada podatkowa. Dane zapisują się tylko w tej przeglądarce.</footer>
-
+<footer>Demo · szacunki na podstawie stawek 2026 · dane nie są nigdzie wysyłane ani zapisywane</footer>
 <script>
 "use strict";
-const NBSP = " ";
+const NBSP = " ";
 function fmt(n, dec=2){
   if(n===null||n===undefined||n===""||isNaN(n)) return "";
   const neg = n<0 && Math.abs(n)>=Math.pow(10,-dec)/2;
@@ -140,14 +104,16 @@ function fmtPct(frac){  // 0.0976 -> "9,76"
   return s.replace(".",",");
 }
 
+
 function parseNum(str){
   if(str===null||str===undefined) return null;
-  const t = String(str).replace(/[\s %]/g,"").replace(",",".");
+  const t = String(str).replace(/[\s %]/g,"").replace(",",".");
   if(t==="") return null;
   if(!/^-?\d*\.?\d+$/.test(t)) return NaN;
   return parseFloat(t);
 }
 const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
 
 
 const STAWKI = [
@@ -171,27 +137,20 @@ const STAWKI = [
   {k:"Sp_FGSP", l:"FGŚP", u:"%", t:"pct", d:0.001},
  ]},
  {sec:"PPK – Pracownicze Plany Kapitałowe (UoP / zlecenie, gdy PPK = Tak)", items:[
-  {k:"PPK_os", l:"Wpłata osoby (% podstawy)", u:"%", t:"pct", d:0.02, n:"Pomniejsza „na rękę”. Wpisz łącznie z ewentualną wpłatą dodatkową."},
-  {k:"PPK_sp", l:"Wpłata spółki (% podstawy)", u:"%", t:"pct", d:0.015, n:"Koszt spółki i jednocześnie przychód osoby (zwiększa podstawę podatku)."},
  ]},
  {sec:"Pozostałe koszty spółki na współpracę (zł mies.)", items:[
   {k:"Pozostale_UoP", l:"Umowa o pracę", u:"zł / mies.", t:"pln", d:0, n:"Stała kwota doliczana do kosztu spółki (BHP, badania, benefity), gdy wynagrodzenie > 0."},
   {k:"Pozostale_Zlec", l:"Umowa zlecenie", u:"zł / mies.", t:"pln", d:0},
   {k:"Pozostale_B2B", l:"B2B", u:"zł / mies.", t:"pln", d:0},
-  {k:"Pozostale_KM", l:"Kontrakt menadżerski i powołanie", u:"zł / mies.", t:"pln", d:0, n:"Obie formy rozliczane identycznie (jak w Excelu – jedna pozycja)."},
  ]},
  {sec:"Koszty uzyskania przychodu i podatek (umowy)", items:[
   {k:"KUP_UoP", l:"KUP – umowa o pracę, podstawowe (mies.)", u:"zł / mies.", t:"pln", d:250},
-  {k:"KUP_UoP_podw", l:"KUP – umowa o pracę, podwyższone (mies.)", u:"zł / mies.", t:"pln", d:300, n:"Dla osób oznaczonych w arkuszu Osoby."},
   {k:"KUP_Zlec", l:"KUP – umowa zlecenie", u:"%", t:"pct", d:0.2, n:"Od przychodu pomniejszonego o składki społeczne."},
-  {k:"KUP_KM", l:"KUP – kontrakt menadżerski (mies.)", u:"zł / mies.", t:"pln", d:250},
-  {k:"KUP_POW", l:"KUP – powołanie (mies.)", u:"zł / mies.", t:"pln", d:0},
   {k:"KUP_wiele", l:"Limit KUP przy kilku umowach – krotność limitu jednej umowy", u:"x", t:"num", d:1.5, n:"Dotyczy umów o pracę i kontraktów menadżerskich tej samej osoby: łączne KUP = 1,5 × KUP jednej umowy, dzielone po równo."},
   {k:"PIT_st1", l:"Stawka PIT – I próg", u:"%", t:"pct", d:0.12},
   {k:"PIT_st2", l:"Stawka PIT – II próg", u:"%", t:"pct", d:0.32},
   {k:"PIT_prog", l:"Próg podatkowy (roczny)", u:"zł / rok", t:"pln", d:120000},
   {k:"Kwota_zmn", l:"Kwota zmniejszająca podatek (roczna)", u:"zł / rok", t:"pln", d:3600, n:"Tylko przy złożonym PIT-2, raz na osobę."},
-  {k:"Ulga_mlodych_limit", l:"Ulga dla młodych – roczny limit przychodu zwolnionego z PIT", u:"zł / rok", t:"pln", d:85528, n:"Raz na osobę, osoby do 26 lat."},
  ]},
  {sec:"Działalność gospodarcza (B2B / kontrakt przez działalność)", items:[
   {k:"B2B_podst_duzy", l:"Podstawa ZUS – Duży ZUS (mies.)", u:"zł / mies.", t:"pln", d:5652.6, n:"60% prognozowanego przeciętnego wynagrodzenia."},
@@ -205,15 +164,8 @@ const STAWKI = [
   {k:"Zdrow_lin", l:"Składka zdrowotna – podatek liniowy", u:"%", t:"pct", d:0.049, n:"Minimum: składka zdrowotna (9%) × minimalne wynagrodzenie."},
   {k:"Liniowy_st", l:"Stawka podatku liniowego", u:"%", t:"pct", d:0.19},
   {k:"Liniowy_limit_zdrow", l:"Limit odliczenia składki zdrowotnej – podatek liniowy (roczny)", u:"zł / rok", t:"pln", d:14100, n:"Stosowany raz na osobę."},
-  {k:"Ryczalt_odl_zdrow", l:"Ryczałt – odliczenie składki zdrowotnej od przychodu", u:"%", t:"pct", d:0.5},
-  {k:"Ryczalt_prog1", l:"Ryczałt – próg przychodu 1 (roczny)", u:"zł / rok", t:"pln", d:60000, n:"Do tego progu – mnożnik 1."},
-  {k:"Ryczalt_prog2", l:"Ryczałt – próg przychodu 2 (roczny)", u:"zł / rok", t:"pln", d:300000, n:"Do tego progu – mnożnik 2; powyżej – mnożnik 3."},
-  {k:"Ryczalt_mn1", l:"Ryczałt – mnożnik 1 (składka zdrowotna)", u:"% przeciętnego wynagrodzenia", t:"pct", d:0.6, n:"Składka = 9% × przeciętne wynagrodzenie × mnożnik."},
-  {k:"Ryczalt_mn2", l:"Ryczałt – mnożnik 2 (składka zdrowotna)", u:"% przeciętnego wynagrodzenia", t:"pct", d:1},
-  {k:"Ryczalt_mn3", l:"Ryczałt – mnożnik 3 (składka zdrowotna)", u:"% przeciętnego wynagrodzenia", t:"pct", d:1.8},
  ]},
  {sec:"Przełączniki Tak / Nie (założenia do weryfikacji)", items:[
-  {k:"KM_dzialalnosc", l:"Kontrakt menadżerski i powołanie rozliczane jako działalność (jak B2B)?", u:"Tak / Nie", t:"sw", d:"NIE", n:"Tak = jak B2B. Nie = jak zlecenie. Uwaga: przychody z art. 13 pkt 7 i 9 PIT opodatkowuje się wyłącznie skalą."},
   {k:"Zlec_chor", l:"Zlecenie: opłacana dobrowolna składka chorobowa?", u:"Tak / Nie", t:"sw", d:"NIE"},
   {k:"B2B_chor_sw", l:"B2B: opłacana dobrowolna składka chorobowa?", u:"Tak / Nie", t:"sw", d:"NIE"},
  ]},
@@ -227,7 +179,6 @@ function kategoria(f){
   if(f==="UOP") return "UOP";
   if(f==="ZLEC") return "ZLEC";
   if(f==="B2B") return "DG";
-  if(f==="KM"||f==="POW") return S.stawki.KM_dzialalnosc==="TAK" ? "DG" : "ZLEC";
   return "";
 }
 function flagi(w,kat){
@@ -235,12 +186,12 @@ function flagi(w,kat){
   const k = inny?0:1;
   return {U:k, V:k, X:k, Y:k, Z:k,
           W: inny?0:(kat==="UOP"?1:(kat==="ZLEC"?(S.stawki.Zlec_chor==="TAK"?1:0):(S.stawki.B2B_chor_sw==="TAK"?1:0))),
-          ppk:(kat==="UOP"||kat==="ZLEC") && w.ppk==="TAK"};
+          ppk:false};
 }
 function pitT(x){ const s=S.stawki; x=Math.max(0,x); return s.PIT_st1*Math.min(x,s.PIT_prog)+s.PIT_st2*Math.max(x-s.PIT_prog,0); }
 function pozostale(forma){
   const s=S.stawki;
-  return forma==="UOP"?s.Pozostale_UoP : forma==="ZLEC"?s.Pozostale_Zlec : forma==="B2B"?s.Pozostale_B2B : (forma==="KM"||forma==="POW")?s.Pozostale_KM : 0;
+  return forma==="UOP"?s.Pozostale_UoP : forma==="ZLEC"?s.Pozostale_Zlec : forma==="B2B"?s.Pozostale_B2B : 0;
 }
 
 /* items: wszystkie wiersze jednej osoby (UoP / ZLEC / DG) w kolejności z tabeli:
@@ -263,34 +214,29 @@ function evalPerson(items, osoba, amt){
   /* --- limit 30-krotności, KUP --- */
   let C=0, sumGG=0;
   items.forEach((it,k)=>{
-    if(it.kat==="UOP"||(it.kat==="ZLEC"&&it.forma==="KM")) C++;
+    if(it.kat==="UOP") C++;
     if(it.kat!=="DG") sumGG += Math.max(0,amt[k])*Math.max(it.fl.U,it.fl.V);
   });
   const GF = C>1 ? Math.min(1,(s.KUP_wiele||0)/C) : 1;
   const lim = s.Limit_ZUS||0;
   const GI = (lim<=0||sumGG<=0) ? 1 : Math.min(1, Math.max(0,lim/12-sumGH)/sumGG);
   /* --- składka zdrowotna DG: RAZ NA OSOBĘ od sumy przychodów, rozdzielana proporcjonalnie --- */
-  const dgR=[], dgN=[], dgL=[];
+  const dgN=[], dgL=[];
   items.forEach((it,k)=>{
     if(it.kat!=="DG"||amt[k]<=0) return;
-    if(it.opod==="RYCZALT") dgR.push(k); else { dgN.push(k); if(it.opod==="LINIOWY") dgL.push(k); }
+    dgN.push(k); if(it.opod==="LINIOWY") dgL.push(k);
   });
   const sum=(arr,f)=>arr.reduce((a,k)=>a+f(k),0);
-  const sR=sum(dgR,k=>amt[k]), sN=sum(dgN,k=>amt[k]), sL=sum(dgL,k=>amt[k]);
+  const sN=sum(dgN,k=>amt[k]), sL=sum(dgL,k=>amt[k]);
   const bN=sum(dgN,k=>amt[k]-items[k].koszty-AEdg[k]);
   const zdrDG={};
-  if(sR>0){
-    const mn = sR*12<=s.Ryczalt_prog1 ? s.Ryczalt_mn1 : (sR*12<=s.Ryczalt_prog2 ? s.Ryczalt_mn2 : s.Ryczalt_mn3);
-    const tot = r2(s.Os_zdrow*s.Przecietne_wyn*mn);
-    dgR.forEach(k=>zdrDG[k]=r2(tot*amt[k]/sR));
-  }
   dgN.forEach(k=>{
     const rate = items[k].opod==="LINIOWY" ? s.Zdrow_lin : s.Os_zdrow;
     const tot = Math.max(r2(rate*Math.max(bN,0)), r2(s.Os_zdrow*s.Placa_min));
     zdrDG[k]=r2(tot*amt[k]/sN);
   });
   /* --- wiersze --- */
-  const ulga = osoba.mlody==="TAK" ? (s.Ulga_mlodych_limit||0) : 0;
+  const ulga = 0;
   const R=items.map((it,k)=>{
     const fl=it.fl, AC=Math.max(0,amt[k]), AD=AC*GI, dg=it.kat==="DG";
     const K = dg ? (it.koszty||0) : 0;
@@ -299,22 +245,16 @@ function evalPerson(items, osoba, amt){
     else {
       AE=r2(AD*s.Os_emer*fl.U)+r2(AD*s.Os_rent*fl.V)+r2(AC*s.Os_chor*fl.W);
       AF=AC<=0?0:r2(s.Os_zdrow*(AC-AE));
-      if(fl.ppk){ AG=r2(AD*s.PPK_os); AH=r2(AD*s.PPK_sp); }
     }
     let scale=true, AI=0, fixedTax=null;
-    if(dg && it.opod==="RYCZALT"){
-      scale=false; const AK=r0(Math.max(0,12*(AC-AE-s.Ryczalt_odl_zdrow*AF)));
-      fixedTax=r0(AK*it.rate)/12;
-    } else if(dg && it.opod==="LINIOWY"){
+    if(dg && it.opod==="LINIOWY"){
       scale=false; const ded=sL>0?Math.min(AF,s.Liniowy_limit_zdrow/12*AC/sL):0;
       const AK=r0(Math.max(0,12*(AC-K-AE-ded)));
       fixedTax=r0(AK*s.Liniowy_st)/12;
     } else {
       let baza;
       if(dg) baza=AC-K-AE;
-      else if(it.kat==="UOP") baza=AC+AH-AE-(osoba.kupPodw==="TAK"?s.KUP_UoP_podw:s.KUP_UoP)*GF;
-      else if(it.forma==="POW") baza=AC+AH-AE-(s.KUP_POW||0);
-      else if(it.forma==="KM") baza=AC+AH-AE-(s.KUP_KM||0)*GF;
+      else if(it.kat==="UOP") baza=AC+AH-AE-s.KUP_UoP*GF;
       else baza=(AC+AH-AE)*(1-s.KUP_Zlec);
       AI=r0(Math.max(0,12*baza));
     }
@@ -355,167 +295,65 @@ function solvePerson(items, osoba){
 }
 
 
-const S={stawki:{}};
-const DEF={}; STAWKI.forEach(g=>g.items.forEach(i=>{DEF[i.k]=i.d;}));
-const KEY="kalk1_v1", MAXW=6;
-const FORMY=[["UOP","Umowa o pracę"],["ZLEC","Umowa zlecenie"],["B2B","B2B (działalność)"],["KM","Kontrakt menadżerski"],["POW","Powołanie"]];
-const RODZ=[["BRUTTO","Brutto"],["NETTO","Netto faktury (bez VAT)"],["NARECE","Na rękę"]];
+
+const S={stawki:{}}; STAWKI.forEach(g=>g.items.forEach(i=>{S.stawki[i.k]=i.d;}));
+const MAX=25000;
+const FORMY=[["UOP","Umowa o pracę"],["ZLEC","Umowa zlecenie"],["B2B","B2B (działalność)"]];
 const TN=[["NIE","Nie"],["TAK","Tak"]];
-const OPOD=[["SKALA","Skala podatkowa"],["LINIOWY","Podatek liniowy 19%"],["RYCZALT","Ryczałt"]];
-const ZUS=[["DUZY","Duży ZUS"],["PREF","Preferencyjny ZUS"],["MALY","Mały ZUS Plus"],["ULGA","Ulga na start"],["TYLKO_ZDR","Tylko składka zdrowotna"]];
-const RYC=[[0.085,"8,5%"],[0.12,"12%"],[0.15,"15%"],[0.17,"17%"]];
-const nw=()=>({forma:"",kwota:null,rodzaj:"BRUTTO",ppk:"NIE",inny:"NIE",opod:"LINIOWY",ryczalt:0.12,zus:"DUZY",koszty:null,wyr:false});
-let P={mlody:"NIE",pit2:"NIE",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}};
-function applyStawki(){ Object.assign(S.stawki,DEF,P.stawki||{}); }
-function load(){ try{ const o=JSON.parse(localStorage.getItem(KEY)||"null"); if(o){ P=Object.assign(P,o); if(!P.obecne.length)P.obecne=[nw()]; if(!P.docel.length)P.docel=[nw()]; } }catch(e){} applyStawki(); }
-function save(){ try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){} }
+const OPOD=[["SKALA","Skala podatkowa"],["LINIOWY","Podatek liniowy 19%"]];
+const ZUS=[["DUZY","Duży ZUS"],["PREF","Preferencyjny ZUS"]];
+const nw=()=>({forma:"",kwota:null,opod:"LINIOWY",zus:"DUZY",koszty:null});
+let D={pit2:"NIE",o:nw(),d:nw()};
 const $=s=>document.querySelector(s);
-const opts=(l,v,blank)=>(blank?`<option value=""></option>`:"")+l.map(([k,t])=>`<option value="${k}"${String(k)===String(v)?" selected":""}>${esc(t)}</option>`).join("");
-
-/* ---------- formularz ---------- */
-function workHtml(side,i,w){
-  const docel=side==="docel";
-  const formy=FORMY.concat(docel?[["BRAK","Rozwiązana (brak współpracy)"]]:[]);
-  const F=(f,label,html)=>`<label class="f">${label}${html}</label>`;
-  const sel=(f,list,blank)=>`<select class="in" data-s="${side}" data-i="${i}" data-f="${f}">${opts(list,w[f],blank)}</select>`;
-  const num=(f)=>`<input class="in num" inputmode="decimal" data-s="${side}" data-i="${i}" data-f="${f}" value="${w[f]===null||w[f]===undefined?"":esc(fmt(w[f],2))}">`;
-  return `<div class="work" data-w="${side}${i}"><div class="top"><span>Współpraca ${i+1}</span>${(side==="obecne"?P.obecne:P.docel).length>1?`<button class="x" data-del="${side}" data-i="${i}">Usuń</button>`:""}</div>
-  <div class="grid">
-   ${F("forma","Forma współpracy",sel("forma",formy,true))}
-   ${F("kwota","Wynagrodzenie (mies.)",num("kwota"))}
-   ${F("rodzaj","Rodzaj kwoty",sel("rodzaj",RODZ))}
-   ${F("ppk","PPK",sel("ppk",TN))}
-   ${F("inny","Inny tytuł do ubezpieczeń (np. etat)",sel("inny",TN))}
-   ${F("opod","Opodatkowanie działalności",sel("opod",OPOD))}
-   ${F("ryczalt","Stawka ryczałtu",sel("ryczalt",RYC))}
-   ${F("zus","Rodzaj ZUS",sel("zus",ZUS))}
-   ${F("koszty","Koszty działalności (mies.)",num("koszty"))}
-  </div>
-  ${docel?`<label class="chk"><input type="checkbox" data-s="docel" data-i="${i}" data-f="wyr"${w.wyr?" checked":""}> Wyrównaj do obecnego „na rękę” (wylicz potrzebną kwotę)</label>`:""}
-  <div class="msg" data-m="${side}${i}"></div></div>`;
+const opts=(l,v,b)=>(b?'<option value=""></option>':"")+l.map(([k,t])=>`<option value="${k}"${k===v?" selected":""}>${esc(t)}</option>`).join("");
+function form(side,w){
+  const sel=(f,l,b)=>`<select class="in" data-s="${side}" data-f="${f}">${opts(l,w[f],b)}</select>`;
+  const num=f=>`<input class="in num" inputmode="decimal" data-s="${side}" data-f="${f}" value="${w[f]==null?"":esc(fmt(w[f],2))}">`;
+  const dg=w.forma==="B2B";
+  return `<div class="grid">
+   <label class="f">Forma współpracy${sel("forma",FORMY,true)}</label>
+   <label class="f">${dg?"Przychód z faktury (netto, mies.)":"Wynagrodzenie brutto (mies.)"}${num("kwota")}</label>
+   <label class="f">Opodatkowanie działalności${sel("opod",OPOD)}</label>
+   <label class="f">Rodzaj ZUS${sel("zus",ZUS)}</label>
+   <label class="f">Koszty działalności (mies.)${num("koszty")}</label></div><div class="msg" id="m${side}"></div>`;
 }
-function renderLists(){
-  $("#listO").innerHTML=P.obecne.map((w,i)=>workHtml("obecne",i,w)).join("");
-  $("#listD").innerHTML=P.docel.map((w,i)=>workHtml("docel",i,w)).join("");
-  document.querySelectorAll("[data-p]").forEach(s=>{ s.innerHTML=opts(TN,P[s.dataset.p]); });
+function render(){ $("#fO").innerHTML=form("o",D.o); $("#fD").innerHTML=form("d",D.d); $("#pit2").innerHTML=opts(TN,D.pit2); dis(); }
+function dis(){ [["o",D.o],["d",D.d]].forEach(([s,w])=>{ const dg=w.forma==="B2B";
+  [["kwota",!w.forma],["opod",!dg],["zus",!dg],["koszty",!dg]].forEach(([f,d])=>{ const e=document.querySelector(`[data-s="${s}"][data-f="${f}"]`); if(e){e.disabled=d;e.classList.toggle("dis",d);} }); }); }
+function calc(w){
+  if(!w.forma||!(w.kwota>0)) return null;
+  const kat=kategoria(w.forma), k=Math.min(w.kwota,MAX);
+  const it={i:0,forma:w.forma,kat,fl:flagi({inny:"NIE"},kat),kwota:k,rodzaj:"BRUTTO",opod:w.opod,rate:0,zus:w.zus,koszty:Math.max(0,w.koszty||0)};
+  return solvePerson([it],{mlody:"NIE",pit2:D.pit2,kupPodw:"NIE"})[0];
 }
-function updateDisabled(){
-  [["obecne",P.obecne],["docel",P.docel]].forEach(([side,rows])=>rows.forEach((w,i)=>{
-    const kat=kategoria(w.forma), dg=kat==="DG", um=kat==="UOP"||kat==="ZLEC", brak=w.forma==="BRAK", none=!w.forma;
-    const set=(f,d)=>{ const el=document.querySelector(`[data-s="${side}"][data-i="${i}"][data-f="${f}"]`); if(!el)return; el.disabled=d; el.classList.toggle("dis",d); };
-    set("kwota",none||brak||(side==="docel"&&w.wyr)); set("rodzaj",none||brak||(side==="docel"&&w.wyr)); set("ppk",!um); set("inny",!(kat==="ZLEC"||dg)); set("opod",!dg); set("zus",!dg); set("koszty",!dg); set("ryczalt",!(dg&&w.opod==="RYCZALT")); set("wyr",none||brak);
-  }));
-}
-
-/* ---------- obliczenia (silnik z aplikacji wielu osób) ---------- */
-function osobaP(){ return {mlody:P.mlody,pit2:P.pit2,kupPodw:P.kupPodw}; }
-function mkItem(i,w,kwota,rodzaj){ const kat=kategoria(w.forma);
-  return {i,forma:w.forma,kat,fl:flagi(w,kat),kwota,rodzaj:rodzaj||(w.rodzaj==="NARECE"?"NARECE":"BRUTTO"),opod:w.opod,rate:w.ryczalt||0,zus:w.zus,koszty:Math.max(0,w.koszty||0)}; }
-function itemsOf(rows){ const it=[]; rows.forEach((w,i)=>{ const kat=kategoria(w.forma); if(w.forma&&w.forma!=="BRAK"&&kat&&w.kwota>0) it.push(mkItem(i,w,w.kwota)); }); return it; }
-function msgsOf(rows){ return rows.map(w=>{ const m=[], kat=kategoria(w.forma);
-  if(!w.forma) return m; if(w.forma==="BRAK") return ["Współpraca rozwiązana – koszt i „na rękę” = 0."];
-  if(!(w.kwota>0)&&!w.wyr) m.push("Podaj kwotę wynagrodzenia.");
-  if(kat==="DG"){ if(w.ppk==="TAK") m.push("PPK nie dotyczy działalności – pominięto.");
-    if((w.forma==="KM"||w.forma==="POW")&&(w.opod==="LINIOWY"||w.opod==="RYCZALT")) m.push("Uwaga: kontrakt menadżerski / powołanie rozliczane jako działalność z podatkiem liniowym lub ryczałtem nie jest zgodne z przepisami (przychody z art. 13 pkt 7 i 9 PIT – wyłącznie skala).");
-    if(w.opod==="RYCZALT"&&!(w.ryczalt>0)) m.push("Brak stawki ryczałtu."); }
-  if(kat!=="DG"&&w.rodzaj==="NETTO"&&!w.wyr) m.push("„Netto faktury” przy umowie – przyjęto jak brutto.");
-  if(w.forma==="POW") m.push("Samo powołanie (bez umowy) zwykle nie podlega ZUS.");
-  return m; }); }
-function calcSide(rows,align){
-  const os=osobaP(); let items=itemsOf(rows), out=Array(rows.length).fill(null), aligned=null;
-  rows.forEach((w,i)=>{ if(w.forma==="BRAK") out[i]=ZERO_ROW(); });
-  if(align&&align.target>0){
-    const a=align.index, w=rows[a], kat=kategoria(w.forma);
-    if(w.forma&&w.forma!=="BRAK"&&kat){
-      const others=itemsOf(rows).filter(it=>it.i!==a);
-      const tot=x=>{ const its=others.concat([mkItem(a,w,x,"BRUTTO")]); const r=solvePerson(its,os); return r.reduce((q,y)=>q+y.narece,0); };
-      let lo=0,hi=Math.max(align.target*2,1000),g=0; while(tot(hi)<align.target&&g++<30) hi*=2;
-      for(let k=0;k<60&&hi-lo>0.0005;k++){ const mid=(lo+hi)/2; if(tot(mid)<align.target) lo=mid; else hi=mid; }
-      const x=r2(hi); aligned=x;
-      items=others.concat([mkItem(a,w,x,"BRUTTO")]).sort((p,q)=>p.i-q.i);
-    }
-  }
-  const res=items.length?solvePerson(items,os):[];
-  items.forEach((it,k)=>{ out[it.i]=res[k]; });
-  return {out,aligned,msgs:msgsOf(rows)};
-}
-const ZERO_ROW=()=>({podstawa:0,spol:0,zdr:0,podatek:0,ppkOs:0,narece:0,skSp:0,pozost:0,koszt:0,K:0});
-const sumOut=(out)=>out.reduce((t,r)=>{ if(r){ t.p+=r.podstawa; t.s+=r.spol; t.z+=r.zdr; t.t+=r.podatek; t.pp+=r.ppkOs; t.n+=r.narece; t.k+=r.koszt; t.kd+=r.K; } return t; },{p:0,s:0,z:0,t:0,pp:0,n:0,k:0,kd:0});
-const cls=(v,good)=>Math.abs(v)<0.005?"":((v>0)===good?"pos":"neg");
 const sg=v=>(v>0.004?"+":"")+fmt(v,2);
-
-function tableHtml(title,rows,c){
-  const T=sumOut(c.out); let h=`<h3>${title}</h3><div class="tw"><table><thead><tr><th>Współpraca</th><th>Podstawa</th><th>Składki społ.</th><th>Zdrowotna</th><th>Podatek</th><th>PPK</th><th>Na rękę</th><th>Koszt pracodawcy</th></tr></thead><tbody>`;
-  let n=0; rows.forEach((w,i)=>{ const r=c.out[i]; if(!r) return; n++;
-    const nm=(FORMY.concat([["BRAK","Rozwiązana"]]).find(f=>f[0]===w.forma)||["",""])[1];
-    h+=`<tr><td>${esc(nm)} ${i+1}${c.aligned!==null&&r.podstawa===c.aligned&&w.wyr?" <small>(wyrównana)</small>":""}</td><td>${fmt(r.podstawa,2)}</td><td>${fmt(r.spol,2)}</td><td>${fmt(r.zdr,2)}</td><td>${fmt(r.podatek,2)}</td><td>${fmt(r.ppkOs,2)}</td><td class="key">${fmt(r.narece,2)}</td><td>${fmt(r.koszt,2)}</td></tr>`; });
-  if(!n) return h+`<tr><td colspan="8" style="text-align:left;color:var(--muted)">Uzupełnij formę i kwotę.</td></tr></tbody></table></div>`;
-  if(n>1) h+=`<tr class="tot"><td>Razem</td><td>${fmt(T.p,2)}</td><td>${fmt(T.s,2)}</td><td>${fmt(T.z,2)}</td><td>${fmt(T.t,2)}</td><td>${fmt(T.pp,2)}</td><td>${fmt(T.n,2)}</td><td>${fmt(T.k,2)}</td></tr>`;
-  return h+`</tbody></table></div>`;
-}
+const cls=(v,good)=>Math.abs(v)<0.005?"":((v>0)===good?"pos":"neg");
 function refresh(){
-  updateDisabled();
-  const o=calcSide(P.obecne), N0=sumOut(o.out).n;
-  const ai=P.docel.findIndex(w=>w.wyr&&w.forma&&w.forma!=="BRAK");
-  const d=calcSide(P.docel,ai>=0?{index:ai,target:N0}:null);
-  const A=sumOut(o.out),B=sumOut(d.out), dn=B.n-A.n, dk=B.k-A.k;
-  const have=o.out.some(Boolean)&&d.out.some(Boolean);
-  P.obecne.forEach((w,i)=>{ const e=document.querySelector(`[data-m="obecne${i}"]`); if(e) e.innerHTML=o.msgs[i].map(esc).join("<br>"); });
-  P.docel.forEach((w,i)=>{ const e=document.querySelector(`[data-m="docel${i}"]`); if(e) e.innerHTML=d.msgs[i].map(esc).join("<br>"); });
-  let h=`<h2>Wynik porównania</h2>`;
-  if(!have){ h+=`<p class="lead">Wybierz formę i wpisz kwotę w obu kolumnach – wynik pojawi się tutaj.</p>`; }
-  else {
-    const pn=A.n>0.005?dn/A.n*100:null, pk=A.k>0.005?dk/A.k*100:null;
+  dis();
+  ["o","d"].forEach(s=>{ const w=D[s], e=$("#m"+s); e.textContent=w.kwota>MAX?`W wersji demo kwota jest ograniczona do ${fmt(MAX,0)} zł – przyjęto ${fmt(MAX,0)} zł.`:""; });
+  const a=calc(D.o), b=calc(D.d);
+  let h="<h2>Wynik porównania</h2>";
+  if(!a||!b) h+='<p class="lead">Wybierz formę i wpisz kwotę w obu kolumnach – wynik pojawi się tutaj.</p>';
+  else { const dn=b.narece-a.narece, dk=b.koszt-a.koszt;
     h+=`<div class="hero">
-      <div class="kpi big"><div class="t">Zmiana „na rękę” / mies.</div><div class="v ${cls(dn,true)}">${sg(dn)} zł</div><div class="s">${fmt(A.n,2)} → <b>${fmt(B.n,2)}</b> zł${pn===null?"":` · ${pn>0?"+":""}${fmt(pn,1)}%`}</div></div>
-      <div class="kpi"><div class="t">Zmiana „na rękę” / rok</div><div class="v ${cls(dn,true)}">${sg(dn*12)} zł</div><div class="s">${fmt(A.n*12,2)} → ${fmt(B.n*12,2)} zł</div></div>
-      <div class="kpi"><div class="t">Zmiana kosztu pracodawcy / mies.</div><div class="v ${cls(dk,false)}">${sg(dk)} zł</div><div class="s">${fmt(A.k,2)} → <b>${fmt(B.k,2)}</b> zł${pk===null?"":` · ${pk>0?"+":""}${fmt(pk,1)}%`}</div></div>
-      <div class="kpi"><div class="t">Zmiana kosztu pracodawcy / rok</div><div class="v ${cls(dk,false)}">${sg(dk*12)} zł</div><div class="s">${fmt(A.k*12,2)} → ${fmt(B.k*12,2)} zł</div></div></div>`;
-    if(d.aligned!==null) h+=`<div class="info">Aby zachować obecne „na rękę” (${fmt(A.n,2)} zł), docelowa kwota w tej współpracy musi wynosić <b>${fmt(d.aligned,2)} zł</b>.</div>`;
-    h+=`<div style="margin-top:18px">${tableHtml("Obecnie",P.obecne,o)}</div><div style="margin-top:18px">${tableHtml("Docelowo",P.docel,d)}</div>`;
-  }
+     <div class="kpi big"><div class="t">Zmiana „na rękę” / mies.</div><div class="v ${cls(dn,true)}">${sg(dn)} zł</div><div class="s">${fmt(a.narece,2)} → <b>${fmt(b.narece,2)}</b> zł</div></div>
+     <div class="kpi"><div class="t">Zmiana kosztu pracodawcy / mies.</div><div class="v ${cls(dk,false)}">${sg(dk)} zł</div><div class="s">${fmt(a.koszt,2)} → <b>${fmt(b.koszt,2)}</b> zł</div></div></div>
+     <p class="lead" style="margin-top:14px">Szczegółowe rozbicie (składki, zdrowotna, podatek), zestawienie roczne i raporty są dostępne w pełnej wersji.</p>`; }
   $("#result").innerHTML=h;
 }
-/* ---------- stawki ---------- */
-function renderStawki(){
-  let h=""; STAWKI.forEach(g=>{ h+=`<div class="sec">${esc(g.sec)}</div>`; g.items.forEach(i=>{
-    const v=S.stawki[i.k]; const inp=i.t==="sw"?`<select class="in" data-st="${i.k}">${opts(TN,v)}</select>`:`<input class="in num" inputmode="decimal" data-st="${i.k}" data-t="${i.t}" value="${esc(v===null||v===undefined?"":(i.t==="pct"?fmtPct(v):i.t==="int"?String(v):fmt(v,2)))}">`;
-    h+=`<label class="f" title="${esc(i.n||"")}">${esc(i.l)} <small>(${esc(i.u)})</small>${inp}</label>`; }); });
-  $("#stawki").innerHTML=h;
-}
-/* ---------- zdarzenia ---------- */
-document.addEventListener("change",e=>{
-  const t=e.target;
-  if(t.dataset.p){ P[t.dataset.p]=t.value; }
-  else if(t.dataset.s){ const rows=P[t.dataset.s], w=rows[+t.dataset.i], f=t.dataset.f;
-    if(f==="wyr"){ if(t.checked) rows.forEach(x=>x.wyr=false); w.wyr=t.checked; renderLists(); }
-    else if(t.tagName==="SELECT") w[f]=f==="ryczalt"?parseFloat(t.value):t.value;
-    else { const v=parseNum(t.value); if(Number.isNaN(v)){ t.style.boxShadow="inset 0 0 0 2px var(--bad)"; return; } t.style.boxShadow=""; w[f]=v; t.value=v===null?"":fmt(v,2); } }
-  else if(t.dataset.st){ const k=t.dataset.st, typ=t.dataset.t;
-    if(t.tagName==="SELECT") P.stawki[k]=t.value;
-    else { let v=parseNum(t.value); if(Number.isNaN(v)) return; if(v!==null&&typ==="pct") v=Math.round(v/100*1e10)/1e10; P.stawki[k]=v; t.value=v===null?"":(typ==="pct"?fmtPct(v):typ==="int"?String(v):fmt(v,2)); }
-    applyStawki(); }
-  else return;
-  save(); refresh();
-});
-document.addEventListener("click",e=>{
-  const t=e.target;
-  if(t.dataset.add){ if(P[t.dataset.add].length<MAXW){ P[t.dataset.add].push(nw()); renderLists(); refresh(); save(); } }
-  else if(t.dataset.del){ P[t.dataset.del].splice(+t.dataset.i,1); renderLists(); refresh(); save(); }
-  else if(t.id==="bPrint") window.print();
-  else if(t.id==="bClr"){ if(confirm("Wyczyścić wszystkie dane i stawki?")){ P={mlody:"NIE",pit2:"NIE",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}}; applyStawki(); renderLists(); renderStawki(); refresh(); save(); } }
-  else if(t.id==="bReset"){ if(confirm("Przywrócić domyślne stawki?")){ P.stawki={}; applyStawki(); renderStawki(); refresh(); save(); } }
-  else if(t.id==="bEx"){ P.obecne=[Object.assign(nw(),{forma:"UOP",kwota:10000,rodzaj:"BRUTTO"})]; P.docel=[Object.assign(nw(),{forma:"B2B",kwota:12000,rodzaj:"NETTO",opod:"LINIOWY",zus:"DUZY"})]; renderLists(); refresh(); save(); }
-});
-const TK="kalk1_theme";
-function setTheme(t){ document.documentElement.dataset.theme=t; const b=$("#bTheme"); if(b) b.textContent=t==="dark"?"Styl jasny":"Styl ciemny"; try{localStorage.setItem(TK,t);}catch(e){} }
-let th="light"; try{ th=localStorage.getItem(TK)||"light"; }catch(e){}
-setTheme(th);
-let prevTh=null;
-window.addEventListener("beforeprint",()=>{ prevTh=document.documentElement.dataset.theme; document.documentElement.dataset.theme="light"; });
-window.addEventListener("afterprint",()=>{ if(prevTh) document.documentElement.dataset.theme=prevTh; });
-document.addEventListener("click",e=>{ if(e.target.id==="bTheme") setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"); });
-load(); renderLists(); renderStawki(); refresh();
+document.addEventListener("change",e=>{ const t=e.target;
+  if(t.id==="pit2") D.pit2=t.value;
+  else if(t.dataset.s){ const w=D[t.dataset.s], f=t.dataset.f;
+    if(t.tagName==="SELECT"){ w[f]=t.value; if(f==="forma") render(); }
+    else { const v=parseNum(t.value); if(Number.isNaN(v)) return; w[f]=v; t.value=v==null?"":fmt(v,2); } }
+  else return; refresh(); });
+document.addEventListener("click",e=>{ const id=e.target.id;
+  if(id==="bClr"){ D={pit2:"NIE",o:nw(),d:nw()}; render(); refresh(); }
+  else if(id==="bEx"){ D.o=Object.assign(nw(),{forma:"UOP",kwota:10000}); D.d=Object.assign(nw(),{forma:"B2B",kwota:12000}); render(); refresh(); }
+  else if(id==="bTheme") setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"); });
+function setTheme(t){ document.documentElement.dataset.theme=t; $("#bTheme").textContent=t==="dark"?"Styl jasny":"Styl ciemny"; try{localStorage.setItem("kalk_demo_theme",t);}catch(e){} }
+let th="light"; try{th=localStorage.getItem("kalk_demo_theme")||"light";}catch(e){} setTheme(th);
+render(); refresh();
 </script>
 </body>
 </html>
