@@ -68,10 +68,12 @@ summary{cursor:pointer;font-weight:600;color:var(--acc)}
 .sec{grid-column:1/-1;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--acc);font-weight:700;margin-top:10px}
 #prName{display:none}
 footer{text-align:center;color:#94a3b8;font-size:12px;padding:16px 24px 28px}
+#copyBlock{text-align:center;color:#94a3b8;font-size:12px;padding:12px 24px 0}#copyBlock:empty{display:none}#copyBlock a{color:inherit}
 @media print{@page{size:A4 portrait;margin:8mm}
 html,body{background:#fff;font-size:10.5px}
 header{padding:8px 12px;background:#312e81!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}header h1{font-size:15px}header p{font-size:10px}
 header button,.no-print,details,button,footer{display:none!important}
+#copyBlock{display:block;padding:6px 0 0;font-size:9.5px;color:#555!important}#copyBlock:empty{display:none!important}
 main{padding:8px 0 0;max-width:none}
 .card{box-shadow:none;break-inside:avoid;padding:10px 12px;margin-bottom:8px;border-radius:8px}
 .cols{grid-template-columns:1fr 1fr!important;gap:8px}.person{flex-wrap:nowrap;gap:8px}.person label{min-width:0;flex:1}
@@ -128,10 +130,17 @@ html.simple .work .top{margin-bottom:4px}}
     </details>
   </section>
 </main>
+<div id="copyBlock"></div>
 <footer>Narzędzie do porównań i szacunków, nie porada podatkowa. Dane zapisują się tylko w tej przeglądarce.</footer>
 
 <script>
 "use strict";
+/* ===== USTAWIENIE: stopka Copyright (na stronie i na wydrukach) =====
+   false = ukryta, true = widoczna */
+const SHOW_COPYRIGHT = false;
+const COPYRIGHT_TEXT = "Copyright © Dawid Frączek";
+const COPYRIGHT_URL  = "https://fraktai.github.io/";
+/* ===================================================================== */
 const NBSP = " ";
 function fmt(n, dec=2){
   if(n===null||n===undefined||n===""||isNaN(n)) return "";
@@ -524,6 +533,7 @@ window.addEventListener("afterprint",()=>{ document.documentElement.classList.re
 document.addEventListener("click",e=>{ if(e.target.id==="bTheme") setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"); });
 function setName(){ const n=(P.imie||"").trim(); const i=$("#inName"); if(i&&i.value!==(P.imie||"")) i.value=P.imie||""; $("#prName").textContent=n?"Imię i nazwisko: "+n:""; }
 document.addEventListener("input",e=>{ if(e.target.id==="inName"){ P.imie=e.target.value; setName(); save(); } });
+if(SHOW_COPYRIGHT) $("#copyBlock").innerHTML=esc(COPYRIGHT_TEXT)+(COPYRIGHT_URL?' · <a href="'+esc(COPYRIGHT_URL)+'" target="_blank" rel="noopener">'+esc(COPYRIGHT_URL)+'</a>':"");
 load(); renderLists(); renderStawki(); setName(); refresh();
 </script>
 </body>
