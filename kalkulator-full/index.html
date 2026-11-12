@@ -66,6 +66,7 @@ details{margin-top:6px}
 summary{cursor:pointer;font-weight:600;color:var(--acc)}
 .st{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px 18px;margin-top:12px}
 .sec{grid-column:1/-1;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--acc);font-weight:700;margin-top:10px}
+#prName{display:none}
 footer{text-align:center;color:#94a3b8;font-size:12px;padding:16px 24px 28px}
 @media print{@page{size:A4 portrait;margin:8mm}
 html,body{background:#fff;font-size:10.5px}
@@ -85,21 +86,27 @@ input.in,select.in{height:24px;padding:2px 6px;font-size:10.5px;box-shadow:none;
 .kpi{padding:8px 10px}.kpi .v{font-size:18px}.kpi .t{font-size:9.5px}.kpi .s{font-size:10px}
 table{font-size:10px}th,td{padding:4px 6px}th{font-size:8.5px}
 .tw{overflow:visible}.tw table{min-width:0}
-*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#prName:not(:empty){display:block;font-size:13px;font-weight:700;margin:6px 0 0;padding:0 2px}
+.nameF{display:none!important}
+html.simple #secUst,html.simple .chk,html.simple .f:has(.dis),html.simple .msg:empty{display:none!important}
+html.simple .work .top{margin-bottom:4px}}
 </style>
 </head>
 <body>
 <header>
   <div><h1>Kalkulator zmiany formy współpracy</h1><p>Porównaj „na rękę” i koszt pracodawcy – obecnie i po zmianie formy lub wynagrodzenia</p></div>
   <span class="sp"></span>
-  <button id="bTheme" title="Przełącz styl jasny/ciemny">Styl ciemny</button><button id="bEx">Wczytaj przykład</button><button id="bPrint">Drukuj</button><button id="bClr">Wyczyść</button>
+  <button id="bTheme" title="Przełącz styl jasny/ciemny">Styl ciemny</button><button id="bEx">Wczytaj przykład</button><button id="bPrint">Drukuj</button><button id="bPrintS" title="Wydruk bez ustawień podatkowych, pustych i nieaktywnych pól oraz opcji wyrównania">Drukuj uproszczony</button><button id="bClr">Wyczyść</button>
 </header>
+<div id="prName"></div>
 <main>
   <div class="note no-print" style="margin-top:0"><b>Zastrzeżenie:</b> narzędzie do porównań i szacunków, nie porada podatkowa. Kwoty miesięczne w zł; wyniki liczone jak dla stałego miesiąca przez cały rok.</div>
 
-  <section class="card">
+  <section class="card" id="secUst">
     <h3>Twoje ustawienia podatkowe</h3>
     <div class="person">
+      <label class="nameF">Imię i nazwisko (opcjonalnie)<input class="in" type="text" id="inName" maxlength="80" autocomplete="name"></label>
       <label>Wiek do 26 lat (ulga dla młodych)<select class="in" data-p="mlody"></select></label>
       <label>Złożone PIT-2 (kwota zmniejszająca 3 600 zł)<select class="in" data-p="pit2"></select></label>
       <label>Podwyższone koszty uzyskania (dojazd)<select class="in" data-p="kupPodw"></select></label>
@@ -365,7 +372,7 @@ const OPOD=[["SKALA","Skala podatkowa"],["LINIOWY","Podatek liniowy 19%"],["RYCZ
 const ZUS=[["DUZY","Duży ZUS"],["PREF","Preferencyjny ZUS"],["MALY","Mały ZUS Plus"],["ULGA","Ulga na start"],["TYLKO_ZDR","Tylko składka zdrowotna"]];
 const RYC=[[0.085,"8,5%"],[0.12,"12%"],[0.15,"15%"],[0.17,"17%"]];
 const nw=()=>({forma:"",kwota:null,rodzaj:"BRUTTO",ppk:"NIE",inny:"NIE",opod:"LINIOWY",ryczalt:0.12,zus:"DUZY",koszty:null,wyr:false});
-let P={mlody:"NIE",pit2:"NIE",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}};
+let P={imie:"",mlody:"NIE",pit2:"NIE",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}};
 function applyStawki(){ Object.assign(S.stawki,DEF,P.stawki||{}); }
 function load(){ try{ const o=JSON.parse(localStorage.getItem(KEY)||"null"); if(o){ P=Object.assign(P,o); if(!P.obecne.length)P.obecne=[nw()]; if(!P.docel.length)P.docel=[nw()]; } }catch(e){} applyStawki(); }
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){} }
@@ -503,7 +510,8 @@ document.addEventListener("click",e=>{
   if(t.dataset.add){ if(P[t.dataset.add].length<MAXW){ P[t.dataset.add].push(nw()); renderLists(); refresh(); save(); } }
   else if(t.dataset.del){ P[t.dataset.del].splice(+t.dataset.i,1); renderLists(); refresh(); save(); }
   else if(t.id==="bPrint") window.print();
-  else if(t.id==="bClr"){ if(confirm("Wyczyścić wszystkie dane i stawki?")){ P={mlody:"NIE",pit2:"NIE",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}}; applyStawki(); renderLists(); renderStawki(); refresh(); save(); } }
+  else if(t.id==="bPrintS"){ document.documentElement.classList.add("simple"); window.print(); }
+  else if(t.id==="bClr"){ if(confirm("Wyczyścić wszystkie dane i stawki?")){ P={imie:"",mlody:"NIE",pit2:"NIE",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}}; applyStawki(); setName(); renderLists(); renderStawki(); refresh(); save(); } }
   else if(t.id==="bReset"){ if(confirm("Przywrócić domyślne stawki?")){ P.stawki={}; applyStawki(); renderStawki(); refresh(); save(); } }
   else if(t.id==="bEx"){ P.obecne=[Object.assign(nw(),{forma:"UOP",kwota:10000,rodzaj:"BRUTTO"})]; P.docel=[Object.assign(nw(),{forma:"B2B",kwota:12000,rodzaj:"NETTO",opod:"LINIOWY",zus:"DUZY"})]; renderLists(); refresh(); save(); }
 });
@@ -513,9 +521,11 @@ let th="light"; try{ th=localStorage.getItem(TK)||"light"; }catch(e){}
 setTheme(th);
 let prevTh=null;
 window.addEventListener("beforeprint",()=>{ prevTh=document.documentElement.dataset.theme; document.documentElement.dataset.theme="light"; });
-window.addEventListener("afterprint",()=>{ if(prevTh) document.documentElement.dataset.theme=prevTh; });
+window.addEventListener("afterprint",()=>{ document.documentElement.classList.remove("simple"); if(prevTh) document.documentElement.dataset.theme=prevTh; });
 document.addEventListener("click",e=>{ if(e.target.id==="bTheme") setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark"); });
-load(); renderLists(); renderStawki(); refresh();
+function setName(){ const n=(P.imie||"").trim(); const i=$("#inName"); if(i&&i.value!==(P.imie||"")) i.value=P.imie||""; $("#prName").textContent=n?"Imię i nazwisko: "+n:""; }
+document.addEventListener("input",e=>{ if(e.target.id==="inName"){ P.imie=e.target.value; setName(); save(); } });
+load(); renderLists(); renderStawki(); setName(); refresh();
 </script>
 </body>
 </html>
