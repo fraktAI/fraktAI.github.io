@@ -108,7 +108,7 @@ html.simple .work .top{margin-bottom:4px}}
 </header>
 <div id="prName"></div>
 <main>
-  <div class="note no-print" style="margin-top:0"><b>Zastrzeżenie:</b> narzędzie do porównań i szacunków, nie porada podatkowa. Kwoty miesięczne w zł; wyniki liczone jak dla stałego miesiąca przez cały rok.</div>
+  <div class="note no-print" style="margin-top:0"><b>Zastrzeżenie:</b> narzędzie do porównań i szacunków, nie porada podatkowa. Kwoty miesięczne w zł; wyniki liczone jak dla stałego miesiąca przez cały rok. Dane zapisują się tylko w tej przeglądarce.</div>
 
   <section class="card" id="secUst">
     <h3>Twoje ustawienia podatkowe</h3>
@@ -395,7 +395,7 @@ const OPOD=[["SKALA","Skala podatkowa"],["LINIOWY","Podatek liniowy 19%"],["RYCZ
 const ZUS=[["DUZY","Duży ZUS"],["PREF","Preferencyjny ZUS"],["MALY","Mały ZUS Plus"],["ULGA","Ulga na start"],["TYLKO_ZDR","Tylko składka zdrowotna"]];
 const RYC=[[0.085,"8,5%"],[0.12,"12%"],[0.15,"15%"],[0.17,"17%"]];
 const nw=()=>({forma:"",kwota:null,rodzaj:"BRUTTO",ppk:"NIE",inny:"NIE",opod:"LINIOWY",ryczalt:0.12,zus:"DUZY",koszty:null,wyr:false});
-let P={imie:"",mlody:"NIE",pit2:"NIE",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}};
+let P={imie:"",mlody:"NIE",pit2:"TAK",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}};
 function applyStawki(){ Object.assign(S.stawki,DEF,P.stawki||{}); }
 function load(){ try{ const o=JSON.parse(localStorage.getItem(KEY)||"null"); if(o){ P=Object.assign(P,o); if(!P.obecne.length)P.obecne=[nw()]; if(!P.docel.length)P.docel=[nw()]; } }catch(e){} applyStawki(); }
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){} }
@@ -533,7 +533,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.add){ if(P[t.dataset.add].length<MAXW){ P[t.dataset.add].push(nw()); renderLists(); refresh(); save(); } }
   else if(t.dataset.del){ P[t.dataset.del].splice(+t.dataset.i,1); renderLists(); refresh(); save(); }
   else if(t.id==="bPrintS"){ document.documentElement.classList.add("simple"); window.print(); }
-  else if(t.id==="bClr"){ if(confirm("Wyczyścić wszystkie dane i stawki?")){ P={imie:"",mlody:"NIE",pit2:"NIE",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}}; applyStawki(); setName(); renderLists(); renderStawki(); refresh(); save(); } }
+  else if(t.id==="bClr"){ if(confirm("Wyczyścić wszystkie dane i stawki?")){ P={imie:"",mlody:"NIE",pit2:"TAK",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}}; applyStawki(); setName(); renderLists(); renderStawki(); refresh(); save(); } }
   else if(t.id==="bReset"){ if(confirm("Przywrócić domyślne stawki?")){ P.stawki={}; applyStawki(); renderStawki(); refresh(); save(); } }
   else if(t.id==="bEx"){ P.obecne=[Object.assign(nw(),{forma:"UOP",kwota:10000,rodzaj:"BRUTTO"})]; P.docel=[Object.assign(nw(),{forma:"B2B",kwota:12000,rodzaj:"NETTO",opod:"LINIOWY",zus:"DUZY"})]; renderLists(); refresh(); save(); }
 });
