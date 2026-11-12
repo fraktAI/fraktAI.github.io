@@ -97,7 +97,7 @@ html.simple .work .top{margin-bottom:4px}}
 <header>
   <div><h1>Kalkulator zmiany formy współpracy</h1><p>Porównaj „na rękę” i koszt pracodawcy – obecnie i po zmianie formy lub wynagrodzenia</p></div>
   <span class="sp"></span>
-  <button id="bTheme" title="Przełącz styl jasny/ciemny">Styl ciemny</button><button id="bEx">Wczytaj przykład</button><button id="bPrint">Drukuj</button><button id="bPrintS" title="Wydruk bez ustawień podatkowych, pustych i nieaktywnych pól oraz opcji wyrównania">Drukuj uproszczony</button><button id="bClr">Wyczyść</button>
+  <button id="bTheme" title="Przełącz styl jasny/ciemny">Styl ciemny</button><button id="bEx">Wczytaj przykład</button><button id="bPrintS" title="Wydruk bez ustawień podatkowych, pustych i nieaktywnych pól oraz opcji wyrównania">Drukuj</button><button id="bClr">Wyczyść</button>
 </header>
 <div id="prName"></div>
 <main>
@@ -509,7 +509,6 @@ document.addEventListener("click",e=>{
   const t=e.target;
   if(t.dataset.add){ if(P[t.dataset.add].length<MAXW){ P[t.dataset.add].push(nw()); renderLists(); refresh(); save(); } }
   else if(t.dataset.del){ P[t.dataset.del].splice(+t.dataset.i,1); renderLists(); refresh(); save(); }
-  else if(t.id==="bPrint") window.print();
   else if(t.id==="bPrintS"){ document.documentElement.classList.add("simple"); window.print(); }
   else if(t.id==="bClr"){ if(confirm("Wyczyścić wszystkie dane i stawki?")){ P={imie:"",mlody:"NIE",pit2:"NIE",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}}; applyStawki(); setName(); renderLists(); renderStawki(); refresh(); save(); } }
   else if(t.id==="bReset"){ if(confirm("Przywrócić domyślne stawki?")){ P.stawki={}; applyStawki(); renderStawki(); refresh(); save(); } }
