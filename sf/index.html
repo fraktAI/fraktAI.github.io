@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Podgląd sprawozdania finansowego XML</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#f3efe6;--sf:#fbf9f3;--ink:#1c2420;--mu:#6a716b;--ln:#ddd6c6;--ac:#1d5b49;--a2:#c4762c;--ng:#b0372b;--ps:#1d6a47;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13181a;--sf:#1b2124;--ink:#e8e6de;--mu:#98a099;--ln:#2c353a;--ac:#5fb594;--a2:#e0a05e;--ng:#e56d5f;--ps:#5fc08f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#13181a;--sf:#1b2124;--ink:#e8e6de;--mu:#98a099;--ln:#2c353a;--ac:#5fb594;--a2:#e0a05e;--ng:#e56d5f;--ps:#5fc08f;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 'IBM Plex Sans',system-ui,sans-serif}
+.mono,td.n,.cd,.kv{font-family:'IBM Plex Mono',ui-monospace,monospace}
+header{display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;padding:28px 28px 14px;max-width:1200px;margin:auto}
+h1{font:700 28px/1.15 Fraunces,Georgia,serif;margin:0;letter-spacing:-.01em}
+.sub{color:var(--mu);margin-top:4px}
+button,select,input{font:inherit;color:inherit}
+.btn{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:6px 12px;cursor:pointer}
+.btn:hover{border-color:var(--ac)}
+main{max-width:1200px;margin:auto;padding:0 28px 48px}
+#drop{border:2px dashed var(--ln);border-radius:16px;padding:64px 24px;text-align:center;background:var(--sf);margin-top:24px;cursor:pointer}
+#drop.on,#drop:hover{border-color:var(--ac)}
+#drop b{font:700 22px Fraunces,Georgia,serif;display:block;margin-bottom:8px}
+nav{display:flex;gap:4px;border-bottom:1px solid var(--ln);overflow-x:auto;margin:8px 0 20px}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;cursor:pointer;color:var(--mu);white-space:nowrap;font-weight:500}
+nav button.on{color:var(--ink);border-color:var(--ac)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:14px 16px}
+.card h3{margin:0 0 10px;font:600 13px 'IBM Plex Sans';color:var(--mu);text-transform:uppercase;letter-spacing:.05em}
+.kl{color:var(--mu);font-size:12px}
+.kv{font-size:22px;font-weight:500;margin:4px 0}
+.chip{font-size:12px;font-family:'IBM Plex Mono',monospace}
+.up,.pos{color:var(--ps)}.dn,.neg{color:var(--ng)}
+.two{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));margin-top:12px}
+.sec{margin:28px 0 10px;font:700 18px Fraunces,Georgia,serif}
+.hb{display:grid;grid-template-columns:minmax(110px,32%) 1fr;gap:4px 10px;align-items:center;font-size:12.5px}
+.hb .tr{display:flex;flex-direction:column;gap:2px}
+.hb .bar{height:7px;border-radius:2px;background:var(--ac)}.hb .bar.p{background:var(--ln)}.hb .bar.n{background:var(--ng)}
+.hb .v{font:11px 'IBM Plex Mono',monospace;color:var(--mu)}
+.st{display:flex;height:26px;border-radius:6px;overflow:hidden;margin:4px 0 2px;font:11px 'IBM Plex Mono',monospace;color:#fff}
+.st div{display:flex;align-items:center;padding-left:8px;white-space:nowrap;overflow:hidden}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.tools input[type=search]{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:6px 10px;min-width:200px}
+.tools select{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:6px}
+.tw{overflow-x:auto;background:var(--sf);border:1px solid var(--ln);border-radius:12px;margin-bottom:16px}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th{font:600 12px 'IBM Plex Sans';color:var(--mu);text-align:right;padding:9px 10px;border-bottom:1px solid var(--ln);white-space:nowrap}
+th:first-child{text-align:left}
+td{padding:6px 10px;border-bottom:1px solid var(--ln)}
+td.n{text-align:right;white-space:nowrap;font-size:13px}
+td.lb{display:flex;align-items:center;gap:6px;border:0}
+tr:last-child td{border-bottom:0}
+tr.d0 td{font-weight:700;background:color-mix(in srgb,var(--ac) 9%,transparent)}
+tr.d1 td{font-weight:600}
+tr.ex td.lb{font-style:italic;color:var(--mu)}
+.cd{color:var(--mu);font-size:11px;min-width:34px}
+.cv{width:18px;height:18px;border:0;background:none;cursor:pointer;padding:0;position:relative}
+.cv:before{content:"";position:absolute;left:5px;top:4px;border:5px solid transparent;border-left:6px solid var(--mu)}
+.cv.o:before{left:3px;top:6px;border:5px solid transparent;border-top:6px solid var(--mu)}
+.sp{width:18px;display:inline-block}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0}
+dt{color:var(--mu)}dd{margin:0}
+details{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:10px 14px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+pre{white-space:pre-wrap;font:13px/1.5 'IBM Plex Sans',sans-serif;margin:10px 0 0}
+.hide{display:none!important}
+svg text{fill:var(--ink);font:10.5px 'IBM Plex Sans',sans-serif}
+svg .ax{stroke:var(--ln)}svg .u{fill:var(--ps)}svg .d{fill:var(--ng)}svg .t{fill:var(--ac)}
+@media(max-width:600px){header,main{padding-left:14px;padding-right:14px}h1{font-size:22px}}
+/* ---- nowoczesny motyw ---- */
+:root{--bg:#f5f6fa;--sf:#fff;--ink:#0f172a;--mu:#64748b;--ln:#e5e8f0;--ac:#4f46e5;--a2:#06b6d4;--ng:#e11d48;--ps:#059669;--r:18px;--sh:0 1px 2px rgba(15,23,42,.05),0 12px 28px -14px rgba(15,23,42,.18)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0c12;--sf:#12151e;--ink:#e6e9f2;--mu:#8b93a7;--ln:#222735;--ac:#818cf8;--a2:#22d3ee;--ng:#fb7185;--ps:#34d399;--sh:0 1px 0 rgba(255,255,255,.03) inset,0 12px 28px -14px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#0a0c12;--sf:#12151e;--ink:#e6e9f2;--mu:#8b93a7;--ln:#222735;--ac:#818cf8;--a2:#22d3ee;--ng:#fb7185;--ps:#34d399;--sh:0 1px 0 rgba(255,255,255,.03) inset,0 12px 28px -14px rgba(0,0,0,.6)}
+body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(900px 420px at 8% -8%,color-mix(in srgb,var(--ac) 16%,transparent),transparent),radial-gradient(700px 360px at 100% 0,color-mix(in srgb,var(--a2) 12%,transparent),transparent),var(--bg);background-attachment:fixed;font-feature-settings:'cv11','ss01'}
+h1{font:700 32px/1.1 Inter,sans-serif;letter-spacing:-.035em}
+.sub{font-size:13px}
+.sec{font:650 15px Inter,sans-serif;letter-spacing:-.01em;margin:32px 0 12px}
+.mono,.cd,.chip,.hb .v,.st{font-family:'JetBrains Mono',ui-monospace,monospace}
+.kv,td.n{font-family:Inter,sans-serif;font-variant-numeric:tabular-nums}
+.kv{font-size:27px;font-weight:650;letter-spacing:-.03em;margin:6px 0}
+.card{border-radius:var(--r);box-shadow:var(--sh);padding:18px 20px;position:relative}
+.card:has(.kv):before{content:"";position:absolute;left:20px;top:0;width:36px;height:3px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,var(--ac),var(--a2))}
+.card h3{text-transform:none;letter-spacing:-.005em;font:600 14px Inter,sans-serif;color:var(--ink);margin-bottom:14px}
+.btn{border-radius:12px;padding:8px 14px;font-weight:500;box-shadow:var(--sh)}
+#open{background:linear-gradient(135deg,var(--ac),var(--a2));color:#fff;border:0}
+nav{background:var(--sf);border:1px solid var(--ln);padding:4px;border-radius:999px;width:max-content;max-width:100%;box-shadow:var(--sh);margin:6px 0 24px}
+nav button{border:0;border-radius:999px;padding:8px 16px;transition:background .15s,color .15s}
+nav button:hover{color:var(--ink)}
+nav button.on{background:var(--ac);color:#fff}
+#drop{border-radius:28px;border:1.5px dashed color-mix(in srgb,var(--ac) 45%,var(--ln));background:linear-gradient(160deg,color-mix(in srgb,var(--ac) 7%,var(--sf)),var(--sf));padding:88px 24px}
+#drop b{font:700 24px Inter,sans-serif;letter-spacing:-.02em}
+.tools input[type=search],.tools select{border-radius:12px;padding:8px 12px}
+.tw{border-radius:var(--r);box-shadow:var(--sh)}
+th{font:600 11px Inter,sans-serif;text-transform:uppercase;letter-spacing:.07em;padding:12px 12px}
+td{padding:8px 12px}
+tr:hover td{background:color-mix(in srgb,var(--ac) 5%,transparent)}
+tr.d0 td{background:color-mix(in srgb,var(--ac) 11%,transparent)}
+.hb .bar{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--ac),var(--a2))}
+.hb .bar.p{background:var(--ln)}.hb .bar.n{background:var(--ng)}
+.st{height:32px;border-radius:10px;gap:2px}.st div{font-size:11.5px}
+details{border-radius:14px;box-shadow:var(--sh)}
+svg text{font-family:Inter,sans-serif}
+svg rect{rx:4}
+/* strona startowa */
+#drop{padding:52px 24px}
+#intro{margin-top:8px}
+#intro .lead{font-size:16px;line-height:1.6;max-width:72ch;color:var(--mu);margin:0 0 18px}
+#intro .card p{margin:0;color:var(--mu);font-size:13.5px}
+#intro .steps{padding-left:22px;color:var(--mu);margin:0 0 18px}
+#intro .steps li{margin:8px 0}
+#intro .steps b{color:var(--ink)}
+#intro .note{font-size:12.5px;color:var(--mu);border-top:1px solid var(--ln);padding-top:14px}
+#intro .note b{color:var(--ink)}
+/* ciemny motyw: czerwono-czarny */
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0606;--sf:#150e0f;--ink:#f3eae8;--mu:#a8918f;--ln:#30201f;--ac:#ef4444;--a2:#ff8f6b;--ng:#ff7a93;--ps:#4ade80}}
+:root[data-theme="dark"]{--bg:#0a0606;--sf:#150e0f;--ink:#f3eae8;--mu:#a8918f;--ln:#30201f;--ac:#ef4444;--a2:#ff8f6b;--ng:#ff7a93;--ps:#4ade80}
+/* interaktywne wykresy */
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--bg);padding:9px 12px;border-radius:12px;font:12px/1.5 Inter,sans-serif;box-shadow:0 10px 30px -8px rgba(0,0,0,.45);max-width:290px}
+#tip b{display:block;margin-bottom:2px;font-weight:600}
+[data-tip]{cursor:crosshair}
+svg rect[data-tip]:hover,.st div[data-tip]:hover{filter:brightness(1.15)}
+.hb .tr[data-tip]{padding:3px 4px;border-radius:8px;transition:background .15s}
+.hb .tr[data-tip]:hover{background:color-mix(in srgb,var(--ac) 8%,transparent)}
+@keyframes gr{from{transform:scaleX(0)}}@keyframes rise{from{transform:scaleY(0)}}
+.hb .bar{transform-origin:left;animation:gr .7s cubic-bezier(.2,.7,.2,1) both}
+svg rect[data-tip]{transform-box:fill-box;transform-origin:bottom;animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+@media(prefers-reduced-motion:reduce){.hb .bar,svg rect{animation:none}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1 id="ttl">Podgląd sprawozdania finansowego</h1><div class="sub" id="sub">Wczytaj plik XML z e‑Sprawozdań — dane nie opuszczają Twojej przeglądarki.</div></div>
+  <div class="tools" style="margin:0"><button class="btn" id="open">Wczytaj plik…</button><button class="btn" id="th" title="Motyw">◐</button></div>
+</header>
+<main>
+  <div id="drop"><b>Upuść tutaj plik sprawozdania (.xml)</b>albo kliknij, aby wybrać plik z dysku</div>
+  <div id="intro">
+    <div class="sec">Do czego służy to narzędzie</div>
+    <p class="lead">Zamienia plik XML ze sprawozdaniem finansowym (e‑Sprawozdania, struktura „jednostka inna”) w czytelny pulpit: wskaźniki, wykresy i rozwijane tabele zamiast tysięcy linii kodu.</p>
+    <div class="grid feat">
+      <div class="card"><h3>Przegląd</h3><p>Kluczowe wielkości z porównaniem rok do roku, wskaźniki płynności, zadłużenia i rentowności oraz wykresy: most wyniku, struktura bilansu, koszty rodzajowe.</p></div>
+      <div class="card"><h3>Bilans i rachunek zysków i strat</h3><p>Pełne drzewo pozycji z rozwijaniem, wyszukiwarką, zmianą w kwocie i procentach oraz wyborem jednostki: zł, tys. zł lub mln zł.</p></div>
+      <div class="card"><h3>Przepływy i kapitał własny</h3><p>Rachunek przepływów pieniężnych metodą pośrednią oraz zestawienie zmian w kapitale własnym w jednym układzie.</p></div>
+      <div class="card"><h3>Informacje i noty</h3><p>Dane jednostki (NIP, KRS, PKD), zasady rachunkowości z wprowadzenia oraz pobieranie załączonych plików, na przykład not w PDF.</p></div>
+    </div>
+    <div class="sec">Jak zacząć</div>
+    <ol class="steps"><li><b>Przygotuj plik XML</b> wyeksportowany z programu księgowego lub z systemu e‑Sprawozdań.</li><li><b>Upuść go w polu powyżej</b> albo kliknij „Wczytaj plik…”.</li><li><b>Przełączaj zakładki</b> u góry i rozwijaj pozycje strzałkami przy nazwach.</li></ol>
+    <p class="note"><b>Prywatność.</b> Plik jest przetwarzany wyłącznie w Twojej przeglądarce i nigdzie nie jest wysyłany. Nazwy pozycji pochodzą ze standardowego układu z ustawy o rachunkowości, ponieważ w samym XML są tylko kody.</p>
+  </div>
+  <input type="file" id="file" accept=".xml,text/xml,application/xml" class="hide">
+  <div id="app" class="hide">
+    <nav id="nav"></nav>
+    <section id="t-ov"></section>
+    <section id="t-bil" class="hide"></section>
+    <section id="t-rz" class="hide"></section>
+    <section id="t-cf" class="hide"></section>
+    <section id="t-eq" class="hide"></section>
+    <section id="t-in" class="hide"></section>
+  </div>
+</main>
+<div id="tip" class="hide" role="tooltip"></div>
+<script>
+const AK="A=Aktywa trwałe|A_I=Wartości niematerialne i prawne|A_I_1=Koszty zakończonych prac rozwojowych|A_I_2=Wartość firmy|A_I_3=Inne wartości niematerialne i prawne|A_I_4=Zaliczki na wartości niematerialne i prawne|A_II=Rzeczowe aktywa trwałe|A_II_1=Środki trwałe|A_II_1_A=Grunty|A_II_1_B=Budynki, lokale i obiekty inżynierii|A_II_1_C=Urządzenia techniczne i maszyny|A_II_1_D=Środki transportu|A_II_1_E=Inne środki trwałe|A_II_2=Środki trwałe w budowie|A_II_3=Zaliczki na środki trwałe w budowie|A_III=Należności długoterminowe|A_IV=Inwestycje długoterminowe|A_IV_1=Nieruchomości|A_IV_2=Wartości niematerialne i prawne|A_IV_3=Długoterminowe aktywa finansowe|A_IV_4=Inne inwestycje długoterminowe|A_V=Długoterminowe rozliczenia międzyokresowe|A_V_1=Aktywa z tytułu odroczonego podatku dochodowego|A_V_2=Inne rozliczenia międzyokresowe|B=Aktywa obrotowe|B_I=Zapasy|B_I_1=Materiały|B_I_2=Półprodukty i produkty w toku|B_I_3=Produkty gotowe|B_I_4=Towary|B_I_5=Zaliczki na dostawy i usługi|B_II=Należności krótkoterminowe|B_II_1=Od jednostek powiązanych|B_II_1_A=Z tytułu dostaw i usług|B_II_1_A_1=do 12 miesięcy|B_II_1_A_2=powyżej 12 miesięcy|B_II_1_B=Inne|B_II_2=Od pozostałych jednostek z zaangażowaniem w kapitale|B_II_3=Od pozostałych jednostek|B_II_3_A=Z tytułu dostaw i usług|B_II_3_A_1=do 12 miesięcy|B_II_3_A_2=powyżej 12 miesięcy|B_II_3_B=Z tytułu podatków, dotacji, ceł i ubezpieczeń|B_II_3_C=Inne|B_II_3_D=Dochodzone na drodze sądowej|B_III=Inwestycje krótkoterminowe|B_III_1=Krótkoterminowe aktywa finansowe|B_III_1_A=W jednostkach powiązanych|B_III_1_B=W pozostałych jednostkach|B_III_1_C=Środki pieniężne i inne aktywa pieniężne|B_III_1_C_1=Środki pieniężne w kasie i na rachunkach|B_III_1_C_2=Inne środki pieniężne|B_III_1_C_3=Inne aktywa pieniężne|B_III_2=Inne inwestycje krótkoterminowe|B_IV=Krótkoterminowe rozliczenia międzyokresowe|C=Należne wpłaty na kapitał podstawowy|D=Udziały (akcje) własne";
+const PA="A=Kapitał (fundusz) własny|A_I=Kapitał (fundusz) podstawowy|A_II=Kapitał (fundusz) zapasowy|A_II_1=w tym: nadwyżka wartości emisyjnej nad nominalną|A_III=Kapitał z aktualizacji wyceny|A_IV=Pozostałe kapitały rezerwowe|A_V=Zysk (strata) z lat ubiegłych|A_VI=Zysk (strata) netto|A_VII=Odpisy z zysku netto w ciągu roku|B=Zobowiązania i rezerwy na zobowiązania|B_I=Rezerwy na zobowiązania|B_I_1=Rezerwa z tytułu odroczonego podatku dochodowego|B_I_2=Rezerwa na świadczenia emerytalne i podobne|B_I_2_1=długoterminowa|B_I_2_2=krótkoterminowa|B_I_3=Pozostałe rezerwy|B_I_3_1=długoterminowe|B_I_3_2=krótkoterminowe|B_II=Zobowiązania długoterminowe|B_II_1=Wobec jednostek powiązanych|B_II_2=Wobec pozostałych jednostek z zaangażowaniem w kapitale|B_II_3=Wobec pozostałych jednostek|B_II_3_A=Kredyty i pożyczki|B_II_3_B=Z tytułu emisji dłużnych papierów wartościowych|B_II_3_C=Inne zobowiązania finansowe|B_II_3_D=Zobowiązania wekslowe|B_II_3_E=Inne|B_III=Zobowiązania krótkoterminowe|B_III_1=Wobec jednostek powiązanych|B_III_1_A=Z tytułu dostaw i usług|B_III_1_A_1=do 12 miesięcy|B_III_1_A_2=powyżej 12 miesięcy|B_III_1_B=Inne|B_III_2=Wobec pozostałych jednostek z zaangażowaniem w kapitale|B_III_3=Wobec pozostałych jednostek|B_III_3_A=Kredyty i pożyczki|B_III_3_B=Z tytułu emisji dłużnych papierów wartościowych|B_III_3_C=Inne zobowiązania finansowe|B_III_3_D=Z tytułu dostaw i usług|B_III_3_D_1=do 12 miesięcy|B_III_3_D_2=powyżej 12 miesięcy|B_III_3_E=Zaliczki otrzymane na dostawy i usługi|B_III_3_F=Zobowiązania wekslowe|B_III_3_G=Z tytułu podatków, ceł, ubezpieczeń i innych świadczeń|B_III_3_H=Z tytułu wynagrodzeń|B_III_3_I=Inne|B_III_4=Fundusze specjalne|B_IV=Rozliczenia międzyokresowe|B_IV_1=Ujemna wartość firmy|B_IV_2=Inne rozliczenia międzyokresowe";
+const RZ="A=Przychody netto ze sprzedaży i zrównane z nimi|A_J=w tym: od jednostek powiązanych|A_I=Przychody netto ze sprzedaży produktów|A_II=Zmiana stanu produktów|A_III=Koszt wytworzenia produktów na własne potrzeby|A_IV=Przychody netto ze sprzedaży towarów i materiałów|B=Koszty działalności operacyjnej|B_I=Amortyzacja|B_II=Zużycie materiałów i energii|B_III=Usługi obce|B_IV=Podatki i opłaty|B_IV_1=w tym: podatek akcyzowy|B_V=Wynagrodzenia|B_VI=Ubezpieczenia społeczne i inne świadczenia|B_VI_1=w tym: emerytalne|B_VII=Pozostałe koszty rodzajowe|B_VIII=Wartość sprzedanych towarów i materiałów|C=Zysk (strata) ze sprzedaży|D=Pozostałe przychody operacyjne|D_I=Zysk ze zbycia niefinansowych aktywów trwałych|D_II=Dotacje|D_III=Aktualizacja wartości aktywów niefinansowych|D_IV=Inne przychody operacyjne|E=Pozostałe koszty operacyjne|E_I=Strata ze zbycia niefinansowych aktywów trwałych|E_II=Aktualizacja wartości aktywów niefinansowych|E_III=Inne koszty operacyjne|F=Zysk (strata) z działalności operacyjnej|G=Przychody finansowe|G_I=Dywidendy i udziały w zyskach|G_II=Odsetki|G_III=Zysk ze zbycia inwestycji|G_IV=Aktualizacja wartości inwestycji|G_V=Inne|H=Koszty finansowe|H_I=Odsetki|H_II=Strata ze zbycia inwestycji|H_III=Aktualizacja wartości inwestycji|H_IV=Inne|I=Zysk (strata) brutto|J=Podatek dochodowy|K=Pozostałe obowiązkowe zmniejszenia zysku|L=Zysk (strata) netto";
+const CF="A=Przepływy z działalności operacyjnej|A_I=Zysk (strata) netto|A_II=Korekty razem|A_II_1=Amortyzacja|A_II_2=Zyski (straty) z tytułu różnic kursowych|A_II_3=Odsetki i udziały w zyskach (dywidendy)|A_II_4=Zysk (strata) z działalności inwestycyjnej|A_II_5=Zmiana stanu rezerw|A_II_6=Zmiana stanu zapasów|A_II_7=Zmiana stanu należności|A_II_8=Zmiana stanu zobowiązań krótkoterminowych (bez kredytów)|A_II_9=Zmiana stanu rozliczeń międzyokresowych|A_II_10=Inne korekty|A_III=Przepływy pieniężne netto z działalności operacyjnej|B=Przepływy z działalności inwestycyjnej|B_I=Wpływy|B_I_1=Zbycie WNiP oraz rzeczowych aktywów trwałych|B_I_2=Zbycie inwestycji w nieruchomości oraz WNiP|B_I_3=Z aktywów finansowych|B_I_4=Inne wpływy inwestycyjne|B_II=Wydatki|B_II_1=Nabycie WNiP oraz rzeczowych aktywów trwałych|B_II_2=Inwestycje w nieruchomości oraz WNiP|B_II_3=Na aktywa finansowe|B_II_4=Inne wydatki inwestycyjne|B_III=Przepływy pieniężne netto z działalności inwestycyjnej|C=Przepływy z działalności finansowej|C_I=Wpływy|C_I_1=Wpływy z wydania udziałów i dopłat do kapitału|C_I_2=Kredyty i pożyczki|C_I_3=Emisja dłużnych papierów wartościowych|C_I_4=Inne wpływy finansowe|C_II=Wydatki|C_II_1=Nabycie udziałów (akcji) własnych|C_II_2=Dywidendy i inne wypłaty na rzecz właścicieli|C_II_3=Inne wydatki z podziału zysku|C_II_4=Spłaty kredytów i pożyczek|C_II_5=Wykup dłużnych papierów wartościowych|C_II_6=Inne zobowiązania finansowe|C_II_7=Płatności z tytułu leasingu finansowego|C_II_8=Odsetki|C_II_9=Inne wydatki finansowe|C_III=Przepływy pieniężne netto z działalności finansowej|D=Przepływy pieniężne netto razem|E=Bilansowa zmiana stanu środków pieniężnych|E_1=w tym: zmiana z tytułu różnic kursowych|F=Środki pieniężne na początek okresu|G=Środki pieniężne na koniec okresu|G_1=w tym: o ograniczonej możliwości dysponowania";
+const EQ="I=Kapitał własny na początek okresu (BO)|I_1=Zmiany przyjętych zasad (polityki) rachunkowości|I_2=Korekty błędów podstawowych|IA=Kapitał własny na początek okresu po korektach|IA_1=Kapitał (fundusz) podstawowy|IA_2=Należne wpłaty na kapitał podstawowy|IA_3=Udziały (akcje) własne|IA_4=Kapitał (fundusz) zapasowy|IA_5=Kapitał z aktualizacji wyceny|IA_6=Pozostałe kapitały rezerwowe|II=Kapitał własny na koniec okresu (BZ)|III=Kapitał własny po uwzględnieniu proponowanego podziału zysku";
+const mk=(s,p='')=>Object.fromEntries(s.split('|').map(x=>{const i=x.indexOf('=');return[p+x.slice(0,i),x.slice(i+1)]}));
+const L={bil:{Aktywa:'AKTYWA',Pasywa:'PASYWA',...mk(AK,'Aktywa_'),...mk(PA,'Pasywa_')},rz:mk(RZ),cf:mk(CF),eq:mk(EQ)};
+
+const $=s=>document.querySelector(s),kids=e=>[...e.children];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let D=null,unit=1,hideZero=true,q='',tables=[];
+
+const val=(e,n)=>{const c=kids(e).find(x=>x.localName===n);return c?parseFloat(c.textContent):null};
+function build(e){const out=[];for(const c of kids(e)){const n=c.localName;
+  if(/^Kwot/.test(n))continue;
+  if(/^Pozycja/.test(n)){const nm=kids(c).find(x=>x.localName==='NazwaPozycji'),kp=kids(c).find(x=>/^Kwoty/.test(x.localName));
+    out.push({code:'',name:nm?nm.textContent.trim():'',a:kp?val(kp,'KwotaA'):null,b:kp?val(kp,'KwotaB'):null,ch:[],extra:1});continue}
+  const nd={code:n,a:val(c,'KwotaA'),b:val(c,'KwotaB'),ch:build(c)};
+  if(nd.a==null){const t=nd.ch.find(x=>/_III$/.test(x.code));if(t){nd.a=t.a;nd.b=t.b}}
+  out.push(nd)}return out}
+const idx=(ns,o={})=>{for(const n of ns){if(n.code)o[n.code]=n;idx(n.ch,o)}return o};
+
+const nf=(v,d)=>v.toLocaleString('pl-PL',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmt=v=>v==null?'—':nf(v/unit,unit===1e6?2:0);
+const short=v=>v==null?'—':Math.abs(v)>=1e9?nf(v/1e9,2)+' mld zł':Math.abs(v)>=1e6?nf(v/1e6,1)+' mln zł':nf(v/1e3,0)+' tys. zł';
+const pct=(a,b)=>(a==null||!b)?null:(a-b)/Math.abs(b)*100;
+const pf=p=>p==null||Math.abs(p)>9999?'n/d':(p>0?'+':'')+nf(p,1)+'%';
+const cls=v=>v<0?'neg':'';
+const dt=(s,y=0)=>{const d=new Date(s);d.setUTCFullYear(d.getUTCFullYear()-y);return d.toLocaleDateString('pl-PL',{timeZone:'UTC'})};
+
+function table(host,nodes,sec,heads){
+  const rows=[];let id=0;
+  (function f(ns,d,p){for(const n of ns){const r={id:id++,d,p,n,has:n.ch.length>0};rows.push(r);f(n.ch,d+1,r.id)}})(nodes,0,-1);
+  const open=new Set(rows.filter(r=>r.d<2&&r.has).map(r=>r.id));
+  const lab=n=>n.name||L[sec][n.code]||('Pozycja '+n.code.replace(/_/g,'.'));
+  const draw=()=>{
+    const vis=[];let h='';
+    for(const r of rows){const n=r.n,z=!(n.a||n.b);
+      let v=r.p<0||(vis[r.p]&&open.has(r.p));
+      if(hideZero&&z)v=false;
+      vis[r.id]=v;
+      const l=lab(n);
+      if(q?!(l.toLowerCase().includes(q)&&!(hideZero&&z)):!v)continue;
+      const dd=n.a!=null&&n.b!=null?n.a-n.b:null,p=pct(n.a,n.b);
+      const code=n.code.replace(/^(Aktywa|Pasywa)_?/,'').replace(/_/g,'.');
+      h+=`<tr class="d${Math.min(r.d,2)}${n.extra?' ex':''}"><td class="lb" style="padding-left:${8+(q?0:r.d*18)}px">${r.has&&!q?`<button class="cv${open.has(r.id)?' o':''}" data-i="${r.id}" aria-label="Rozwiń lub zwiń"></button>`:'<i class="sp"></i>'}<span class="cd">${code}</span><span>${esc(l)}</span></td><td class="n ${cls(n.a)}">${fmt(n.a)}</td><td class="n ${cls(n.b)}">${fmt(n.b)}</td><td class="n ${cls(dd)}">${dd==null?'—':fmt(dd)}</td><td class="n ${p==null?'':p<0?'dn':'up'}">${pf(p)}</td></tr>`}
+    host.innerHTML=`<table><thead><tr><th>Pozycja</th>${heads.map(x=>`<th>${x}</th>`).join('')}<th>Zmiana</th><th>Zmiana %</th></tr></thead><tbody>${h||'<tr><td colspan="5" style="color:var(--mu)">Brak pozycji do wyświetlenia.</td></tr>'}</tbody></table>`};
+  host.onclick=e=>{const b=e.target.closest('[data-i]');if(b){const i=+b.dataset.i;open.has(i)?open.delete(i):open.add(i);draw()}};
+  tables.push({draw,all:on=>{open.clear();if(on)rows.forEach(r=>r.has&&open.add(r.id));draw()},host});
+  draw()}
+
+function tools(t){return `<div class="tools"><input type="search" placeholder="Szukaj pozycji…" class="sq"><select class="su"><option value="1">w zł</option><option value="1000">w tys. zł</option><option value="1000000">w mln zł</option></select><label><input type="checkbox" class="sz" ${hideZero?'checked':''}> ukryj pozycje zerowe</label><button class="btn ea">Rozwiń wszystko</button><button class="btn ec">Zwiń</button></div>`}
+
+function rowTip(r){const A=D.I.rz.A||{},f=(v,base)=>nf(v||0,2)+' zł'+(r.rev&&base?' ('+nf((v||0)/base*100,1)+'% przychodów)':'');return [r.l,'Bieżący: '+f(r.a,A.a),'Poprzedni: '+f(r.b,A.b),'Zmiana r/r: '+pf(pct(r.a,r.b))].join('|')}
+function wTip(b){const A=D.I.rz.A;return [b.l,(b.t?'':b.v>=0?'+':'')+nf(b.v,2)+' zł',A&&A.a?nf(b.v/A.a*100,1)+'% przychodów':''].filter(Boolean).join('|')}
+function hbars(rows){const mx=Math.max(...rows.flatMap(r=>[Math.abs(r.a||0),Math.abs(r.b||0)]),1);
+  return `<div class="hb">`+rows.map(r=>{const bar=(v,c)=>`<div class="bar ${c}${v<0?' n':''}" style="width:${Math.max(Math.abs(v||0)/mx*100,.5)}%"></div>`;
+    return `<div>${esc(r.l)}</div><div class="tr" data-tip="${esc(rowTip(r))}">${bar(r.a,'')}${bar(r.b,'p')}<span class="v">${nf((r.a||0)/1e6,2)} / ${nf((r.b||0)/1e6,2)} mln</span></div>`}).join('')+`</div>`}
+
+function waterfall(steps){
+  const W=640,H=250,pt=22,pb=40,bars=[];let run=0;
+  for(const s of steps){if(s.t){bars.push({l:s.l,y0:0,y1:s.v,v:s.v,t:1});run=s.v}else{bars.push({l:s.l,y0:run,y1:run+s.v,v:s.v});run+=s.v}}
+  const all=bars.flatMap(b=>[b.y0,b.y1,0]),mn=Math.min(...all),mx=Math.max(...all),y=v=>pt+(H-pt-pb)*(1-(v-mn)/((mx-mn)||1)),w=W/bars.length;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Most wyniku finansowego"><line class="ax" x1="0" x2="${W}" y1="${y(0)}" y2="${y(0)}"/>`;
+  bars.forEach((b,i)=>{const x=i*w+w*.18,bw=w*.64,t=Math.min(y(b.y0),y(b.y1)),h=Math.max(Math.abs(y(b.y0)-y(b.y1)),1.5),c=b.t?'t':b.v>=0?'u':'d';
+    const words=b.l.split(' '),m=Math.ceil(words.length/2),ls=[words.slice(0,m).join(' '),words.slice(m).join(' ')];
+    s+=`<rect class="${c}" data-tip="${esc(wTip(b))}" x="${x}" y="${t}" width="${bw}" height="${h}" rx="2"/><text x="${x+bw/2}" y="${t-5}" text-anchor="middle">${nf(b.v/1e6,2)}</text>`+ls.map((l,k)=>`<text x="${x+bw/2}" y="${H-pb+16+k*12}" text-anchor="middle">${esc(l)}</text>`).join('')});
+  return s+'</svg>'}
+
+function render(){
+  const {bil,rz,cf,eq,I,h}=D,a=I.bil,r=I.rz,c=I.cf,g=(m,k,f)=>m[k]?m[k][f]:null;
+  const per=`${dt(h.od)} – ${dt(h.do)}`,perP=`${dt(h.od,1)} – ${dt(h.do,1)}`;
+  $('#ttl').textContent=h.nazwa||'Sprawozdanie finansowe';
+  $('#sub').textContent=`Okres ${per} · sporządzono ${h.data?dt(h.data):'—'}`;
+  const kp=[['Suma bilansowa',g(a,'Aktywa','a'),g(a,'Aktywa','b')],['Przychody ze sprzedaży',g(r,'A','a'),g(r,'A','b')],['Zysk z działalności operacyjnej',g(r,'F','a'),g(r,'F','b')],['Zysk (strata) netto',g(r,'L','a'),g(r,'L','b')],['Kapitał własny',g(a,'Pasywa_A','a'),g(a,'Pasywa_A','b')],['Środki pieniężne na koniec okresu',g(c,'G','a'),g(c,'G','b')]];
+  const dv=(x,y)=>y?x/y:null,pc=v=>v==null?'—':nf(v*100,1)+'%',xx=v=>v==null?'—':nf(v,2);
+  const ratio=(n,f)=>[f('a'),f('b')];
+  const rt=[['Płynność bieżąca',k=>dv(g(a,'Aktywa_B',k),g(a,'Pasywa_B_III',k)),xx],['Płynność szybka',k=>dv((g(a,'Aktywa_B_II',k)||0)+(g(a,'Aktywa_B_III',k)||0),g(a,'Pasywa_B_III',k)),xx],['Udział kapitału własnego',k=>dv(g(a,'Pasywa_A',k),g(a,'Pasywa',k)),pc],['Zadłużenie ogółem',k=>dv(g(a,'Pasywa_B',k),g(a,'Pasywa',k)),pc],['Marża operacyjna',k=>dv(g(r,'F',k),g(r,'A',k)),pc],['Marża netto',k=>dv(g(r,'L',k),g(r,'A',k)),pc],['ROE (na koniec okresu)',k=>dv(g(r,'L',k),g(a,'Pasywa_A',k)),pc]];
+  const st=(tl,x,y)=>{const t=(x||0)+(y||0)||1,n=tl.split('|'),sg=(v,i,c)=>`<div data-tip="${esc((n[i]||'')+'|'+nf(v||0,2)+' zł|'+nf((v||0)/t*100,1)+'% sumy bilansowej')}" style="width:${(v||0)/t*100}%;background:var(--${c})">${pc((v||0)/t)}</div>`;return `<div class="st">${sg(x,0,'ac')}${sg(y,1,'a2')}</div>`};
+  const shr=(lab,k,x,y,l1,l2)=>`<div class="kl" style="margin-top:8px">${lab} — ${k}</div>`+st('',x,y);
+  const bs=(k,lab)=>shr(lab,k,g(a,'Aktywa_A',k),g(a,'Aktywa_B',k))+shr('',k,0,0).slice(0,0);
+  const pas=(k)=>st('Kapitał własny|Zobowiązania i rezerwy',g(a,'Pasywa_A',k),g(a,'Pasywa_B',k));
+  const wf=[{l:'Wynik ze sprzedaży',v:g(r,'C','a'),t:1},{l:'Pozostałe przychody oper.',v:g(r,'D','a')||0},{l:'Pozostałe koszty oper.',v:-(g(r,'E','a')||0)},{l:'Przychody finansowe',v:g(r,'G','a')||0},{l:'Koszty finansowe',v:-(g(r,'H','a')||0)},{l:'Podatek i obciążenia',v:-((g(r,'J','a')||0)+(g(r,'K','a')||0))},{l:'Zysk netto',v:g(r,'L','a'),t:1}];
+  const cost=['B_I','B_II','B_III','B_IV','B_V','B_VI','B_VII','B_VIII'].filter(k=>r[k]).map(k=>({l:L.rz[k],a:r[k].a,b:r[k].b,rev:1}));
+  const flows=[['A_III','Operacyjne'],['B_III','Inwestycyjne'],['C_III','Finansowe'],['D','Razem']].filter(x=>c[x[0]]).map(x=>({l:x[1],a:c[x[0]].a,b:c[x[0]].b}));
+  $('#t-ov').innerHTML=`<div class="grid">${kp.map(([l,x,y])=>{const p=pct(x,y);return `<div class="card"><div class="kl">${l}</div><div class="kv ${cls(x)}">${short(x)}</div><div class="chip ${p==null?'':p<0?'dn':'up'}">${pf(p)} <span style="color:var(--mu)">r/r · poprz. ${short(y)}</span></div></div>`}).join('')}</div>
+  <div class="sec">Wskaźniki</div><div class="grid">${rt.map(([l,f,fm])=>`<div class="card"><div class="kl">${l}</div><div class="kv">${fm(f('a'))}</div><div class="kl">poprzednio ${fm(f('b'))}</div></div>`).join('')}</div>
+  <div class="two"><div class="card"><h3>Most od wyniku ze sprzedaży do zysku netto (mln zł)</h3>${r.C&&r.L?waterfall(wf):'<span class="kl">Brak danych RZiS.</span>'}</div>
+  <div class="card"><h3>Struktura bilansu</h3><div class="kl">Aktywa: trwałe | obrotowe — bieżący</div>${st('Aktywa trwałe|Aktywa obrotowe',g(a,'Aktywa_A','a'),g(a,'Aktywa_B','a'))}<div class="kl">poprzedni</div>${st('Aktywa trwałe|Aktywa obrotowe',g(a,'Aktywa_A','b'),g(a,'Aktywa_B','b'))}<div class="kl" style="margin-top:12px">Pasywa: kapitał własny | zobowiązania i rezerwy — bieżący</div>${pas('a')}<div class="kl">poprzedni</div>${pas('b')}<div class="kl" style="margin-top:10px"><span style="color:var(--ac)">■</span> kapitał własny / aktywa trwałe &nbsp; <span style="color:var(--a2)">■</span> zobowiązania / aktywa obrotowe</div></div>
+  <div class="card"><h3>Koszty według rodzaju (mln zł) — bieżący / poprzedni</h3>${hbars(cost)}</div>
+  <div class="card"><h3>Przepływy pieniężne netto (mln zł) — bieżący / poprzedni</h3>${hbars(flows)}</div></div>`;
+  const sc=(id,t,html)=>{$(id).innerHTML=t+html};
+  tables=[];
+  const hb=[`Stan na ${dt(h.do)}`,`Stan na ${dt(h.do,1)}`],hf=[per,perP];
+  $('#t-bil').innerHTML=tools()+'<div class="tw" id="tb"></div>';
+  $('#t-rz').innerHTML=tools()+'<div class="tw" id="tr"></div>';
+  $('#t-cf').innerHTML=tools()+'<div class="tw" id="tc"></div>';
+  $('#t-eq').innerHTML=tools()+'<div class="tw" id="te"></div>';
+  table($('#tb'),bil,'bil',hb);table($('#tr'),rz,'rz',hf);table($('#tc'),cf,'cf',hf);table($('#te'),eq,'eq',hb);
+  const fl=D.files.map((f,i)=>`<button class="btn" data-f="${i}">⬇ ${esc(f.n)}</button>`).join(' ')||'<span class="kl">brak</span>';
+  $('#t-in').innerHTML=`<div class="two" style="margin-top:0"><div class="card"><h3>Jednostka</h3><dl><dt>Nazwa</dt><dd>${esc(h.nazwa||'—')}</dd><dt>Siedziba</dt><dd>${esc(h.adres||'—')}</dd><dt>NIP</dt><dd class="mono">${esc(h.nip||'—')}</dd><dt>KRS</dt><dd class="mono">${esc(h.krs||'—')}</dd><dt>PKD</dt><dd class="mono">${esc(h.pkd.join(', ')||'—')}</dd></dl></div><div class="card"><h3>Sprawozdanie</h3><dl><dt>Okres</dt><dd>${per}</dd><dt>Data sporządzenia</dt><dd>${h.data?dt(h.data):'—'}</dd><dt>Kod</dt><dd>${esc(h.kod||'—')}</dd><dt>Załączniki</dt><dd>${fl}</dd></dl></div></div><div class="sec">Zasady rachunkowości i informacje wprowadzające</div>${D.txt.length?D.txt.map((t,i)=>`<details><summary>${esc(t.split('\n')[0].slice(0,110)||'Część '+(i+1))}</summary><pre>${esc(t)}</pre></details>`).join(''):'<span class="kl">Brak tekstów.</span>'}`;
+  $('#nav').innerHTML=[['ov','Przegląd'],['bil','Bilans'],['rz','Rachunek zysków i strat'],['cf','Przepływy pieniężne'],['eq','Kapitał własny'],['in','Informacje i noty']].map(([k,t],i)=>`<button data-t="${k}" class="${i?'':'on'}">${t}</button>`).join('');
+  $('#drop').classList.add('hide');$('#intro').classList.add('hide');$('#app').classList.remove('hide')}
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-t]');
+  if(t){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b===t));['ov','bil','rz','cf','eq','in'].forEach(k=>$('#t-'+k).classList.toggle('hide',k!==t.dataset.t))}
+  const f=e.target.closest('[data-f]');
+  if(f){const x=D.files[+f.dataset.f];try{const bin=atob(x.d.replace(/\s/g,'')),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);const url=URL.createObjectURL(new Blob([u],{type:x.n.endsWith('.pdf')?'application/pdf':'application/octet-stream'}));const a=document.createElement('a');a.href=url;a.download=x.n;a.click();setTimeout(()=>URL.revokeObjectURL(url),5e3)}catch(_){alert('Nie udało się zdekodować załącznika.')}}
+  const sec=e.target.closest('section');
+  if(e.target.classList.contains('ea')||e.target.classList.contains('ec')){const tb=tables.find(x=>sec.contains(x.host));tb&&tb.all(e.target.classList.contains('ea'))}});
+document.addEventListener('input',e=>{
+  if(e.target.classList.contains('sq')){q=e.target.value.trim().toLowerCase();document.querySelectorAll('.sq').forEach(i=>i.value=e.target.value);tables.forEach(t=>t.draw())}
+  if(e.target.classList.contains('su')){unit=+e.target.value;document.querySelectorAll('.su').forEach(i=>i.value=unit);tables.forEach(t=>t.draw())}
+  if(e.target.classList.contains('sz')){hideZero=e.target.checked;document.querySelectorAll('.sz').forEach(i=>i.checked=hideZero);tables.forEach(t=>t.draw())}});
+
+function load(txt){
+  const doc=new DOMParser().parseFromString(txt,'application/xml');
+  if(doc.querySelector('parsererror'))return alert('To nie jest poprawny plik XML.');
+  const G=n=>doc.getElementsByTagNameNS('*',n)[0],T=n=>{const e=G(n);return e?e.textContent.trim():''},be=G('Bilans');
+  if(!be)return alert('Nie znaleziono sekcji „Bilans” — plik nie wygląda na sprawozdanie finansowe w formacie e‑Sprawozdań.');
+  const sub=n=>G(n)&&G(n).children[0]?build(G(n).children[0]):[];
+  const bil=build(be),rz=sub('RZiS'),cf=sub('RachPrzeplywow'),eq=G('ZestZmianWKapitale')?build(G('ZestZmianWKapitale')):[];
+  const ad=[T('Ulica')&&'ul. '+T('Ulica'),T('NrDomu'),T('KodPocztowy'),T('Miejscowosc')].filter(Boolean).join(' ');
+  D={bil,rz,cf,eq,I:{bil:idx(bil),rz:idx(rz),cf:idx(cf)},
+    h:{nazwa:T('NazwaFirmy'),od:T('OkresOd')||T('DataOd'),do:T('OkresDo')||T('DataDo'),data:T('DataSporzadzenia'),kod:T('KodSprawozdania'),nip:T('P_1D'),krs:T('P_1E'),adres:ad,pkd:[...doc.getElementsByTagNameNS('*','KodPKD2007')].map(x=>x.textContent.trim())},
+    txt:[...doc.getElementsByTagNameNS('*','P_7A'),...doc.getElementsByTagNameNS('*','P_7B')].map(x=>x.textContent.trim()).filter(Boolean),
+    files:[...doc.getElementsByTagNameNS('*','Plik')].map(p=>({n:(kids(p).find(x=>x.localName==='Nazwa')||{}).textContent||'zalacznik',d:(kids(p).find(x=>x.localName==='Zawartosc')||{}).textContent||''}))};
+  render()}
+const pick=f=>f&&f.text().then(load);
+$('#open').onclick=()=>$('#file').click();$('#drop').onclick=()=>$('#file').click();
+$('#file').onchange=e=>pick(e.target.files[0]);
+['dragover','dragenter'].forEach(v=>document.addEventListener(v,e=>{e.preventDefault();$('#drop').classList.add('on')}));
+document.addEventListener('dragleave',()=>$('#drop').classList.remove('on'));
+document.addEventListener('drop',e=>{e.preventDefault();$('#drop').classList.remove('on');pick(e.dataTransfer.files[0])});
+document.documentElement.dataset.theme='light';
+const tip=$('#tip');
+const showTip=e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(!t){tip.classList.add('hide');return}
+  tip.innerHTML=t.dataset.tip.split('|').map((l,i)=>i?esc(l):'<b>'+esc(l)+'</b>').join('<br>');tip.classList.remove('hide');
+  const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;tip.style.left=Math.max(8,x)+'px';tip.style.top=Math.max(8,y)+'px'};
+document.addEventListener('pointermove',showTip);document.addEventListener('pointerdown',showTip);document.addEventListener('scroll',()=>tip.classList.add('hide'),true);
+$('#th').onclick=()=>{const r=document.documentElement,d=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=d?'light':'dark'};
+</script>
+</body>
+</html>
