@@ -81,6 +81,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .call{flex:none;display:inline-flex;align-items:center;min-height:42px;padding:0 16px;border-radius:999px;background:var(--accent);color:var(--onaccent);font-weight:700;text-decoration:none;white-space:nowrap}
 .row.sos .dot{--c:var(--accent)}
 .aq{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:6px}
+.apt24{background:var(--card);border:1px solid var(--accent);border-radius:18px;padding:16px;margin-top:14px}
+.apt24 .badge{display:inline-block;background:var(--accent);color:var(--onaccent);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:3px 10px}
+.apt24 h3{margin:10px 0 2px;font-size:20px}
+.apt24 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.call.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .foot{margin-top:18px;text-align:center;font-size:13px;color:var(--mute)}
 
 /* widoki szczegółowe */
@@ -162,6 +167,14 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
       <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1.5v4M10 3.5h4M12 5.5l5 4V21H7V9.5zM10 21v-4.5a2 2 0 0 1 4 0V21M3 21h18"/></svg></span>
       <span class="txt"><span class="tt" id="tm-t">Najbliższa msza św.</span><span class="ss" id="tm-s"></span></span><span class="chev">›</span>
     </a>
+    <a class="tile" id="t-prad" href="#/prad">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+      <span class="txt"><span class="tt" id="pr-t">Prąd: awarie i wyłączenia</span><span class="ss" id="pr-s">Sprawdź wyłączenia w Kruszynie</span></span><span class="chev">›</span>
+    </a>
+    <a class="tile" id="t-apt" href="#/apteki" hidden>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg></span>
+      <span class="txt"><span class="tt">Apteka całodobowa</span><span class="ss" id="apt-s"></span></span><span class="chev">›</span>
+    </a>
     <div class="tile" id="t-air" hidden>
       <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/></svg></span>
       <span class="txt"><span class="tt" id="air-t">Jakość powietrza</span><span class="ss" id="air-s"></span></span>
@@ -185,6 +198,31 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Ważne telefony</h2></div>
   <div id="phones"></div>
   <p class="foot">Brakuje numeru? Dopisz go w pliku <code>wies.json</code>.</p>
+</section>
+
+<!-- PRĄD -->
+<section class="view" id="v-prad" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Prąd</h2></div>
+  <div class="card">
+    <h3>Zgłoszone w Kruszynie</h3>
+    <div id="prad-list"></div>
+  </div>
+  <div class="card">
+    <h3>Sprawdź na Tauron Dystrybucja</h3>
+    <div class="row"><div class="grow"><div class="name">Awarie i planowane wyłączenia</div><div class="sub">wpisz miejscowość, ulicę i numer</div></div><a class="call" href="https://www.tauron-dystrybucja.pl/wylaczenia">Otwórz</a></div>
+    <div class="row"><div class="grow"><div class="name">Powiadomienia SMS / e-mail</div><div class="sub">Tauron wyśle info o wyłączeniu pod Twój adres</div></div><a class="call alt" href="https://www.tauron-dystrybucja.pl/powiadomienia">Zapisz się</a></div>
+    <div class="row sos"><span class="dot"></span><div class="grow"><div class="name">Pogotowie energetyczne</div><div class="sub">awaria, zerwany przewód, zagrożenie</div></div><a class="call" href="tel:991">991</a></div>
+  </div>
+  <div class="card"><h3>Gdy zabraknie prądu</h3><div class="sub" style="padding-bottom:10px;line-height:1.6">Sprawdź bezpieczniki w domu i czy prąd mają sąsiedzi. Jeśli nie, zgłoś awarię pod 991. Nie zbliżaj się do zerwanych przewodów.</div></div>
+  <p class="foot" id="prad-foot">Wiążące informacje: <a href="https://www.tauron-dystrybucja.pl/wylaczenia">tauron-dystrybucja.pl</a>.</p>
+</section>
+
+<!-- APTEKI -->
+<section class="view" id="v-apteki" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Apteki</h2></div>
+  <div id="apt24"></div>
+  <div class="card"><h3>Inne apteki w Bolesławcu</h3><div id="aptlist"></div></div>
+  <p class="foot">Dyżury nocne i świąteczne wyznacza powiat. Stały dyżur całodobowy ma apteka „U Nelli”, ale przed wyjazdem warto zadzwonić.<br>Sprawdź też: <a href="https://powiatboleslawiecki.pl/dyzury-aptek/">powiatboleslawiecki.pl</a> · <a href="https://www.bolec.info/boleslawiec/apteki">bolec.info</a></p>
 </section>
 
 <!-- MSZE -->
@@ -229,7 +267,7 @@ const col = id => `style="--c:var(--c-${esc(id)})"`;
 const bag = id => `<svg class="bag" viewBox="0 0 24 24" ${col(id)} aria-hidden="true"><path d="M9 2h6l-1 3c3 1 6 4 6 9a8 8 0 0 1-16 0c0-5 3-8 6-9z"/></svg>`;
 
 // ---------- nawigacja (#/pogoda, #/smieci) ----------
-const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony'];
+const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony', 'apteki', 'prad'];
 function route() {
   const h = (location.hash || '').replace(/^#\/?/, '');
   const v = VIEWS.includes(h) ? h : 'home';
@@ -304,7 +342,7 @@ $('h-date').textContent = cap(fmt(today, {weekday: 'long', day: 'numeric', month
 
 // ---------- OGŁOSZENIA I TELEFONY (wies.json) ----------
 (async function () {
-  const FB = {"ogloszenia": [], "telefony": [{"grupa": "Alarmowe", "nazwa": "Numer alarmowy", "opis": "każda służba", "tel": "112", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Pogotowie ratunkowe", "tel": "999", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Straż pożarna", "tel": "998", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Policja", "tel": "997", "sos": true}, {"grupa": "Awarie", "nazwa": "Pogotowie gazowe", "tel": "992"}, {"grupa": "Awarie", "nazwa": "Pogotowie energetyczne", "tel": "991"}, {"grupa": "Nasza wieś", "nazwa": "Parafia św. Jana Chrzciciela", "opis": "kancelaria, Kruszyn", "tel": "75 732 14 14"}, {"grupa": "Nasza wieś", "nazwa": "Urząd Gminy Bolesławiec", "opis": "ul. Teatralna 1a", "tel": "75 732 32 21"}, {"grupa": "Nasza wieś", "nazwa": "COM-D – odbiór odpadów", "tel": "76 870 21 68"}]};
+  const FB = {"ogloszenia": [], "telefony": [{"grupa": "Alarmowe", "nazwa": "Numer alarmowy", "opis": "każda służba", "tel": "112", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Pogotowie ratunkowe", "tel": "999", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Straż pożarna", "tel": "998", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Policja", "tel": "997", "sos": true}, {"grupa": "Awarie", "nazwa": "Pogotowie gazowe", "tel": "992"}, {"grupa": "Awarie", "nazwa": "Pogotowie energetyczne", "tel": "991"}, {"grupa": "Nasza wieś", "nazwa": "Parafia św. Jana Chrzciciela", "opis": "kancelaria, Kruszyn", "tel": "75 732 14 14"}, {"grupa": "Nasza wieś", "nazwa": "Urząd Gminy Bolesławiec", "opis": "ul. Teatralna 1a", "tel": "75 732 32 21"}, {"grupa": "Nasza wieś", "nazwa": "COM-D – odbiór odpadów", "tel": "76 870 21 68"}], "apteki": [{"nazwa": "Apteka „U Nelli”", "adres": "ul. Dolne Młyny 21c, Bolesławiec", "tel": "75 640 92 13", "cala_doba": true}, {"nazwa": "Apteka Nova", "adres": "ul. 10 Marca 2, Bolesławiec", "tel": "75 644 35 70"}, {"nazwa": "Apteka Centrum", "adres": "ul. Karola Miarki 29b, Bolesławiec", "tel": "75 732 39 34"}, {"nazwa": "Apteka im. Szymona Fabiana", "adres": "ul. Asnyka 21/9a, Bolesławiec", "tel": "75 643 58 43"}, {"nazwa": "Apteka Pod Klonami+", "adres": "ul. Asnyka 1, Bolesławiec", "tel": "75 612 10 85"}, {"nazwa": "Apteka DR.MAX", "adres": "ul. Kościuszki 15, Bolesławiec", "tel": "75 734 87 73"}], "prad": []};
   let w;
   try { const r = await fetch('wies.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { w = FB; }
   const tel = t => 'tel:' + String(t).replace(/\s/g, '');
@@ -318,6 +356,37 @@ $('h-date').textContent = cap(fmt(today, {weekday: 'long', day: 'numeric', month
   (w.telefony || []).forEach(p => { let g = groups.find(x => x.n === p.grupa); if (!g) groups.push(g = {n: p.grupa, l: []}); g.l.push(p); });
   $('phones').innerHTML = groups.map(g => `<div class="card"><h3>${esc(g.n)}</h3>` + g.l.map(p =>
     `<div class="row${p.sos ? ' sos' : ''}"><div class="grow"><div class="name">${esc(p.nazwa)}</div>${p.opis ? `<div class="sub">${esc(p.opis)}</div>` : ''}</div><a class="call" href="${esc(tel(p.tel))}" aria-label="Zadzwoń: ${esc(p.nazwa)}">${esc(p.tel)}</a></div>`).join('') + '</div>').join('');
+  // prąd: wpisy z wies.json
+  let auto = {items: [], updated: null};
+  try { const r = await fetch('wylaczenia.json', {cache: 'no-cache'}); if (r.ok) auto = await r.json(); } catch (_) {}
+  const hm = t => t ? t.slice(11, 16) : '';
+  const fromAuto = (auto.items || []).filter(o => o.od).map(o => ({
+    typ: o.typ, dzien: o.od.slice(0, 10), dzien_do: o.do ? o.do.slice(0, 10) : null,
+    godz: o.typ === 'awaria' ? 'od ' + hm(o.od) : hm(o.od) + ' – ' + hm(o.do),
+    gdzie: o.tekst, koniec: o.typ === 'awaria' ? hm(o.do) : ''}));
+  const pr = fromAuto.concat(w.prad || []).filter(p => (p.dzien_do || p.dzien) >= today).sort((a, b) => a.dzien < b.dzien ? -1 : 1);
+  const upd = auto.updated ? new Date(auto.updated) : null;
+  const stale = !upd || (Date.now() - upd.getTime()) > 36 * 36e5;
+  $('prad-foot').innerHTML = (upd ? `Dane z Tauron Dystrybucja pobierane automatycznie co godzinę (ostatnio: ${esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(upd))}).` : 'Automatyczne pobieranie danych z Tauron nie jest jeszcze włączone.') +
+    (stale && upd ? ' <b>Dane mogą być nieaktualne.</b>' : '') + ' Wiążące informacje: <a href="https://www.tauron-dystrybucja.pl/wylaczenia">tauron-dystrybucja.pl</a>.';
+  $('prad-list').innerHTML = pr.length ? pr.map(p => {
+    const k = diff(p.dzien), aw = p.typ === 'awaria';
+    const when = k < 0 ? 'trwa' : rel(k);
+    return `<div class="row${aw ? ' sos' : ''}"><div class="grow"><div class="name">${esc(p.gdzie)}</div><div class="sub">${aw ? 'awaria' : 'planowane wyłączenie'}${p.godz ? ' · ' + esc(p.godz) : ''}${p.koniec ? ' · koniec ok. ' + esc(p.koniec) : ''}</div></div><div class="when"><b class="${k <= 1 ? 's' : ''}">${esc(fmt(p.dzien, {weekday: 'short', day: 'numeric', month: 'short'}))}</b><span class="sub">${when}</span></div></div>`;
+  }).join('') : '<p class="sub" style="padding:4px 0 10px">Brak wpisów. Sprawdź swój adres w Tauron poniżej.</p>';
+  const soonP = pr.filter(p => diff(p.dzien) <= 1);
+  if (soonP.length) {
+    const p = soonP[0], k = diff(p.dzien);
+    $('pr-t').textContent = p.typ === 'awaria' ? 'Awaria prądu w Kruszynie' : `Wyłączenie prądu: ${k <= 0 ? 'dziś' : 'jutro'}`;
+    $('pr-s').textContent = p.gdzie + (p.godz ? ' · ' + p.godz : '') + (soonP.length > 1 ? ` · +${soonP.length - 1}` : '');
+    $('t-prad').classList.add('soon');
+  }
+  // apteki
+  const map = a => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a.nazwa.replace(/[„”]/g, '') + ' ' + a.adres);
+  const ap = w.apteki || [], a24 = ap.filter(a => a.cala_doba), rest = ap.filter(a => !a.cala_doba);
+  $('apt24').innerHTML = a24.map(a => `<div class="apt24"><span class="badge">całodobowo</span><h3>${esc(a.nazwa)}</h3><div class="sub">${esc(a.adres)}</div><div class="btns"><a class="call" href="${esc(tel(a.tel))}">Zadzwoń ${esc(a.tel)}</a><a class="call alt" href="${esc(map(a))}">Mapa</a></div></div>`).join('');
+  $('aptlist').innerHTML = rest.map(a => `<div class="row"><div class="grow"><div class="name">${esc(a.nazwa)}</div><div class="sub">${esc(a.adres)}</div></div><a class="call" href="${esc(tel(a.tel))}" aria-label="Zadzwoń: ${esc(a.nazwa)}">${esc(a.tel)}</a></div>`).join('');
+  if (a24.length) { $('apt-s').textContent = a24[0].nazwa.replace(/[„”]/g, '') + ' · ' + a24[0].adres; $('t-apt').hidden = false; }
 })();
 
 // ---------- JAKOŚĆ POWIETRZA (Open-Meteo) ----------
