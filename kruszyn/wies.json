@@ -1,0 +1,14 @@
+{
+  "ogloszenia": [],
+  "telefony": [
+    {"grupa": "Alarmowe", "nazwa": "Numer alarmowy", "opis": "każda służba", "tel": "112", "sos": true},
+    {"grupa": "Alarmowe", "nazwa": "Pogotowie ratunkowe", "tel": "999", "sos": true},
+    {"grupa": "Alarmowe", "nazwa": "Straż pożarna", "tel": "998", "sos": true},
+    {"grupa": "Alarmowe", "nazwa": "Policja", "tel": "997", "sos": true},
+    {"grupa": "Awarie", "nazwa": "Pogotowie gazowe", "tel": "992"},
+    {"grupa": "Awarie", "nazwa": "Pogotowie energetyczne", "tel": "991"},
+    {"grupa": "Nasza wieś", "nazwa": "Parafia św. Jana Chrzciciela", "opis": "kancelaria, Kruszyn", "tel": "75 732 14 14"},
+    {"grupa": "Nasza wieś", "nazwa": "Urząd Gminy Bolesławiec", "opis": "ul. Teatralna 1a", "tel": "75 732 32 21"},
+    {"grupa": "Nasza wieś", "nazwa": "COM-D – odbiór odpadów", "tel": "76 870 21 68"}
+  ]
+}
