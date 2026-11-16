@@ -70,7 +70,15 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add -A data index.html
           for f in wylaczenia.json ostrzezenia.json; do [ -f "$f" ] && git add "$f"; done || true
-          git diff --cached --quiet || (git commit -m "Aktualizacja danych" && git push)
+          if ! git diff --cached --quiet; then
+            git commit -m "Aktualizacja danych"
+            # ktoś mógł w międzyczasie zapisać zmiany w repozytorium – dołącz je i spróbuj ponownie
+            for i in 1 2 3; do
+              git pull --rebase -X ours origin main && git push && break
+              git rebase --abort 2>/dev/null || true
+              sleep 5
+            done || true
+          fi
 
       - name: Przygotuj pliki strony
         run: |
