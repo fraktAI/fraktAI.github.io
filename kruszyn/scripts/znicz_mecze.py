@@ -82,6 +82,8 @@ def fetch(url):
 
 # ---------------------------------------------------------------- terminarz
 DATE = re.compile(r"^(\d{1,2})\s+([^\W\d_]{3,})\.?(?:\s*/\s*(\d{1,2}))?$")
+DAY = re.compile(r"^\d{1,2}$")
+MONTHW = re.compile(r"^[^\W\d_]{3,}\.?$")
 SLASH = re.compile(r"^/\s*(\d{1,2}|-)$")
 TIME = re.compile(r"^(\d{1,2}):(\d{2})$")
 HEAD = re.compile(r"^[^|]{3,40}\|\s*(.+)$")          # "Dolnośląskie | Klasa B"
@@ -111,10 +113,16 @@ def parse_matches(tok, today):
         j = i + 1                                       # indeks tokenu z godziną (po ewentualnym "/10")
         if m and j < len(tok) and SLASH.match(tok[j]):
             j += 1
+        elif not m and DAY.match(t) and i + 1 < len(tok) and MONTHW.match(tok[i + 1]) \
+                and norm(tok[i + 1])[:3] in MONTHS:     # data w trzech elementach: "02", "sie", "/08"
+            m = re.match(r"(\d{1,2})\s+(\S+)$", f"{t} {tok[i + 1]}")
+            j = i + 2
+            if j < len(tok) and SLASH.match(tok[j]):
+                j += 1
         h = HEAD.match(t)
         if h and not TIME.match(t) and not m:
             close()
-            comp = h.group(1).strip()
+            comp = h.group(1).split("|")[0].strip()
         elif m and j < len(tok) and (TIME.match(tok[j]) or tok[j] == "?:?"):
             close()
             mon = MONTHS.get(norm(m.group(2))[:3]) or int(m.group(3))
@@ -238,6 +246,33 @@ SAMPLE_T = """
 """
 
 
+REAL = ['Dolnośląskie | Klasa B | Jelenia Góra IV', 'Polska | MECZE SPARINGOWE', '02', 'sie', '/08', '11:00', 'Znicz Kruszyn', '7', '5', ':', 'KS Milików',
+        'Dolnośląskie | Puchar Polski', '09', 'sie', '/08', '15:00', 'Znicz Kruszyn', '4', '2', ':', 'Kwisa Świeradów-Zdrój', 'L', 'Zobacz relację',
+        'Dolnośląskie | Klasa B', '16', 'sie', '/08', '16:00', 'Bóbr Dąbrowa Bolesławiecka', '5', '2', ':', 'Znicz Kruszyn', 'L', 'Zobacz relację',
+        '23', 'sie', '/08', '11:00', 'Znicz Kruszyn', '1', '0', ':', 'Majdan Bolesławice', 'L', 'Zobacz relację',
+        '30', 'sie', '/08', '11:00', 'Jawa Otok', '3', '2', ':', 'Znicz Kruszyn', 'L', 'Zobacz relację',
+        '15', 'lis', '/11', '14:00', 'Znicz Kruszyn', '3', '2', ':', 'LZS Brzeźnik', 'L', 'Zobacz relację',
+        '-', '-', '-', '/-', '?:?', 'Znicz Kruszyn', '-', '-', ':', 'Bóbr Dąbrowa Bolesławiecka', 'Dodaj relację',
+        'Stopka', '50', '50']
+
+
+def selftest_real():
+    ms = parse_matches(REAL, dt.date(2026, 11, 16))
+    assert len(ms) == 7, ms
+    assert ms[0] == {"data": "2026-08-02", "godz": "11:00", "rozgrywki": "MECZE SPARINGOWE", "gospodarz": "Znicz Kruszyn",
+                     "gosc": "KS Milików", "wynik": "7:5"}, ms[0]
+    assert ms[1]["rozgrywki"] == "Puchar Polski" and ms[1]["wynik"] == "4:2"
+    assert ms[2]["gospodarz"] == "Bóbr Dąbrowa Bolesławiecka" and ms[2]["wynik"] == "5:2" and ms[2]["rozgrywki"] == "Klasa B"
+    assert ms[5]["data"] == "2026-11-15" and ms[5]["wynik"] == "3:2" and ms[5]["gosc"] == "LZS Brzeźnik", ms[5]
+    assert ms[6]["data"] is None and ms[6]["wynik"] is None and ms[6]["gosc"] == "Bóbr Dąbrowa Bolesławiecka", ms[6]
+    tt = ['Drużyna', 'Pkt', 'M', 'W', 'R', 'P', 'Bramki', 'Forma', '1', 'Bóbr Dąbrowa Bolesławiecka', '29', '12', '9', '2', '1', '50:17', '?', 'W', 'P', 'R', 'W', 'R',
+          '2', 'Leśnik Osiecznica', '28', '12', '9', '1', '2', '44:18', '?', 'W', 'W', 'W', 'W', 'W', '3', 'Jawa Otok', '28', '12', '9', '1', '2', '32:19', '?', 'R', 'W', 'W', 'P', 'W',
+          '4', 'LZS Brzeźnik', '24', '12', '7', '3', '2', '42:23', '?', 'W', 'W', 'W', 'R', 'P', '5', 'Znicz Kruszyn', '22', '12', '7', '1', '4', '31:23', '?', 'W', 'W', 'P', 'P', 'W']
+    tb = parse_table(tt)
+    assert len(tb) == 5 and tb[4]["druzyna"] == "Znicz Kruszyn" and tb[4]["pkt"] == 22 and tb[4]["bramki"] == "31:23", tb
+    print("selftest (prawdziwe teksty) OK")
+
+
 def selftest():
     today = dt.date(2026, 11, 16)
     ms = parse_matches(tokens(SAMPLE_M), today)
@@ -256,6 +291,7 @@ def selftest():
     d = build(ms, tb, today)
     assert d["ostatnie"][0]["data"] == "2026-11-15" and d["ostatnie"][0]["rezultat"] == "W"
     assert d["najblizsze"][0]["data"] == "2026-11-29" and d["bez_terminu"] == 2 and d["pozycja"]["poz"] == 3
+    selftest_real()
     print("selftest OK")
 
 
