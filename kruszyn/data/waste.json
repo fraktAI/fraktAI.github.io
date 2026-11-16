@@ -2,8 +2,8 @@
   "village": "Kruszyn",
   "commune": "Gmina Bolesławiec",
   "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn",
-  "mode": "pdf",
-  "fetched": "2026-11-15",
+  "mode": "live",
+  "fetched": "2026-11-16",
   "phone": "76 870 21 68",
   "fractions": [
     {
@@ -33,7 +33,6 @@
         "2026-10-05",
         "2026-10-19",
         "2026-11-02",
-        "2026-11-16",
         "2026-11-30",
         "2026-12-14",
         "2026-12-28"
@@ -124,8 +123,7 @@
       "label": "Odzież i tekstylia",
       "frequency": "odzież i tekstylia 2x w roku",
       "dates": [
-        "2026-03-02",
-        "2026-11-16"
+        "2026-03-02"
       ]
     },
     {

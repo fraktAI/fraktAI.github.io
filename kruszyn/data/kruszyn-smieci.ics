@@ -690,21 +690,6 @@ TRIGGER:-PT6H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-16-smieci@kruszyn
-DTSTAMP:20260101T000000Z
-DTSTART;VALUE=DATE:20261116
-DTEND;VALUE=DATE:20261117
-SUMMARY:Wywóz śmieci: odpady zmieszane\, odzież i tekstylia
-DESCRIPTION:Odbiór: odpady zmieszane\, odzież i tekstylia. Pamiętaj o wy
- stawieniu pojemników.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:Jutro wywóz śmieci: odpady zmieszane\, odzież i tekstylia
-TRIGGER:-PT6H
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
 UID:2026-11-23-smieci@kruszyn
 DTSTAMP:20260101T000000Z
 DTSTART;VALUE=DATE:20261123
