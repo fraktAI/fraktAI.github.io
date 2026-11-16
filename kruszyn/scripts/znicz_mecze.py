@@ -259,6 +259,22 @@ def selftest():
     print("selftest OK")
 
 
+def diag(rm, rt, tm, tt):
+    """Wydruk do logu: pokazuje, co robot widzi na stronach (do szukania przyczyn błędów)."""
+    print(f"DIAGNOSTYKA: terminarz {len(rm)} znaków HTML, {len(tm)} tekstów; tabela {len(rt)} znaków, {len(tt)} tekstów")
+    k = next((i for i, t in enumerate(tm) if "Terminarz" in t and "Znicz" in t), 0)
+    print("DIAGNOSTYKA – teksty terminarza od nagłówka:", tm[k:k + 110])
+    k = next((i for i, t in enumerate(tt) if t == "Pkt"), 0)
+    print("DIAGNOSTYKA – teksty tabeli od 'Pkt':", tt[max(0, k - 4):k + 50])
+    mo = re.search(r"\d{1,2}\s*(sty|lut|mar|kwi|maj|cze|lip|sie|wrz|pa\u017a|lis|gru)", rm, re.I)
+    if mo:
+        print("DIAGNOSTYKA – HTML wokół pierwszej daty:\n", rm[max(0, mo.start() - 400):mo.start() + 1600])
+    else:
+        print("DIAGNOSTYKA – w HTML terminarza NIE MA dat (dane ładowane skryptem?). Adresy skryptów/AJAX:")
+        for u in sorted(set(re.findall(r"""(?:src|href|url)\s*[=:]\s*["']([^"']*(?:ajax|api|json|mecz|terminarz|kalendarz)[^"']*)["']""", rm, re.I)))[:25]:
+            print("   ", u)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--discover", action="store_true")
@@ -267,20 +283,19 @@ def main():
     if a.selftest:
         return selftest()
     today = dt.datetime.now(TZ).date()
-    tm, tt = tokens(fetch(URL_MATCHES)), tokens(fetch(URL_TABLE))
+    rm, rt = fetch(URL_MATCHES), fetch(URL_TABLE)
+    tm, tt = tokens(rm), tokens(rt)
     if a.discover:
-        print("TERMINARZ (pierwsze 120 tekstów):", tm[:120], "\nTABELA (pierwsze 120):", tt[:120], sep="\n")
+        diag(rm, rt, tm, tt)
     matches, table = parse_matches(tm, today), parse_table(tt)
     played = [m for m in matches if m["wynik"]]
-    def diag():
-        print("DIAGNOSTYKA – początek terminarza:", tm[:70], "\nDIAGNOSTYKA – początek tabeli:", tt[:50], sep="\n")
 
     if len(matches) < 3 or len(table) < 4 or not any(norm(r["druzyna"]) == norm(TEAM) for r in table):
-        diag()
+        diag(rm, rt, tm, tt)
         raise SystemExit(f"Nie rozpoznano danych (meczów: {len(matches)}, wierszy tabeli: {len(table)}) "
                          "– zmienił się układ strony? Uruchom z --discover.")
     if not any(m["data"] and m["wynik"] for m in matches):
-        diag()
+        diag(rm, rt, tm, tt)
         raise SystemExit("Nie rozpoznano żadnego rozegranego meczu z datą i wynikiem – zmienił się układ strony? "
                          "Uruchom z --discover.")
     data = build(matches, table, today)
