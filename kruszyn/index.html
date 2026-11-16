@@ -13,6 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<script>try{var t=localStorage.getItem('kr-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <style>
 :root{
   --bg:#fbf7f0;--card:#fff;--ink:#1d1b18;--mute:#5d574e;--line:#ebe3d6;--accent:#d6001c;--tile:#f3ede2;--onaccent:#fff;
@@ -148,209 +149,77 @@ details[open] summary::after{content:"－"}
 .plist{margin:0;padding:0 0 10px 20px;line-height:1.55;font-size:16px}
 .plist li{margin:4px 0}
 
-/* ===== NOWOCZESNY, RESPONSYWNY WYGLĄD ===== */
-:root {
-  --bg: #f3f6fb;
-  --card: #ffffff;
-  --ink: #172235;
-  --mute: #64748b;
-  --line: #e2e8f0;
-  --accent: #176b87;
-  --tile: #edf4f7;
-  --onaccent: #ffffff;
-  --shadow: 0 8px 28px rgba(20, 42, 65, .07);
+/* ===== NOWOCZESNY UKŁAD: telefon (1 kolumna) → tablet → komputer ===== */
+:root{--bg2:#f1e9dc;--r:28px;--ease:cubic-bezier(.2,.7,.2,1)}
+@media (prefers-color-scheme:dark){:root{--bg2:#0d0b09}}
+html{background:var(--bg2)}
+.notices[hidden],#v-home[hidden]{display:none}
+body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 60%),radial-gradient(900px 480px at -10% 8%,color-mix(in srgb,#2e6fd6 10%,transparent),transparent 60%),linear-gradient(180deg,var(--bg),var(--bg2)) fixed}
+.wrap{padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(48px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.card,.tile,.hero,.notice,.apt24{border-radius:var(--r)}
+.card{padding:18px 20px 10px;break-inside:avoid}
+.tile,.hero,.bar a.back,.call,.btn,.zoom button{transition:transform .18s var(--ease),box-shadow .18s var(--ease),background-color .18s}
+@media (hover:hover){
+  .tile:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(60,40,10,.06),0 18px 36px rgba(60,40,10,.14)}
+  .hero:hover{transform:translateY(-2px)}
+  .call:hover,.btn:hover{filter:brightness(1.08)}
+  .bar a.back:hover{transform:translateX(-2px)}
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d1724;
-    --card: #152335;
-    --ink: #edf4fb;
-    --mute: #a8b7c8;
-    --line: #2a3b50;
-    --accent: #55b6c8;
-    --tile: #1c3042;
-    --onaccent: #071923;
-    --shadow: 0 10px 30px rgba(0, 0, 0, .2);
-  }
-}
-html { scroll-behavior: smooth; }
-body {
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at 8% 0%, rgba(56, 145, 174, .10), transparent 34rem),
-    var(--bg);
-  color: var(--ink);
-  font: 16px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-.wrap {
-  width: min(100% - 40px, 1180px);
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 22px 0 64px;
-  zoom: var(--z, 1);
-}
-.sub { color: var(--mute); font-size: 14px; }
-.topbar { min-height: 42px; }
-.zoom button {
-  min-width: 44px; height: 38px; border: 1px solid var(--line);
-  border-radius: 12px; background: var(--card); color: var(--ink);
-  font: 600 14px inherit; box-shadow: 0 2px 8px rgba(20,42,65,.04);
-}
-.top { padding: 8px 0 22px; }
-.top .greet { font-size: 15px; color: var(--mute); }
-.top h1 {
-  margin-top: 5px; font-size: clamp(38px, 6vw, 58px);
-  line-height: 1.08; letter-spacing: -.055em;
-}
-.top h1 span { color: #e16b62; }
-.top .where {
-  margin-top: 10px; font-size: 12px; letter-spacing: .13em;
-}
-.hero {
-  min-height: 245px;
-  margin-top: 8px;
-  padding: 26px 30px 82px;
-  border-radius: 28px;
-  box-shadow: 0 18px 44px rgba(22, 74, 105, .2);
-  background: linear-gradient(125deg, #164e70 0%, #207f96 58%, #55a9ad 100%);
-}
-.hero.day { background: linear-gradient(125deg, #176b9b, #50a9d6); }
-.hero.cloud { background: linear-gradient(125deg, #52677c, #8299aa); }
-.hero .lab { font-size: 12px; letter-spacing: .16em; }
-.hero .date { font-size: clamp(22px, 3vw, 30px); }
-.hero .big .i { font-size: 46px; }
-.hero .big .t { font-size: clamp(44px, 5vw, 58px); letter-spacing: -.06em; }
-.hero .line { max-width: 650px; font-size: 16px; }
-.hero .cta {
-  margin-top: 16px; padding: 10px 17px; border-radius: 12px;
-  color: #164e70; font-size: 14px;
-}
-.notices { margin-top: 18px; gap: 12px; }
-.notice {
-  border: 1px solid var(--line); border-left: 5px solid var(--accent);
-  border-radius: 16px; padding: 15px 18px; box-shadow: var(--shadow);
-}
-.notice.urgent { background: #b93843; border-color: #b93843; color: #fff; }
-.notice b { font-size: 15px; }
-.notice p { font-size: 14px; }
-.tiles {
-  margin-top: 20px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-.tile {
-  min-width: 0; min-height: 150px; padding: 20px;
-  gap: 16px; border: 1px solid var(--line); border-radius: 20px;
-  box-shadow: var(--shadow);
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-}
-.tile:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 32px rgba(20, 42, 65, .12);
-  border-color: color-mix(in srgb, var(--tc) 42%, var(--line));
-}
-.tile:active { transform: scale(.985); }
-.tile .ico { width: 48px; height: 48px; border-radius: 15px; }
-.tile .ico svg { width: 24px; height: 24px; }
-.tile .tt { font-size: 16px; line-height: 1.35; }
-.tile .ss { font-size: 13px; }
-.tile.wide { grid-column: span 1; min-height: 150px; flex-direction: column; align-items: flex-start; }
-.tile.soon { background: var(--accent); color: var(--onaccent); }
-.tile.soon .ss { color: var(--onaccent); }
-.foot { margin-top: 26px; font-size: 12px; line-height: 1.7; }
-.bar { margin: 8px 0 18px; gap: 16px; }
-.bar a.back {
-  min-height: 42px; padding: 0 15px; border-radius: 12px;
-  font-size: 14px; border: 1px solid var(--line); box-shadow: none;
-}
-.bar h2 { font-size: clamp(23px, 3vw, 30px); letter-spacing: -.035em; }
-.card {
-  margin-top: 16px; padding: 20px 22px 10px;
-  border: 1px solid var(--line); border-radius: 20px;
-  box-shadow: var(--shadow);
-}
-.card h3 { font-size: 11px; letter-spacing: .13em; }
-.banner {
-  border-radius: 16px; padding: 14px 18px; font-size: 15px;
-  background: var(--accent);
-}
-.row { gap: 16px; padding: 15px 0; }
-.row .dot { width: 11px; height: 11px; }
-.name { font-size: 14px; }
-.when { font-size: 14px; }
-.call, .btn {
-  min-height: 42px; padding: 0 16px; border-radius: 12px;
-  background: var(--accent); font-size: 13px;
-}
-.call.alt { border-width: 1px; }
-.nav button {
-  width: 44px; height: 42px; border-radius: 12px;
-  background: var(--tile); border: 1px solid var(--line);
-}
-.nav strong { font-size: 16px; }
-.grid { gap: 6px; }
-.day { min-height: 58px; border-radius: 10px; font-size: 14px; }
-.dow { font-size: 11px; }
-.apt24 { border-radius: 20px; padding: 20px; }
-.apt24 h3 { font-size: 20px; }
-details summary { font-size: 15px; }
-.plist { font-size: 14px; }
-a { text-underline-offset: 3px; }
-a:hover { text-decoration-thickness: 2px; }
-button { cursor: pointer; transition: background .15s ease, transform .15s ease; }
-button:active { transform: scale(.97); }
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.tile .ico{width:56px;height:56px;border-radius:20px}
+.hero{background-size:140% 140%}
 
-@media (min-width: 900px) {
-  .top { text-align: left; padding: 4px 0 24px; }
-  .topbar { justify-content: flex-end; }
-  .hero { padding-left: 34px; }
-  .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .tile.wide { grid-column: span 2; }
-  #v-pogoda, #v-smieci, #v-msze, #v-telefony, #v-apteki, #v-prad, #v-pszok {
-    max-width: 900px; margin: 0 auto;
-  }
-  #v-pogoda .card, #v-smieci .card { padding: 24px 28px 12px; }
-}
-@media (max-width: 640px) {
-  .wrap { width: min(100% - 28px, 520px); padding-top: 14px; }
-  .top { padding-bottom: 16px; }
-  .top h1 { font-size: clamp(35px, 10vw, 46px); }
-  .hero { min-height: 220px; padding: 20px 19px 76px; border-radius: 22px; }
-  .hero .r1 { align-items: flex-start; flex-wrap: wrap; }
-  .hero .big { gap: 5px; }
-  .hero .big .i { font-size: 36px; }
-  .hero .big .t { font-size: 42px; }
-  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .tile, .tile.wide {
-    min-height: 142px; padding: 14px; gap: 11px;
-    border-radius: 17px;
-  }
-  .tile .ico { width: 42px; height: 42px; border-radius: 13px; }
-  .tile .ico svg { width: 22px; height: 22px; }
-  .tile .tt { font-size: 14px; }
-  .tile .ss { font-size: 12px; }
-  .bar { gap: 10px; }
-  .bar h2 { font-size: 22px; }
-  .bar a.back { padding: 0 12px; }
-  .card { padding: 16px 15px 8px; border-radius: 17px; }
-  .row { gap: 10px; }
-  .call { padding: 0 12px; font-size: 12px; }
-  .when { font-size: 12px; }
-  .hours { grid-template-columns: repeat(3, 1fr); row-gap: 12px; }
-  .day { min-height: 46px; font-size: 13px; }
-}
-@media (max-width: 360px) {
-  .wrap { width: calc(100% - 20px); }
-  .tile { padding: 11px; }
-  .tile .tt { font-size: 13px; }
-  .tile .ss { font-size: 11px; }
-  .hero .date { font-size: 20px; }
-  .hero .big .t { font-size: 36px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+/* tablet */
+@media (min-width:700px){
+  body{font-size:18px}
+  .wrap{max-width:860px;padding-top:28px}
+  .tiles{grid-template-columns:repeat(3,1fr);gap:14px}
+  .tile.wide{grid-column:span 3}
+  .hero{padding:28px 28px 100px;margin-top:22px}
+  .hero .date{font-size:30px}.hero .big .i{font-size:54px}.hero .big .t{font-size:60px}
+  .hero svg.sil{height:72px}
+  .top h1{font-size:60px}
+  .grid{gap:6px}.day{min-height:60px;font-size:16px}
+  /* widoki szczegółowe w dwóch kolumnach */
+  .view:not(#v-home){column-count:2;column-gap:18px}
+  .view:not(#v-home)>.bar,.view:not(#v-home)>.banner,.view:not(#v-home)>.foot,.view:not(#v-home)>#phones{column-span:all}
+  #phones{column-count:2;column-gap:18px}
+  .view:not(#v-home)>.card,.view:not(#v-home)>.apt24,#apt24{break-inside:avoid;margin-top:0;margin-bottom:18px}
+  .bar{margin:4px 0 20px}
+  .bar h2{font-size:34px}
 }
 
+/* komputer */
+@media (min-width:1100px){
+  .wrap{max-width:1180px;padding:36px 32px 64px}
+  #v-home{display:grid;grid-template-columns:minmax(400px,1fr) 1.45fr;column-gap:28px;align-items:start}
+  #v-home>.topbar,#v-home>.top,#v-home>.notices,#v-home>.foot{grid-column:1/-1}
+  #v-home>.topbar{grid-row:1}#v-home>.top{grid-row:2}#v-home>.notices{grid-row:3}#v-home>.foot{grid-row:5}
+  #v-home>.topbar{margin-bottom:-6px}
+  #v-home>.hero{grid-column:1;grid-row:4;margin-top:8px;position:sticky;top:24px;min-height:360px;padding:32px 32px 110px}
+  #v-home>.tiles{grid-column:2;grid-row:4;margin-top:8px;grid-template-columns:repeat(2,1fr);gap:16px}
+  .tile.wide{grid-column:span 2}
+  .tile{min-height:170px;padding:20px}
+  .tile .tt{font-size:20px}.tile .ss{font-size:15px}
+  .hero .date{font-size:34px}.hero .line{font-size:19px}.hero .cta{font-size:17px}
+  .top h1{font-size:72px}
+  .top .where{font-size:14px}
+  .view:not(#v-home){column-count:2;column-gap:24px}
+  .view:not(#v-home)>.bar h2,.bar h2{font-size:38px}
+}
+@media (min-width:1500px){
+  .wrap{max-width:1320px}
+  #v-home>.tiles{grid-template-columns:repeat(3,1fr)}
+  .tile.wide{grid-column:span 3}
+}
+.tile.t-pszok.soon{background:#2e9b5f;border-color:#2e9b5f;color:#fff}.tile.t-pszok.soon .ss{color:#fff}.tile.t-pszok.soon .ico{background:#fff;color:#2e9b5f}
+
+/* ===== PRZEŁĄCZNIK MOTYWU (jasny/ciemny) ===== */
+:root[data-theme="dark"]{--bg:#14110e;--card:#1f1c18;--ink:#f6f1e9;--mute:#bbb2a4;--line:#312c26;--accent:#ff5263;--tile:#2a2621;--onaccent:#25060a;--shadow:none;
+  --c-zmieszane:#aeb4b0;--c-bio:#c99562;--c-plastik:#f0c43a;--c-szklo:#5fc08a;--c-makulatura:#6aa5e6;--c-odziez:#c98bc9;--c-gabaryty:#f08c4d;;--bg2:#0d0b09;color-scheme:dark}
+:root[data-theme="light"]{  --bg:#fbf7f0;--card:#fff;--ink:#1d1b18;--mute:#5d574e;--line:#ebe3d6;--accent:#d6001c;--tile:#f3ede2;--onaccent:#fff;--shadow:0 1px 2px rgba(60,40,10,.06),0 10px 28px rgba(60,40,10,.08);--c-zmieszane:#55605a;--c-bio:#8a5a2b;--c-plastik:#d9a400;--c-szklo:#2e8b57;--c-makulatura:#2f6fb5;--c-odziez:#9b4f9b;--c-gabaryty:#d1621f;--bg2:#f1e9dc;color-scheme:light}
+#th{min-width:48px;height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font:600 18px Poppins,system-ui,sans-serif;cursor:pointer;line-height:1}
+.topbar{align-items:center}
 </style>
 </head>
 <body>
@@ -358,7 +227,7 @@ button:active { transform: scale(.97); }
 
 <!-- EKRAN GŁÓWNY -->
 <section class="view" id="v-home">
-  <div class="topbar zoom" role="group" aria-label="Wielkość tekstu"><button id="zm" aria-label="Mniejszy tekst">A−</button><button id="zp" aria-label="Większy tekst">A+</button></div>
+  <div class="topbar zoom" role="group" aria-label="Wielkość tekstu"><button id="th" aria-label="Przełącz motyw jasny/ciemny" title="Jasny / ciemny">🌙</button><button id="zm" aria-label="Mniejszy tekst">A−</button><button id="zp" aria-label="Większy tekst">A+</button></div>
   <header class="top">
     <p class="greet" id="greet">Dzień dobry</p>
     <h1>Mój <span>♥</span> Kruszyn</h1>
@@ -499,7 +368,7 @@ button:active { transform: scale(.97); }
 
 </div>
 <script>
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-16", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "pdf", "fetched": "2026-11-15", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -875,6 +744,26 @@ function renderPszok(P) {
     ${o.tresc ? `<div class="sub" style="margin-top:4px;color:var(--ink)">${esc(o.tresc)}</div>` : ''}</div></div>`).join('') +
     `<p class="sub" style="margin:8px 0 10px">Źródło: <a href="https://meteo.imgw.pl/">IMGW-PIB</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}.</p>`;
   $('imgw-card').hidden = false;
+})();
+
+// ---------- przełącznik motywu ----------
+(function () {
+  const root = document.documentElement, mq = matchMedia('(prefers-color-scheme: dark)');
+  const cur = () => root.getAttribute('data-theme') || (mq.matches ? 'dark' : 'light');
+  const apply = () => {
+    const t = cur(), meta = document.querySelector('meta[name=theme-color]');
+    $('th').textContent = t === 'dark' ? '☀️' : '🌙';
+    $('th').setAttribute('aria-label', t === 'dark' ? 'Włącz jasny motyw' : 'Włącz ciemny motyw');
+    if (meta) meta.content = t === 'dark' ? '#14110e' : '#fbf7f0';
+  };
+  $('th').onclick = () => {
+    const n = cur() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', n);
+    try { localStorage.setItem('kr-theme', n); } catch (_) {}
+    apply();
+  };
+  mq.addEventListener && mq.addEventListener('change', apply);
+  apply();
 })();
 
 // ---------- kalendarz .ics (tylko gdy strona jest opublikowana w internecie) ----------
