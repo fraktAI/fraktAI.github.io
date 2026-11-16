@@ -220,6 +220,16 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 :root[data-theme="light"]{  --bg:#fbf7f0;--card:#fff;--ink:#1d1b18;--mute:#5d574e;--line:#ebe3d6;--accent:#d6001c;--tile:#f3ede2;--onaccent:#fff;--shadow:0 1px 2px rgba(60,40,10,.06),0 10px 28px rgba(60,40,10,.08);--c-zmieszane:#55605a;--c-bio:#8a5a2b;--c-plastik:#d9a400;--c-szklo:#2e8b57;--c-makulatura:#2f6fb5;--c-odziez:#9b4f9b;--c-gabaryty:#d1621f;--bg2:#f1e9dc;color-scheme:light}
 #th{min-width:48px;height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font:600 18px Poppins,system-ui,sans-serif;cursor:pointer;line-height:1}
 .topbar{align-items:center}
+.t-znicz{--tc:#2e6fd6}
+.res{flex:none;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;font-weight:700;font-size:14px;color:#fff;background:#8a8f98}
+.res.w{background:#2e9b5f}.res.p{background:#d6001c}
+.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl th{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);text-align:right;padding:4px 6px}
+.tbl th:nth-child(2),.tbl td:nth-child(2){text-align:left}
+.tbl td{padding:9px 6px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
+.tbl td:nth-child(2){white-space:normal}
+.tbl tr.me td{background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:700}
+.tbl tr.me td:first-child{border-radius:10px 0 0 10px}.tbl tr.me td:last-child{border-radius:0 10px 10px 0}
 </style>
 </head>
 <body>
@@ -272,6 +282,10 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
     <a class="tile t-pszok" id="t-pszok" href="#/pszok" hidden>
       <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6M5 10v10h14V10M9 20v-6h6v6"/></svg></span>
       <span class="txt"><span class="tt" id="ps-t">PSZOK</span><span class="ss" id="ps-s"></span></span>
+    </a>
+    <a class="tile t-znicz" id="t-znicz" href="#/znicz" hidden>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.8 2.8-1.4 4.4H9.6l-1.4-4.4zM12 7.5V3M15.8 10.3l4.2-1.3M14.4 14.7l2.6 3.5M9.6 14.7l-2.6 3.5M8.2 10.3L4 9"/></svg></span>
+      <span class="txt"><span class="tt" id="zn-t">Znicz Kruszyn</span><span class="ss" id="zn-s"></span></span>
     </a>
     <div class="tile t-air" id="t-air" hidden>
       <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/></svg></span>
@@ -347,6 +361,16 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
   <p class="foot" id="ps-foot"></p>
 </section>
 
+<!-- ZNICZ -->
+<section class="view" id="v-znicz" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Znicz Kruszyn</h2></div>
+  <div class="banner" id="zn-banner" hidden></div>
+  <div class="card" id="zn-next-card" hidden><h3>Najbliższe mecze</h3><div id="zn-next"></div></div>
+  <div class="card" id="zn-last-card" hidden><h3>Ostatnie mecze</h3><div id="zn-last"></div></div>
+  <div class="card" id="zn-tab-card" hidden><h3 id="zn-tab-h">Tabela</h3><div style="overflow-x:auto"><table class="tbl" id="zn-tab"></table></div><p class="sub" id="zn-tab-note" style="margin:6px 0 10px"></p></div>
+  <p class="foot" id="zn-foot"></p>
+</section>
+
 <!-- ŚMIECI -->
 <section class="view" id="v-smieci" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wywóz śmieci</h2></div>
@@ -369,7 +393,7 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 
 </div>
 <script>
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-16", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "pdf", "fetched": "2026-11-15", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -386,7 +410,7 @@ const col = id => `style="--c:var(--c-${esc(id)})"`;
 const bag = id => `<svg class="bag" viewBox="0 0 24 24" ${col(id)} aria-hidden="true"><path d="M9 2h6l-1 3c3 1 6 4 6 9a8 8 0 0 1-16 0c0-5 3-8 6-9z"/></svg>`;
 
 // ---------- nawigacja (#/pogoda, #/smieci) ----------
-const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony', 'apteki', 'prad', 'pszok'];
+const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony', 'apteki', 'prad', 'pszok', 'znicz'];
 function route() {
   const h = (location.hash || '').replace(/^#\/?/, '');
   const v = VIEWS.includes(h) ? h : 'home';
@@ -783,6 +807,47 @@ function renderPszok(P) {
   const nm = window.__nm;
   const hit = nm && act.find(i => i.data === nm.s && mn(i.godz) === mn(nm.t));
   if (hit && hit.tresc) { const t = hit.tresc.length > 70 ? hit.tresc.slice(0, 67).trim() + '…' : hit.tresc; $('tm-s').textContent = 'Kruszyn · ' + t; }
+})();
+
+// ---------- ZNICZ KRUSZYN (znicz.json, robot z regiowyniki.pl) ----------
+(async function () {
+  let w; try { const r = await fetch('znicz.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { return; }
+  const T = w.druzyna || 'Znicz Kruszyn';
+  const mine = m => m.gospodarz === T;
+  const opp = m => mine(m) ? m.gosc : m.gospodarz;
+  const dshort = s => s ? fmt(s, {day: 'numeric', month: 'numeric'}) : 'termin do ustalenia';
+  const dlong = s => s ? cap(fmt(s, {weekday: 'long', day: 'numeric', month: 'long'})) : 'termin do ustalenia';
+  const last = (w.ostatnie || [])[0], next = (w.najblizsze || []).filter(m => m.data >= today)[0], pos = w.pozycja;
+
+  // kafelek
+  let title = T, sub = '';
+  if (next && diff(next.data) <= 7) {
+    const k = diff(next.data);
+    title = 'Mecz: ' + (k === 0 ? 'dziś' : k === 1 ? 'jutro' : fmt(next.data, {weekday: 'long'})) + (next.godz ? ', ' + next.godz : '');
+    sub = (mine(next) ? 'u siebie z ' : 'wyjazd do ') + opp(next);
+    if (k <= 1) $('t-znicz').classList.add('soon');
+  } else if (last) {
+    sub = `${last.rezultat === 'W' ? 'Wygrana' : last.rezultat === 'P' ? 'Porażka' : 'Remis'} ${last.wynik} z ${opp(last)}` + (pos ? ` · ${pos.poz}. miejsce` : '');
+  } else if (pos) sub = `${pos.poz}. miejsce · ${pos.pkt} pkt`;
+  $('zn-t').textContent = title; $('zn-s').textContent = sub; $('t-znicz').hidden = false;
+
+  // widok szczegółowy
+  const banner = $('zn-banner');
+  if (next) banner.textContent = `Następny mecz: ${dlong(next.data)}${next.godz ? ', ' + next.godz : ''} · ${mine(next) ? 'u siebie z ' : 'wyjazd do '}${opp(next)}`;
+  else if (w.bez_terminu) banner.textContent = `Terminy kolejnych meczów (${w.bez_terminu}) nie są jeszcze ustalone.`;
+  if (banner.textContent) banner.hidden = false;
+  const row = (m, badge) => `<div class="row">${badge ? `<span class="res ${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : ''}">${esc(m.rezultat)}</span>` : ''}<div class="grow"><div class="name">${esc(m.gospodarz)} ${m.wynik ? '<b>' + esc(m.wynik) + '</b> ' : '– '}${esc(m.gosc)}</div><div class="sub">${esc(dshort(m.data))}${m.godz ? ', ' + esc(m.godz) : ''}${m.rozgrywki ? ' · ' + esc(m.rozgrywki) : ''}${mine(m) ? ' · u siebie' : ' · wyjazd'}</div></div></div>`;
+  const nx = (w.najblizsze || []).filter(m => m.data >= today);
+  if (nx.length) { $('zn-next').innerHTML = nx.map(m => row(m, false)).join(''); $('zn-next-card').hidden = false; }
+  if ((w.ostatnie || []).length) { $('zn-last').innerHTML = w.ostatnie.map(m => row(m, true)).join(''); $('zn-last-card').hidden = false; }
+  if ((w.tabela || []).length) {
+    $('zn-tab-h').textContent = `Tabela · ${w.liga || ''} · ${w.sezon || ''}`;
+    $('zn-tab').innerHTML = '<tr><th>#</th><th>Drużyna</th><th>M</th><th>Pkt</th><th>Bramki</th></tr>' + w.tabela.map(r =>
+      `<tr class="${r.druzyna === T ? 'me' : ''}"><td>${r.poz}</td><td>${esc(r.druzyna)}</td><td>${r.m}</td><td><b>${r.pkt}</b></td><td>${esc(r.bramki)}</td></tr>`).join('');
+    $('zn-tab-note').textContent = 'M – mecze, Pkt – punkty. Tabela może różnić się o ostatnią kolejkę.';
+    $('zn-tab-card').hidden = false;
+  }
+  $('zn-foot').innerHTML = `Źródło: <a href="${esc(w.source || 'https://regiowyniki.pl')}">regiowyniki.pl</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}.`;
 })();
 
 // ---------- kalendarz .ics (tylko gdy strona jest opublikowana w internecie) ----------
