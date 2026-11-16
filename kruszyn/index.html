@@ -328,6 +328,7 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 <section class="view" id="v-msze" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Msze święte</h2></div>
   <div class="card"><h3>Kruszyn · św. Jana Chrzciciela</h3><div id="m-kr"></div></div>
+  <div class="card" id="int-card" hidden><h3>Intencje mszalne · Kruszyn</h3><div id="int-list"></div></div>
   <div class="card"><h3>Łaziska</h3><div id="m-lz"></div></div>
   <div class="card"><h3>Stały porządek</h3><div id="m-rule" class="sub" style="padding-bottom:10px;line-height:1.6"></div></div>
   <p class="foot">Źródło: <a href="https://kruszyn.com/porzadek-nabozenstw/">kruszyn.com</a> · <a href="https://kruszyn.com/ogloszenia-parafialne/">intencje mszalne</a><br>W święta i uroczystości godziny mogą się różnić – sprawdź ogłoszenia parafialne lub zadzwoń: <a href="tel:757321414">75 732 14 14</a>.</p>
@@ -368,7 +369,7 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 
 </div>
 <script>
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-16", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "pdf", "fetched": "2026-11-15", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -445,6 +446,7 @@ $('h-date').textContent = cap(fmt(today, {weekday: 'long', day: 'numeric', month
     $('tm-t').textContent = `Msza: ${when}, ${found.t}`;
     $('tm-s').textContent = 'Kruszyn' + (found.r.note ? ' · ' + found.r.note : '');
     if (found.k === 0) $('t-msza').classList.add('soon');
+    window.__nm = {s: found.s, t: found.t};
   }
 
   // widok: 7 dni Kruszyn, najbliższe Łaziska
@@ -764,6 +766,23 @@ function renderPszok(P) {
   };
   mq.addEventListener && mq.addEventListener('change', apply);
   apply();
+})();
+
+// ---------- INTENCJE MSZALNE (intencje.json, robot z kruszyn.com) ----------
+(async function () {
+  let w; try { const r = await fetch('intencje.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { return; }
+  const mn = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const nowM = now.getHours() * 60 + now.getMinutes();
+  const act = (w.items || []).filter(i => i.data > today || (i.data === today && mn(i.godz) + 60 > nowM)).slice(0, 40);
+  if (!act.length) return;
+  const dl = s => { const k = diff(s); return k === 0 ? 'Dziś' : k === 1 ? 'Jutro' : cap(fmt(s, {weekday: 'long'})) + ' ' + fmt(s, {day: 'numeric', month: 'numeric'}); };
+  $('int-list').innerHTML = act.map(i => `<div class="row"><div class="grow"><div class="name">${esc(i.tresc || 'Msza święta')}</div><div class="sub">${esc(dl(i.data))} · ${esc(i.godz)}</div></div></div>`).join('') +
+    `<p class="sub" style="margin:8px 0 10px">Źródło: <a href="${esc(w.source || 'https://kruszyn.com/ogloszenia-parafialne/')}">kruszyn.com</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}. Intencje mogą się zmienić – obowiązują ogłoszenia parafialne.</p>`;
+  $('int-card').hidden = false;
+  // kafelek: intencja najbliższej mszy
+  const nm = window.__nm;
+  const hit = nm && act.find(i => i.data === nm.s && mn(i.godz) === mn(nm.t));
+  if (hit && hit.tresc) { const t = hit.tresc.length > 70 ? hit.tresc.slice(0, 67).trim() + '…' : hit.tresc; $('tm-s').textContent = 'Kruszyn · ' + t; }
 })();
 
 // ---------- kalendarz .ics (tylko gdy strona jest opublikowana w internecie) ----------
