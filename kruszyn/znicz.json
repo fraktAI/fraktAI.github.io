@@ -1,0 +1,173 @@
+{
+ "updated": "2026-11-16T11:08:35+00:00",
+ "source": "https://regiowyniki.pl/druzyna/Pilka_Nozna/Dolnoslaskie/Znicz_Kruszyn/",
+ "source_table": "https://regiowyniki.pl/druzyna/Pilka_Nozna/Dolnoslaskie/Znicz_Kruszyn/tabela/",
+ "druzyna": "Znicz Kruszyn",
+ "liga": "Klasa B, Jelenia Góra IV",
+ "sezon": "2026/27",
+ "tabela": [
+  {
+   "poz": 1,
+   "druzyna": "Bóbr Dąbrowa Bolesławiecka",
+   "pkt": 29,
+   "m": 12,
+   "w": 9,
+   "r": 2,
+   "p": 1,
+   "bramki": "50:17"
+  },
+  {
+   "poz": 2,
+   "druzyna": "Leśnik Osiecznica",
+   "pkt": 28,
+   "m": 12,
+   "w": 9,
+   "r": 1,
+   "p": 2,
+   "bramki": "44:18"
+  },
+  {
+   "poz": 3,
+   "druzyna": "Jawa Otok",
+   "pkt": 28,
+   "m": 12,
+   "w": 9,
+   "r": 1,
+   "p": 2,
+   "bramki": "32:19"
+  },
+  {
+   "poz": 4,
+   "druzyna": "LZS Brzeźnik",
+   "pkt": 24,
+   "m": 12,
+   "w": 7,
+   "r": 3,
+   "p": 2,
+   "bramki": "42:23"
+  },
+  {
+   "poz": 5,
+   "druzyna": "Znicz Kruszyn",
+   "pkt": 22,
+   "m": 12,
+   "w": 7,
+   "r": 1,
+   "p": 4,
+   "bramki": "31:23"
+  },
+  {
+   "poz": 6,
+   "druzyna": "Rybak Parowa",
+   "pkt": 21,
+   "m": 12,
+   "w": 6,
+   "r": 3,
+   "p": 3,
+   "bramki": "47:26"
+  },
+  {
+   "poz": 7,
+   "druzyna": "GKS Gromadka",
+   "pkt": 19,
+   "m": 12,
+   "w": 6,
+   "r": 1,
+   "p": 5,
+   "bramki": "35:23"
+  },
+  {
+   "poz": 8,
+   "druzyna": "LZS Nowa",
+   "pkt": 17,
+   "m": 12,
+   "w": 5,
+   "r": 2,
+   "p": 5,
+   "bramki": "23:20"
+  },
+  {
+   "poz": 9,
+   "druzyna": "Majdan Bolesławice",
+   "pkt": 16,
+   "m": 12,
+   "w": 5,
+   "r": 1,
+   "p": 6,
+   "bramki": "21:21"
+  },
+  {
+   "poz": 10,
+   "druzyna": "LKS Kraśnik Dolny",
+   "pkt": 14,
+   "m": 12,
+   "w": 4,
+   "r": 2,
+   "p": 6,
+   "bramki": "19:35"
+  },
+  {
+   "poz": 11,
+   "druzyna": "KS Milików",
+   "pkt": 10,
+   "m": 12,
+   "w": 3,
+   "r": 1,
+   "p": 8,
+   "bramki": "21:47"
+  },
+  {
+   "poz": 12,
+   "druzyna": "Podgrodzie Raciborowice",
+   "pkt": 7,
+   "m": 12,
+   "w": 2,
+   "r": 1,
+   "p": 9,
+   "bramki": "19:38"
+  },
+  {
+   "poz": 13,
+   "druzyna": "KS Czerna",
+   "pkt": 6,
+   "m": 12,
+   "w": 2,
+   "r": 0,
+   "p": 10,
+   "bramki": "13:42"
+  },
+  {
+   "poz": 14,
+   "druzyna": "LZS Łaziska",
+   "pkt": 1,
+   "m": 12,
+   "w": 0,
+   "r": 1,
+   "p": 11,
+   "bramki": "15:60"
+  }
+ ],
+ "pozycja": {
+  "poz": 5,
+  "druzyna": "Znicz Kruszyn",
+  "pkt": 22,
+  "m": 12,
+  "w": 7,
+  "r": 1,
+  "p": 4,
+  "bramki": "31:23"
+ },
+ "ostatnie": [
+  {
+   "data": null,
+   "godz": null,
+   "rozgrywki": "Klasa B",
+   "gospodarz": "LZS Brzeźnik",
+   "gosc": "Znicz Kruszyn",
+   "wynik": "50:50",
+   "rezultat": "R"
+  }
+ ],
+ "najblizsze": [],
+ "bez_terminu": 12
+}
