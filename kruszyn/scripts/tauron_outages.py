@@ -43,7 +43,7 @@ LOOKAHEAD_DAYS = 30
 CONFIG = Path("data/tauron_config.json")
 OUT = Path("wylaczenia.json")
 TZ = ZoneInfo("Europe/Warsaw")
-UA = {"User-Agent": "kruszyn-wies-app/1.0 (aplikacja mieszkańców wsi; kontakt przez repozytorium GitHub)",
+UA = {"User-Agent": "kruszyn-wies-app/1.0 (aplikacja mieszkancow wsi)",
       "Accept": "application/json"}
 
 
