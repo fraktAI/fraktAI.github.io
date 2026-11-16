@@ -1,0 +1,97 @@
+name: Publikacja strony
+
+# Uruchamia się: (1) automatycznie: śmieci 4 razy na dobę, prąd co godzinę, (2) po każdej zmianie w repozytorium,
+# (3) ręcznie: zakładka Actions -> "Publikacja strony" -> Run workflow.
+on:
+  schedule:
+    - cron: "17 3,9,15,21 * * *"   # śmieci + prąd, godziny w UTC
+    - cron: "7 * * * *"            # co godzinę: tylko prąd
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore: ["README.md"]
+
+permissions:
+  contents: write      # zapis zaktualizowanych danych do repozytorium
+  pages: write         # publikacja strony
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      scrape: ${{ steps.scrape.outcome }}
+      prad: ${{ steps.prad.outcome }}
+      imgw: ${{ steps.imgw.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pobierz terminy wywozu z com-d.pl
+        id: scrape
+        if: github.event.schedule != '7 * * * *'   # godzinny przebieg pomija com-d
+        continue-on-error: true   # gdy się nie uda, strona i tak działa na starych danych
+        run: python scripts/kruszyn_scraper.py --out data/waste.json --embed index.html
+
+      - name: Pobierz wyłączenia prądu z Tauron
+        id: prad
+        continue-on-error: true   # gdy się nie uda, zostaje poprzedni plik
+        run: python scripts/tauron_outages.py
+
+      - name: Pobierz ostrzeżenia IMGW
+        id: imgw
+        continue-on-error: true   # gdy się nie uda, zostaje poprzedni plik
+        run: python scripts/imgw_warnings.py
+
+      - name: Zbuduj kalendarz .ics
+        run: python scripts/make_ics.py
+
+      - name: Zapisz zmiany w repozytorium
+        run: |
+          git config user.name "kruszyn-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A data index.html wylaczenia.json ostrzezenia.json
+          git diff --cached --quiet || (git commit -m "Aktualizacja danych" && git push)
+
+      - name: Przygotuj pliki strony
+        run: |
+          mkdir _site
+          cp index.html wies.json favicon.svg manifest.webmanifest icon-192.png icon-512.png _site/
+          cp -r data _site/data
+          [ -f wylaczenia.json ] && cp wylaczenia.json _site/ || true
+          [ -f ostrzezenia.json ] && cp ostrzezenia.json _site/ || true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Zgłoś, jeśli pobieranie danych się nie udało
+        if: needs.build.outputs.scrape == 'failure'
+        run: |
+          echo "::error::Nie udało się pobrać terminów z com-d.pl. Strona działa na ostatnich dobrych danych."
+          exit 1
+
+      - name: Ostrzeżenie o danych o prądzie
+        if: needs.build.outputs.prad == 'failure'
+        run: echo "::warning::Nie udało się pobrać wyłączeń prądu z Tauron. Aplikacja pokazuje ostatnie dane."
+
+      - name: Ostrzeżenie o danych IMGW
+        if: needs.build.outputs.imgw == 'failure'
+        run: echo "::warning::Nie udało się pobrać ostrzeżeń IMGW. Aplikacja pokazuje ostatnie dane."
