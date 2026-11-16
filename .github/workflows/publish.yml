@@ -68,7 +68,8 @@ jobs:
         run: |
           git config user.name "kruszyn-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A data index.html wylaczenia.json ostrzezenia.json
+          git add -A data index.html
+          for f in wylaczenia.json ostrzezenia.json; do [ -f "$f" ] && git add "$f"; done || true
           git diff --cached --quiet || (git commit -m "Aktualizacja danych" && git push)
 
       - name: Przygotuj pliki strony
