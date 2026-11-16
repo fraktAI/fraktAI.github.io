@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths-ignore: ["README.md"]
+    paths-ignore: ["**/README.md"]
 
 permissions:
   contents: write      # zapis zaktualizowanych danych do repozytorium
@@ -23,12 +23,23 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kruszyn   # pliki aplikacji leżą w folderze "kruszyn" w repozytorium
     outputs:
       scrape: ${{ steps.scrape.outcome }}
       prad: ${{ steps.prad.outcome }}
       imgw: ${{ steps.imgw.outcome }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Sprawdź, czy wszystkie pliki są w repozytorium
+        run: |
+          brak=0
+          for f in index.html wies.json favicon.svg manifest.webmanifest icon-192.png icon-512.png data/waste.json scripts/kruszyn_scraper.py scripts/make_ics.py scripts/tauron_outages.py scripts/imgw_warnings.py; do
+            if [ ! -f "$f" ]; then echo "::error::Brakuje pliku w repozytorium: $f (dodaj go: Add file -> Upload files / Create new file)"; brak=1; fi
+          done
+          exit $brak
 
       - uses: actions/setup-python@v5
         with:
@@ -62,11 +73,12 @@ jobs:
 
       - name: Przygotuj pliki strony
         run: |
-          mkdir _site
-          cp index.html wies.json favicon.svg manifest.webmanifest icon-192.png icon-512.png _site/
-          cp -r data _site/data
-          [ -f wylaczenia.json ] && cp wylaczenia.json _site/ || true
-          [ -f ostrzezenia.json ] && cp ostrzezenia.json _site/ || true
+          mkdir -p ../_site/kruszyn
+          cp index.html wies.json favicon.svg manifest.webmanifest icon-192.png icon-512.png ../_site/kruszyn/
+          cp -r data ../_site/kruszyn/data
+          [ -f wylaczenia.json ] && cp wylaczenia.json ../_site/kruszyn/ || true
+          [ -f ostrzezenia.json ] && cp ostrzezenia.json ../_site/kruszyn/ || true
+          echo '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=kruszyn/"><a href="kruszyn/">Mój Kruszyn</a>' > ../_site/index.html
 
       - uses: actions/upload-pages-artifact@v3
         with:
