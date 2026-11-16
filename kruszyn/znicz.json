@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-16T11:08:35+00:00",
+ "updated": "2026-11-16T11:29:11+00:00",
  "source": "https://regiowyniki.pl/druzyna/Pilka_Nozna/Dolnoslaskie/Znicz_Kruszyn/",
  "source_table": "https://regiowyniki.pl/druzyna/Pilka_Nozna/Dolnoslaskie/Znicz_Kruszyn/tabela/",
  "druzyna": "Znicz Kruszyn",
@@ -159,15 +159,78 @@
  },
  "ostatnie": [
   {
-   "data": null,
-   "godz": null,
+   "data": "2026-11-15",
+   "godz": "14:00",
    "rozgrywki": "Klasa B",
-   "gospodarz": "LZS Brzeźnik",
+   "gospodarz": "Znicz Kruszyn",
+   "gosc": "LZS Brzeźnik",
+   "wynik": "3:2",
+   "rezultat": "W"
+  },
+  {
+   "data": "2026-11-08",
+   "godz": "13:30",
+   "rozgrywki": "Klasa B",
+   "gospodarz": "Podgrodzie Raciborowice",
    "gosc": "Znicz Kruszyn",
-   "wynik": "50:50",
-   "rezultat": "R"
+   "wynik": "1:4",
+   "rezultat": "W"
+  },
+  {
+   "data": "2026-10-25",
+   "godz": "11:00",
+   "rozgrywki": "Klasa B",
+   "gospodarz": "Znicz Kruszyn",
+   "gosc": "LZS Łaziska",
+   "wynik": "5:2",
+   "rezultat": "W"
+  },
+  {
+   "data": "2026-10-16",
+   "godz": "19:00",
+   "rozgrywki": "Klasa B",
+   "gospodarz": "Leśnik Osiecznica",
+   "gosc": "Znicz Kruszyn",
+   "wynik": "4:2",
+   "rezultat": "P"
+  },
+  {
+   "data": "2026-10-11",
+   "godz": "11:00",
+   "rozgrywki": "Klasa B",
+   "gospodarz": "Znicz Kruszyn",
+   "gosc": "GKS Gromadka",
+   "wynik": "2:3",
+   "rezultat": "P"
+  },
+  {
+   "data": "2026-10-04",
+   "godz": "11:00",
+   "rozgrywki": "Klasa B",
+   "gospodarz": "KS Milików",
+   "gosc": "Znicz Kruszyn",
+   "wynik": "2:6",
+   "rezultat": "W"
+  },
+  {
+   "data": "2026-09-27",
+   "godz": "11:00",
+   "rozgrywki": "Klasa B",
+   "gospodarz": "LKS Kraśnik Dolny",
+   "gosc": "Znicz Kruszyn",
+   "wynik": "1:2",
+   "rezultat": "W"
+  },
+  {
+   "data": "2026-09-20",
+   "godz": "17:00",
+   "rozgrywki": "Klasa B",
+   "gospodarz": "Znicz Kruszyn",
+   "gosc": "KS Czerna",
+   "wynik": "3:1",
+   "rezultat": "W"
   }
  ],
  "najblizsze": [],
- "bez_terminu": 12
+ "bez_terminu": 13
 }
