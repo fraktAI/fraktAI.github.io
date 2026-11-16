@@ -23,7 +23,7 @@ URL = "https://danepubliczne.imgw.pl/api/data/warningsmeteo"
 POWIAT = "0201"
 OUT = Path("ostrzezenia.json")
 TZ = ZoneInfo("Europe/Warsaw")
-UA = {"User-Agent": "kruszyn-wies-app/1.0 (aplikacja mieszkańców wsi)", "Accept": "application/json"}
+UA = {"User-Agent": "kruszyn-wies-app/1.0 (aplikacja mieszkancow wsi)", "Accept": "application/json"}
 
 
 def fetch():
