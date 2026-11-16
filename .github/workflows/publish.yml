@@ -30,13 +30,14 @@ jobs:
       scrape: ${{ steps.scrape.outcome }}
       prad: ${{ steps.prad.outcome }}
       imgw: ${{ steps.imgw.outcome }}
+      intencje: ${{ steps.intencje.outcome }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Sprawdź, czy wszystkie pliki są w repozytorium
         run: |
           brak=0
-          for f in index.html wies.json favicon.svg manifest.webmanifest icon-192.png icon-512.png data/waste.json scripts/kruszyn_scraper.py scripts/make_ics.py scripts/tauron_outages.py scripts/imgw_warnings.py; do
+          for f in index.html wies.json favicon.svg manifest.webmanifest icon-192.png icon-512.png data/waste.json scripts/kruszyn_scraper.py scripts/make_ics.py scripts/tauron_outages.py scripts/imgw_warnings.py scripts/kruszyn_intencje.py; do
             if [ ! -f "$f" ]; then echo "::error::Brakuje pliku w repozytorium: $f (dodaj go: Add file -> Upload files / Create new file)"; brak=1; fi
           done
           exit $brak
@@ -61,6 +62,12 @@ jobs:
         continue-on-error: true   # gdy się nie uda, zostaje poprzedni plik
         run: python scripts/imgw_warnings.py
 
+      - name: Pobierz intencje mszalne z kruszyn.com
+        id: intencje
+        if: github.event.schedule != '7 * * * *'   # intencje zmieniają się raz w tygodniu – godzinny przebieg pomija
+        continue-on-error: true
+        run: python scripts/kruszyn_intencje.py
+
       - name: Zbuduj kalendarz .ics
         run: python scripts/make_ics.py
 
@@ -69,7 +76,7 @@ jobs:
           git config user.name "kruszyn-bot"
           git config user.email "actions@users.noreply.github.com"
           git add -A data index.html
-          for f in wylaczenia.json ostrzezenia.json; do [ -f "$f" ] && git add "$f"; done || true
+          for f in wylaczenia.json ostrzezenia.json intencje.json; do [ -f "$f" ] && git add "$f"; done || true
           if ! git diff --cached --quiet; then
             git commit -m "Aktualizacja danych"
             # ktoś mógł w międzyczasie zapisać zmiany w repozytorium – dołącz je i spróbuj ponownie
@@ -87,6 +94,7 @@ jobs:
           cp -r data ../_site/kruszyn/data
           [ -f wylaczenia.json ] && cp wylaczenia.json ../_site/kruszyn/ || true
           [ -f ostrzezenia.json ] && cp ostrzezenia.json ../_site/kruszyn/ || true
+          [ -f intencje.json ] && cp intencje.json ../_site/kruszyn/ || true
           echo '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=kruszyn/"><a href="kruszyn/">Mój Kruszyn</a>' > ../_site/index.html
 
       - uses: actions/upload-pages-artifact@v3
@@ -116,3 +124,7 @@ jobs:
       - name: Ostrzeżenie o danych IMGW
         if: needs.build.outputs.imgw == 'failure'
         run: echo "::warning::Nie udało się pobrać ostrzeżeń IMGW. Aplikacja pokazuje ostatnie dane."
+
+      - name: Ostrzeżenie o intencjach mszalnych
+        if: needs.build.outputs.intencje == 'failure'
+        run: echo "::warning::Nie udało się pobrać intencji mszalnych z kruszyn.com. Aplikacja pokazuje ostatnie dane."
