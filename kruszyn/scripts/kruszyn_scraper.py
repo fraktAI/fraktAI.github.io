@@ -260,7 +260,7 @@ def merge_existing(new: dict, path: str) -> dict:
         o = olds.get(f["id"])
         if not o:
             continue
-        past = [d for d in o["dates"] if year_start <= d < today.isoformat()]
+        past = [d for d in o["dates"] if year_start <= d <= today.isoformat()]
         f["dates"] = sorted(set(past) | set(f["dates"]))
         if f["dates"]:
             f.pop("contact", None)
