@@ -300,6 +300,7 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
       <span class="txt"><span class="tt">Ważne telefony</span><span class="ss">alarmowe, awarie, urząd</span></span>
     </a>
   </div>
+  <div id="buycoffee-container"></div>
   <p class="foot">Pogoda: Open-Meteo · Wywóz śmieci: COM-D · Msze: kruszyn.com</p>
 </section>
 
@@ -412,6 +413,27 @@ const diff = s => Math.round((utc(s) - utc(today)) / 864e5);
 const rel = n => n === 0 ? 'dziś' : n === 1 ? 'jutro' : `za ${n} dni`;
 const col = id => `style="--c:var(--c-${esc(id)})"`;
 const bag = id => `<svg class="bag" viewBox="0 0 24 24" ${col(id)} aria-hidden="true"><path d="M9 2h6l-1 3c3 1 6 4 6 9a8 8 0 0 1-16 0c0-5 3-8 6-9z"/></svg>`;
+
+// ---------- BUYCOFFEE ----------
+const coffee = {
+  visible: true,                                    // Zmień na false, aby ukryć przycisk
+  link: "https://buycoffee.to/fraktai",         // Wklej tutaj swój link do BuyCoffee
+  text: "Podoba Ci się ta strona? Postaw mi symboliczną kawę! ☕" // Tekst wyświetlany nad przyciskiem
+};
+
+(function () {
+  const container = $('buycoffee-container');
+  if (!container || !coffee.visible) return;
+  
+  container.innerHTML = `
+    <div class="card" style="text-align: center; padding: 20px; margin-top: 16px;">
+      <p style="margin: 0 0 14px; font-size: 16px; font-weight: 500; color: var(--ink);">${esc(coffee.text)}</p>
+      <a class="btn" href="${esc(coffee.link)}" target="_blank" rel="noopener" style="display: inline-flex; justify-content: center;">
+        Postaw kawę ☕
+      </a>
+    </div>
+  `;
+})();
 
 // ---------- nawigacja (#/pogoda, #/smieci) ----------
 const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony', 'apteki', 'prad', 'pszok', 'znicz'];
