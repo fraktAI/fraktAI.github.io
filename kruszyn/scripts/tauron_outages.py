@@ -79,22 +79,28 @@ def discover():
                          f"Kandydaci: {json.dumps(cand, ensure_ascii=False)[:800]}")
     city = hinted[0]
     gaid = city["GAID"]
-    street = None
-    for part in (CITY, CITY[:3], "ul", "Gł"):          # wieś bez ulic często ma „ulicę” o nazwie wsi
+    street, how = None, "lista ulic"
+    for part in (CITY, CITY[:3], "ul.", "Gł", "Pol", "Lip"):   # wieś bez ulic często nie ma żadnej na liście
         if len(part) < 3:
             continue
         streets = get(STREETS, {"partName": part, "ownerGAID": gaid})
+        n = len(streets) if isinstance(streets, list) else repr(streets)[:80]
+        print(f"Ulice dla '{part}': {n}")
         if isinstance(streets, list) and streets:
             street = streets[0]
             break
     if not street:
-        raise SystemExit(f"Nie znaleziono ulicy dla miejscowości (GAID {gaid}).")
-    cfg = {"city": city.get("Name"), "city_gaid": gaid,
-           "street": street.get("Name"), "street_gaid": street["GAID"], "house_no": HOUSE_NO}
+        # wieś bez ulic: Tauron używa wtedy numeru miejscowości także jako numeru "ulicy"
+        street, how = {"Name": CITY, "GAID": gaid}, "numer miejscowości zamiast ulicy"
+    print(f"Miejscowość: {city.get('Name')} (GAID {gaid}); ulica: {street.get('Name')} (GAID {street['GAID']}) – {how}")
+    return {"city": city.get("Name"), "city_gaid": gaid,
+            "street": street.get("Name"), "street_gaid": street["GAID"], "house_no": HOUSE_NO}
+
+
+def save_config(cfg):
     CONFIG.parent.mkdir(exist_ok=True)
     CONFIG.write_text(json.dumps(cfg, ensure_ascii=False, indent=1), encoding="utf-8")
     print("Zapisano konfigurację:", cfg)
-    return cfg
 
 
 def local(ts):
@@ -168,6 +174,7 @@ def main():
     if a.selftest:
         return selftest()
     cfg = discover()
+    cached = CONFIG.exists()
     now = dt.datetime.now(dt.timezone.utc)
     params = {
         "cityGAID": cfg["city_gaid"], "streetGAID": cfg["street_gaid"], "houseNo": cfg.get("house_no", HOUSE_NO),
@@ -181,7 +188,10 @@ def main():
     try:
         items = parse(raw)
     except ValueError as e:
+        print("Surowa odpowiedź (początek):", json.dumps(raw, ensure_ascii=False)[:600])
         raise SystemExit(f"Błąd odpowiedzi Tauron: {e}")
+    if not cached:
+        save_config(cfg)   # zapamiętaj dopiero, gdy zapytanie się udało
     data = {"updated": now.isoformat(timespec="seconds"), "source": BASE + "/wylaczenia", "items": items}
     OUT.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"Zapisano {OUT}: {len(items)} wpisów")
