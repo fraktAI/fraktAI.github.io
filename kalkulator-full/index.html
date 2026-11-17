@@ -4,6 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kalkulator zmiany formy współpracy</title>
+<script>
+/* ===== PRZEŁĄCZNIK: tryb przerwy technicznej =====
+   true  = zamiast kalkulatora widać stronę „Strona chwilowo niedostępna – zapraszamy wkrótce”
+   false = działa kalkulator */
+const MAINTENANCE = true;
+const MAINT_TITLE = "Strona chwilowo niedostępna";
+const MAINT_TEXT  = "Pracujemy nad nowościami i ulepszeniami. Zapraszamy wkrótce!";
+/* ================================================= */
+if(MAINTENANCE) document.documentElement.classList.add("maint");
+</script>
 <style>
 :root{--in:#fff;--card:#fff;--card2:#fcfcfe;--th:#f8fafc;--tot:#f1f5f9;--bd:#cbd5e1;--keyc:#312e81;--bigb:#c7d2fe;--dis1:#f1f3f6;--dis2:#eaedf1;--hd:linear-gradient(120deg,#1e1b4b,#312e81 45%,#4338ca);--nb:#fef2f2;--nbb:#fecaca;--nc:#991b1b;--ib:#f0fdf4;--ibb:#bbf7d0;--ic:#166534;--rowl:#eef2f7;--calc:#f1f5f9;--ink:#0f172a;--muted:#64748b;--acc:#4338ca;--acc2:#6366f1;--soft:#eef2ff;--bg:#f1f5f9;--bad:#dc2626;--ok:#15803d;--line:#e2e8f0;--r:14px;--sh:0 1px 2px rgba(15,23,42,.06),0 4px 16px rgba(15,23,42,.05)}
 html[data-theme=dark]{--ink:#f5f5f5;--muted:#a3a3a3;--acc:#ef4444;--acc2:#f87171;--soft:#2a1010;--bg:#0a0a0a;--bad:#ff6b6b;--ok:#4ade80;--line:#2b2b2b;--in:#1a1a1a;--card:#141414;--card2:#191919;--th:#1c1c1c;--tot:#1f1f1f;--bd:#3a3a3a;--keyc:#fca5a5;--bigb:#7f1d1d;--dis1:#161616;--dis2:#1d1d1d;--hd:linear-gradient(120deg,#000,#1a0505 50%,#b91c1c);--nb:#2a1010;--nbb:#5b1d1d;--nc:#fecaca;--ib:#0f2417;--ibb:#14532d;--ic:#bbf7d0;--rowl:#232323;--sh:0 1px 2px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.4);color-scheme:dark}
@@ -98,9 +108,35 @@ table{font-size:10px}th,td{padding:4px 6px}th{font-size:8.5px}
 .nameF{display:none!important}
 html.simple #secUst,html.simple .chk,html.simple .f:has(.dis),html.simple .msg:empty{display:none!important}
 html.simple .work .top{margin-bottom:4px}}
+#maint{display:none}
+html.maint header,html.maint main,html.maint footer,html.maint #copyBlock,html.maint #prName{display:none!important}
+html.maint #maint{display:flex}
+html.maint body{background:linear-gradient(135deg,#1e1b4b,#312e81 50%,#4338ca);min-height:100vh}
+html[data-theme=dark].maint body{background:linear-gradient(135deg,#000,#1a0505 50%,#b91c1c)}
+#maint{min-height:100vh;align-items:center;justify-content:center;padding:24px}
+#maint .mc{width:100%;max-width:540px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:44px 36px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+#maint .mi{width:72px;height:72px;margin:0 auto 22px;border-radius:50%;background:var(--soft);color:var(--acc);display:flex;align-items:center;justify-content:center}
+#maint .mi svg{width:36px;height:36px}
+#maint h1{margin:0 0 12px;font-size:28px;letter-spacing:-.02em}
+#maint p{margin:0;color:var(--muted);font-size:16px;line-height:1.6}
+#maint .bar{height:6px;border-radius:6px;background:var(--soft);margin:28px auto 0;max-width:220px;overflow:hidden}
+#maint .bar i{display:block;height:100%;width:40%;border-radius:6px;background:linear-gradient(90deg,var(--acc),var(--acc2));animation:mv 1.8s ease-in-out infinite}
+@keyframes mv{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
+@media(prefers-reduced-motion:reduce){#maint .bar i{animation:none;width:100%}}
+#maint .mt{margin-top:22px;font-size:13px;color:var(--muted)}
+@media print{html.maint #maint{min-height:0}}
 </style>
 </head>
 <body>
+<div id="maint" role="status">
+  <div class="mc">
+    <div class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.6-.6-2.6z"/></svg></div>
+    <h1 id="maintTitle"></h1>
+    <p id="maintText"></p>
+    <div class="bar"><i></i></div>
+    <div class="mt">Kalkulator zmiany formy współpracy</div>
+  </div>
+</div>
 <header>
   <div><h1>Kalkulator zmiany formy współpracy</h1><p>Porównaj „na rękę” i koszt pracodawcy – obecnie i po zmianie formy lub wynagrodzenia</p></div>
   <span class="sp"></span>
@@ -549,6 +585,7 @@ function setName(){ const n=(P.imie||"").trim(); const i=$("#inName"); if(i&&i.v
 document.addEventListener("input",e=>{ if(e.target.id==="inName"){ P.imie=e.target.value; setName(); save(); } });
 if(SHOW_COFFEE){ $("#coffee").hidden=false; $("#coffeeLink").href=COFFEE_URL; }
 if(SHOW_COPYRIGHT) $("#copyBlock").innerHTML=esc(COPYRIGHT_TEXT)+(COPYRIGHT_URL?' · <a href="'+esc(COPYRIGHT_URL)+'" target="_blank" rel="noopener">'+esc(COPYRIGHT_URL)+'</a>':"");
+if(MAINTENANCE){ $("#maintTitle").textContent=MAINT_TITLE; $("#maintText").textContent=MAINT_TEXT; document.title=MAINT_TITLE; }
 load(); renderLists(); renderStawki(); setName(); refresh();
 </script>
 </body>
