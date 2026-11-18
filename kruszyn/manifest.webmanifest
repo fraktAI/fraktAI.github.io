@@ -6,8 +6,8 @@
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
- "background_color": "#eef2f8",
- "theme_color": "#1a3a9c",
+ "background_color": "#fbf7f0",
+ "theme_color": "#2e6fd6",
  "lang": "pl",
  "categories": ["lifestyle", "weather", "utilities"],
  "icons": [
