@@ -58,4 +58,25 @@ DESCRIPTION:Wydarzenie: Mikołajki w Kruszynie
 TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
+BEGIN:VEVENT
+UID:5dadb21d475acacb@kruszyn
+DTSTAMP:20260101T000000Z
+DTSTART;TZID=Europe/Warsaw:20261213T140000
+DTEND;TZID=Europe/Warsaw:20261213T160000
+SUMMARY:Jarmark Bożonarodzeniowy
+LOCATION:Plac przy GOKiS w Kruszynie\, ul. Kasztanowa 1
+DESCRIPTION:W programie: Zjeżdżalnia pontonowa (zjazdy z górki)\, Parada
+  Mikołajowych Pomocników\, Piernikowy Tor Przeszkód\, Chatka Mikołaja 
+ z gorącą czekoladą\, Animacje dla dzieci i świąteczne piosenki\, Karu
+ zela wenecka i zimowy pociąg\, Zagroda z alpakami\, Konkurs na Najpiękni
+ ejszą kartkę świąteczną\, Ozdabianie świątecznych domków\, Świąt
+ eczny Jarmark Smaków i Rękodzieła. Organizator: Gmina Bolesławiec / GO
+ KiS Kruszyn. https://www.facebook.com/photo/?fbid=1598285415656688&locale=
+ pl_PL
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Wydarzenie: Jarmark Bożonarodzeniowy
+TRIGGER:-PT2H
+END:VALARM
+END:VEVENT
 END:VCALENDAR
