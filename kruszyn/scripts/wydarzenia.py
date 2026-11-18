@@ -57,6 +57,8 @@ def parse_date(s):
     if not s:
         return None
     s = s.split(" ")[0]
+    if re.fullmatch(r"\d{5}(?:[.,]\d+)?", s):      # numer seryjny arkusza (QUERY gubi format daty)
+        return (dt.date(1899, 12, 30) + dt.timedelta(days=int(re.split(r"[.,]", s)[0]))).isoformat()
     m = re.fullmatch(r"(\d{4})-(\d{1,2})-(\d{1,2})", s)
     if m:
         y, mo, d = map(int, m.groups())
@@ -75,6 +77,9 @@ def parse_time(s):
     s = clean(s)
     if not s:
         return None
+    if re.fullmatch(r"0?[.,]\d+|[01]", s):         # ułamek doby, np. 0,7083 = 17:00
+        mins = round(float(s.replace(",", ".")) * 1440) % 1440
+        return f"{mins // 60:02d}:{mins % 60:02d}"
     m = re.fullmatch(r"(\d{1,2})[:.](\d{2})(?::\d{2})?\s*([AaPp][Mm])?", s)
     if not m:
         return None
