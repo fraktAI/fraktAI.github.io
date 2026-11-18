@@ -237,6 +237,15 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 .tile.soon .frm i{outline:1px solid rgba(255,255,255,.7)}
 #v-home>#inst{margin-top:16px}
 @media (min-width:1100px){#v-home>#inst{grid-column:1/-1;grid-row:6}}
+.t-wyd{--tc:#e07a1f}
+.dbadge{flex:none;width:54px;border-radius:14px;background:color-mix(in srgb,var(--accent) 12%,var(--card));text-align:center;padding:7px 0;line-height:1.1}
+.dbadge b{display:block;font-size:21px}.dbadge span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.evt{border-top:1px solid var(--line)}.evt:first-child{border-top:0}
+.evt summary{display:flex;align-items:center;gap:12px;padding:12px 0;font-weight:400;font-size:inherit}
+.evt summary::after{margin-left:auto;float:none}
+.evt-t{display:flex;flex-direction:column;min-width:0}.evt-t b{font-size:18px;line-height:1.3}
+.evt-b{padding:0 0 12px 66px;font-size:16px;line-height:1.5}.evt-b p{margin:6px 0}
+.evt.past{opacity:.6}
 </style>
 </head>
 <body>
@@ -281,6 +290,10 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
     <a class="tile t-msza" id="t-msza" href="#/msze">
       <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1.5v4M10 3.5h4M12 5.5l5 4V21H7V9.5zM10 21v-4.5a2 2 0 0 1 4 0V21M3 21h18"/></svg></span>
       <span class="txt"><span class="tt" id="tm-t">Msze święte</span><span class="ss" id="tm-s"></span></span>
+    </a>
+    <a class="tile t-wyd" id="t-wyd" href="#/wydarzenia">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M9 15h6"/></svg></span>
+      <span class="txt"><span class="tt" id="wy-t">Wydarzenia</span><span class="ss" id="wy-s">Dodaj wydarzenie do kalendarza wsi</span></span>
     </a>
     <a class="tile t-prad" id="t-prad" href="#/prad">
       <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
@@ -383,6 +396,16 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
   <p class="foot" id="zn-foot"></p>
 </section>
 
+<!-- WYDARZENIA -->
+<section class="view" id="v-wydarzenia" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wydarzenia</h2></div>
+  <div class="card"><h3>Organizujesz coś we wsi?</h3><p class="sub" style="margin:0 0 12px;line-height:1.6">Wypełnij krótki formularz. Wydarzenie pojawi się tutaj po zatwierdzeniu, zwykle w ciągu kilku godzin.</p><p style="margin:0 0 12px"><a class="btn" id="wy-form" href="#" target="_blank" rel="noopener">Dodaj wydarzenie</a></p></div>
+  <div class="card"><h3>Nadchodzące</h3><div id="wy-up"></div></div>
+  <div class="card" id="wy-past-card" hidden><h3>Minione (ostatnie 5)</h3><div id="wy-past"></div></div>
+  <div class="card" id="wy-sub-card" hidden><h3>Kalendarz w telefonie</h3><p class="sub" style="margin:0 0 12px;line-height:1.6">Wszystkie wydarzenia będą same pojawiać się w kalendarzu telefonu.</p><p style="margin:0 0 14px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn" id="wy-web" href="#">Dodaj do kalendarza</a><a class="call alt" id="wy-ics" href="data/kruszyn-wydarzenia.ics" download>Pobierz plik .ics</a></p></div>
+  <p class="foot" id="wy-foot">Wydarzenia zgłaszają mieszkańcy, a administrator aplikacji je zatwierdza. Za treść odpowiada organizator.</p>
+</section>
+
 <!-- ŚMIECI -->
 <section class="view" id="v-smieci" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wywóz śmieci</h2></div>
@@ -405,7 +428,7 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 
 </div>
 <script>
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "pdf", "fetched": "2026-11-15", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -422,7 +445,7 @@ const col = id => `style="--c:var(--c-${esc(id)})"`;
 const bag = id => `<svg class="bag" viewBox="0 0 24 24" ${col(id)} aria-hidden="true"><path d="M9 2h6l-1 3c3 1 6 4 6 9a8 8 0 0 1-16 0c0-5 3-8 6-9z"/></svg>`;
 
 // ---------- nawigacja (#/pogoda, #/smieci) ----------
-const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony', 'apteki', 'prad', 'pszok', 'znicz'];
+const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony', 'apteki', 'prad', 'pszok', 'znicz', 'wydarzenia'];
 function route() {
   const h = (location.hash || '').replace(/^#\/?/, '');
   const v = VIEWS.includes(h) ? h : 'home';
@@ -885,6 +908,63 @@ function renderPszok(P) {
   if (ios && /^https?:$/.test(location.protocol)) {            // iPhone/iPad: ręcznie przez Safari
     $('inst-txt').innerHTML = 'Aby dodać aplikację na ekran główny: w Safari kliknij przycisk <b>Udostępnij</b> (kwadrat ze strzałką) i wybierz <b>„Do ekranu początkowego”</b>.';
     box.hidden = false;
+  }
+})();
+
+// ---------- WYDARZENIA (data/wydarzenia.json <- arkusz Google <- formularz) ----------
+(async function () {
+  const FORM = 'https://forms.gle/5WF3eW9qoKxSCxCT8';          // adres formularza: tu można go zmienić
+  $('wy-form').href = FORM;
+  let w = {}; try { const r = await fetch('data/wydarzenia.json', {cache: 'no-cache'}); if (r.ok) w = await r.json(); } catch (_) {}
+  const end = e => e.data_do || e.data;
+  const all = [...(w.nadchodzace || []), ...(w.minione || [])].filter((e, i, a) => a.findIndex(x => x.data === e.data && x.nazwa === e.nazwa) === i);
+  const up = all.filter(e => end(e) >= today).sort((a, b) => (a.data + (a.godz || '')) < (b.data + (b.godz || '')) ? -1 : 1);
+  const past = all.filter(e => end(e) < today).sort((a, b) => (a.data + (a.godz || '')) < (b.data + (b.godz || '')) ? 1 : -1).slice(0, 5);
+  const wd = s => cap(fmt(s, {weekday: 'long'}));
+  const dm = s => fmt(s, {day: 'numeric', month: 'numeric'});
+  const line = e => [e.data_do ? `${dm(e.data)} – ${dm(e.data_do)}` : wd(e.data) + ' ' + dm(e.data), e.godz, e.miejsce].filter(Boolean).join(' · ');
+
+  // kafelek
+  const nx = up[0];
+  if (nx) {
+    const k = diff(nx.data), on = k <= 0;
+    $('wy-t').textContent = on ? 'Dziś: ' + nx.nazwa : k === 1 ? 'Jutro' + (nx.godz ? ', ' + nx.godz : '') : wd(nx.data) + ' ' + dm(nx.data) + (nx.godz ? ', ' + nx.godz : '');
+    $('wy-s').textContent = on ? [nx.godz, nx.miejsce].filter(Boolean).join(' · ') : nx.nazwa + (nx.miejsce ? ' · ' + nx.miejsce : '');
+    if (k <= 1) $('t-wyd').classList.add('soon');
+  }
+
+  // lista
+  const badge = s => `<div class="dbadge"><b>${esc(fmt(s, {day: 'numeric'}))}</b><span>${esc(fmt(s, {month: 'short'}).replace('.', ''))}</span></div>`;
+  const row = (e, i, isPast) => {
+    const phone = e.telefon ? `<p>Tel.: <a href="tel:${esc(e.telefon.replace(/[^0-9+]/g, ''))}">${esc(e.telefon)}</a></p>` : '';
+    const link = /^https?:\/\//i.test(e.link || '') ? `<p><a href="${esc(e.link)}" target="_blank" rel="noopener">Więcej informacji</a></p>` : '';
+    return `<details class="evt${isPast ? ' past' : ''}"><summary>${badge(e.data)}<span class="evt-t"><b>${esc(e.nazwa)}</b><span class="sub">${esc(line(e))}</span></span></summary>
+      <div class="evt-b">${e.kategoria ? `<p class="sub">${esc(e.kategoria)}${e.organizator ? ' · ' + esc(e.organizator) : ''}</p>` : ''}${e.opis ? `<p>${esc(e.opis)}</p>` : ''}${phone}${link}
+      ${isPast ? '' : `<p><button class="btn" data-ics="${i}" type="button">Dodaj do kalendarza</button></p>`}</div></details>`;
+  };
+  $('wy-up').innerHTML = up.length ? up.map((e, i) => row(e, i, false)).join('') : '<p class="sub" style="padding:4px 0 12px">Brak zaplanowanych wydarzeń. Dodaj pierwsze!</p>';
+  if (past.length) { $('wy-past').innerHTML = past.map((e, i) => row(e, i, true)).join(''); $('wy-past-card').hidden = false; }
+
+  // pojedyncze wydarzenie do kalendarza telefonu (plik .ics tworzony w przeglądarce)
+  const ics = e => {
+    const z = s => s.replace(/-/g, ''), t = h => h.replace(':', '') + '00', x = s => String(s || '').replace(/[\\;,]/g, m => '\\' + m).replace(/\n/g, '\\n');
+    const addDay = (s, n) => { const d = new Date(utc(s) + n * 864e5); return iso(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()); };
+    const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Kruszyn//Wydarzenie//PL', 'BEGIN:VEVENT', 'UID:' + z(e.data) + '-' + Math.abs([...e.nazwa].reduce((a, c) => a * 31 + c.charCodeAt(0) | 0, 7)) + '@kruszyn', 'DTSTAMP:20260101T000000Z'];
+    if (e.godz) { const h = +e.godz.slice(0, 2); L.push('DTSTART:' + z(e.data) + 'T' + t(e.godz), 'DTEND:' + z(e.data) + 'T' + String(Math.min(23, h + 2)).padStart(2, '0') + e.godz.slice(3, 5) + '00'); }
+    else L.push('DTSTART;VALUE=DATE:' + z(e.data), 'DTEND;VALUE=DATE:' + z(addDay(e.data_do || e.data, 1)));
+    L.push('SUMMARY:' + x(e.nazwa)); if (e.miejsce) L.push('LOCATION:' + x(e.miejsce)); if (e.opis) L.push('DESCRIPTION:' + x(e.opis));
+    L.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + x(e.nazwa), 'TRIGGER:-PT2H', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR');
+    return L.join('\r\n') + '\r\n';
+  };
+  $('wy-up').addEventListener('click', ev => {
+    const b = ev.target.closest('[data-ics]'); if (!b) return;
+    const blob = new Blob([ics(up[+b.dataset.ics])], {type: 'text/calendar;charset=utf-8'}), a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'wydarzenie.ics'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  });
+  if (w.updated && /^https?:$/.test(location.protocol)) {
+    $('wy-web').href = new URL('data/kruszyn-wydarzenia.ics', location.href).href.replace(/^https?:/, 'webcal:');
+    $('wy-sub-card').hidden = false;
   }
 })();
 

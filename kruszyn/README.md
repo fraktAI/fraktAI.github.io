@@ -90,6 +90,38 @@ Po pierwszym uruchomieniu sprawdź w *Actions* krok *Pobierz ostrzeżenia IMGW* 
 
 Kafel **PSZOK** na ekranie głównym pokazuje, czy punkt jest teraz otwarty (wt, czw, sob 10:00–18:00), a w środku są adres, telefony, mapa, lista co przyjmuje i czego nie przyjmuje oraz zasady. Dane pochodzą ze strony gminy i są w `wies.json` w sekcji `"pszok"` – gdy zmienią się godziny, popraw tylko tam (numery dni: 0 = niedziela, 1 = poniedziałek … 6 = sobota). Strona gminy nie podaje godzin w święta ani limitów ilości, więc aplikacja zaleca telefon.
 
+## Intencje mszalne
+
+Robot (4 razy na dobę) czyta stronę kruszyn.com/ogloszenia-parafialne/ i zapisuje intencje w `intencje.json`. W sekcji *Msze święte* pojawia się lista najbliższych intencji, a kafel na ekranie głównym pokazuje intencję najbliższej mszy. Robot pomija wpisy, w których dzień tygodnia nie zgadza się z datą. Gdy parafia zmieni układ strony, robot nie nadpisze starych danych, a w *Actions* pojawi się ostrzeżenie.
+
+## Znicz Kruszyn
+
+Robot (4 razy na dobę) czyta ze strony regiowyniki.pl terminarz i tabelę drużyny (klasa B, Jelenia Góra IV) i zapisuje je w `znicz.json`. Kafel na ekranie głównym pokazuje najbliższy mecz (gdy jest w ciągu tygodnia) albo ostatni wynik i miejsce w tabeli. W środku są najbliższe i ostatnie mecze (z oznaczeniem W/R/P) oraz pełna tabela. Mecze bez ustalonego terminu (np. runda wiosenna przed publikacją terminarza) są liczone, ale nie pokazywane z datą.
+Robot opiera się na tekście strony, nie na jej wyglądzie, ale gdy regiowyniki.pl zmieni układ, w *Actions* pojawi się ostrzeżenie, a aplikacja zostanie przy ostatnich danych. Diagnostyka: `python3 scripts/znicz_mecze.py --discover`.
+
+## Instalacja jako aplikacja (PWA) i praca bez internetu
+
+Strona jest instalowalna. Na Androidzie (Chrome) i na komputerze (Chrome/Edge) na dole ekranu głównego pojawia się karta „Aplikacja w telefonie” z przyciskiem **Zainstaluj aplikację**. Na iPhonie karta pokazuje, jak dodać stronę przez Safari (*Udostępnij → Do ekranu początkowego*); instalacja przez inną przeglądarkę na iPhonie nie działa. Zainstalowana aplikacja otwiera się bez paska przeglądarki, ma własną ikonę, a przytrzymanie ikony na Androidzie daje skróty do Śmieci, Pogody i Mszy. Bez internetu pokazuje ostatnio pobrane dane (plik `sw.js`). Karta znika po instalacji lub po kliknięciu „Nie teraz”.
+Instalacja działa tylko pod adresem `https://…github.io/kruszyn/` (nie z pliku otwartego z dysku).
+
+## Wydarzenia (formularz Google → arkusz → aplikacja)
+
+Mieszkańcy dodają wydarzenia formularzem Google (przycisk w aplikacji). Odpowiedzi trafiają do Twojego arkusza, Ty zatwierdzasz wpis wpisując `TAK` w kolumnie „Zatwierdzone”, a robot co godzinę pobiera zatwierdzone wpisy i pokazuje je w aplikacji (nadchodzące + 5 ostatnich minionych, przycisk „Dodaj do kalendarza” i kalendarz do zasubskrybowania).
+
+Jednorazowa konfiguracja arkusza:
+1. W arkuszu: *Plik → Ustawienia* → Ustawienia regionalne: **Polska**, strefa czasowa: Warszawa.
+2. Kolumna „Zatwierdzone” (N): zaznacz N2:N1000 → *Dane → Weryfikacja danych* → lista: `TAK`. Wpisuj zawsze wielkimi literami.
+3. Dodaj nową zakładkę o nazwie **Publiczne**. W komórce A1 wklej (jedna linia, nazwę zakładki z odpowiedziami sprawdź na dole arkusza):
+```
+=IFERROR(QUERY('Odpowiedzi z formularza 1'!A:O; "select B, C, D, E, F, G, H, I, J, K where N = 'TAK' and (O is null or O <> 'TAK') and M is not null"; 1); "")
+```
+   Jeśli arkusz zgłosi błąd formuły, zamień średniki `;` na przecinki `,`.
+4. *Plik → Udostępnij → Opublikuj w internecie*: w pierwszym polu wybierz **zakładkę Publiczne** (NIE „Cały dokument”, bo ujawniłbyś dane osób dodających), w drugim **Wartości rozdzielane przecinkami (.csv)** → *Opublikuj* → skopiuj link.
+5. W repozytorium otwórz `kruszyn/wydarzenia_url.txt`, zastąp całą zawartość skopiowanym linkiem (jedna linia) i zapisz.
+6. Uruchom *Run workflow*. W kroku *Pobierz wydarzenia z arkusza Google* ma być „Zapisano data/wydarzenia.json: nadchodzące N …”.
+
+Codziennie: gdy dojdzie wpis (e-mail z formularza), sprawdź go i wpisz `TAK`; w ciągu godziny pojawi się w aplikacji. Wycofanie: `TAK` w kolumnie „Anulowane”. Nie usuwaj wierszy (minione wydarzenia są brane z tej samej tabeli) i nie zmieniaj ani nie dodawaj pytań w formularzu bez zmiany robota. Adres formularza w aplikacji jest w `index.html` (stała `FORM`).
+
 ## Nowy rok (2027)
 
 Robot sam próbuje wczytać harmonogram na następny rok (adres `.../boleslawiec-2027r-gmina/kruszyn`). Dopóki COM-D go nie opublikuje, aplikacja pokazuje stare terminy, a po 31 grudnia – informację o braku terminów. Gdy harmonogram się pojawi, ręcznie uruchom workflow (krok 7). Daty zbiórek odzieży i gabarytów na 2027 trzeba dopisać ręcznie.
