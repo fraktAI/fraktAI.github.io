@@ -92,12 +92,18 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .bag{width:17px;height:17px;fill:var(--c);vertical-align:-3px}
 .aq{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--c);margin-right:6px}
 .foot{margin-top:22px;text-align:center;font-size:14px;color:var(--mute)}
-.foot.contact{margin-top:28px;padding-top:18px;border-top:1px solid var(--line,rgba(128,128,128,.25))}.foot.contact .cx{font-weight:500;color:var(--mute);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
-.foot.contact .cx:hover{color:var(--accent);text-decoration-color:var(--accent)}
-.coffee{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:10px 14px;flex-wrap:wrap;font-size:13px;color:var(--mute)}
-.coffee .cbtn{display:inline-block;text-decoration:none;font-weight:600;font-size:14px;color:var(--onaccent);background:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:8px 18px;white-space:nowrap}
+.foot.contact{margin-top:28px;padding-top:6px}
+footer.contact[hidden]{display:none}
+.coffee{margin:0 auto;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--shadow);font-size:14px;line-height:1.5;color:var(--ink)}
+.coffee .cmsg{display:block}.coffee .cmsg b{display:block;font-size:16px;margin-bottom:2px}
+.coffee .cbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
+.coffee .cx,.coffee .cbtn{flex:1 1 170px;max-width:240px;box-sizing:border-box;text-align:center;text-decoration:none;font-weight:600;font-size:15px;border-radius:999px;padding:11px 16px;white-space:nowrap}
+.coffee .cx{border:1.5px solid var(--ink);color:var(--ink);background:transparent}
+.coffee .cx:hover{border-color:var(--accent);color:var(--accent)}
+.coffee .cbtn{color:var(--onaccent);background:var(--accent);border:1.5px solid var(--accent)}
 .coffee .cbtn:hover{filter:brightness(1.08)}
-.coffee[hidden]{display:none}
+.coffee .cbtn[hidden]{display:none}
+.foot .srcs{margin:16px 0 0;font-size:12px;opacity:.85}
 
 /* widoki szczegółowe */
 .bar{display:flex;align-items:center;gap:12px;margin:8px 0 14px}
@@ -327,7 +333,6 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
     <p class="sub" id="inst-txt" style="line-height:1.6;margin:0 0 10px"></p>
     <p style="margin:0 0 12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="inst-btn" type="button" hidden>Zainstaluj aplikację</button><button class="call alt" id="inst-no" type="button" style="font:inherit;font-weight:600;cursor:pointer">Nie teraz</button></p>
   </div>
-  <p class="foot">Pogoda: Open-Meteo · Wywóz śmieci: COM-D · Msze: kruszyn.com</p>
 </section>
 
 <!-- POGODA -->
@@ -432,19 +437,22 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 </section>
 
 <footer class="foot contact">
-  <a class="cx" href="https://forms.gle/PQtFD4dm6tY9ub5KA" target="_blank" rel="noopener">💬 Napisz do twórcy aplikacji – pomysły, uwagi, błędy</a>
-  <div class="coffee" id="coffee" hidden>
-    <span>Aplikacja jest darmowa i tworzona społecznie.</span>
-    <a class="cbtn" id="coffee-a" href="#" target="_blank" rel="noopener">☕ Postaw kawę</a>
+  <div class="coffee" id="coffee">
+    <span class="cmsg"><b>Podoba Ci się aplikacja?</b>Jest darmowa i tworzona społecznie. Masz pomysł albo zauważyłeś błąd? Daj znać. Chcesz wesprzeć rozwój? Dziękuję!</span>
+    <div class="cbtns">
+      <a class="cx" href="https://forms.gle/PQtFD4dm6tY9ub5KA" target="_blank" rel="noopener">💬 Napisz do twórcy</a>
+      <a class="cbtn" id="coffee-a" href="#" target="_blank" rel="noopener" hidden>☕ Postaw kawę</a>
+    </div>
   </div>
+  <p class="srcs">Pogoda: Open-Meteo · Wywóz śmieci: COM-D · Msze: kruszyn.com</p>
 </footer>
 </div>
 <script>
 // ---------- Wsparcie autora (buycoffee.to) ----------
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
-if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "pdf", "fetched": "2026-11-15", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -466,6 +474,7 @@ function route() {
   const h = (location.hash || '').replace(/^#\/?/, '');
   const v = VIEWS.includes(h) ? h : 'home';
   VIEWS.forEach(x => { $('v-' + x).hidden = x !== v; });
+  const ft = document.querySelector('footer.contact'); if (ft) ft.hidden = v !== 'home';   // stopka tylko na stronie głównej
   window.scrollTo(0, 0);
 }
 addEventListener('hashchange', route);
