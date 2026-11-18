@@ -1,1 +1,0 @@
-# Wklej tutaj (zamiast tej linii) adres CSV zakładki "Publiczne" z arkusza Google. Zobacz README.
