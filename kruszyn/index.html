@@ -1,268 +1,481 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#fbf7f0">
+<title>Mój Kruszyn</title>
+<meta name="description" content="Pogoda, wywóz śmieci i ważne informacje z Kruszyna.">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta property="og:image" content="icon-512.png"><meta property="og:title" content="Mój Kruszyn"><meta property="og:description" content="Pogoda, wywóz śmieci i ważne informacje z Kruszyna.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-title" content="Kruszyn"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<script>try{var t=localStorage.getItem('kr-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<style>
+:root{
+  --bg:#fbf7f0;--card:#fff;--ink:#1d1b18;--mute:#5d574e;--line:#ebe3d6;--accent:#d6001c;--tile:#f3ede2;--onaccent:#fff;
+  --shadow:0 1px 2px rgba(60,40,10,.06),0 10px 28px rgba(60,40,10,.08);
+  --c-zmieszane:#55605a;--c-bio:#8a5a2b;--c-plastik:#d9a400;--c-szklo:#2e8b57;--c-makulatura:#2f6fb5;--c-odziez:#9b4f9b;--c-gabaryty:#d1621f;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#14110e;--card:#1f1c18;--ink:#f6f1e9;--mute:#bbb2a4;--line:#312c26;--accent:#ff5263;--tile:#2a2621;--onaccent:#25060a;--shadow:none;
+  --c-zmieszane:#aeb4b0;--c-bio:#c99562;--c-plastik:#f0c43a;--c-szklo:#5fc08a;--c-makulatura:#6aa5e6;--c-odziez:#c98bc9;--c-gabaryty:#f08c4d;
+}}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;background:var(--bg2)}
-body{margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg),var(--bg2)) fixed;color:var(--ink);font:18px/1.55 var(--sans)}
-.wrap{max-width:600px;margin:0 auto;zoom:var(--z,1);
-padding:0 max(16px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
-.wrap::before{content:"";display:block;height:20px;margin:0 -50vw 10px;background:var(--frieze) 0 0/20px 20px repeat-x;opacity:.9}
-.view[hidden],.notices[hidden],#v-home[hidden]{display:none}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.5 Poppins,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 48px;zoom:var(--z,1)}
+.view[hidden]{display:none}
 a{color:var(--accent)}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .sub{font-size:15px;color:var(--mute)}
-h1,h2,h3{font-family:var(--serif)}
 
-/* ---------- pasek narzędzi ---------- */
-.topbar{display:flex;justify-content:flex-end;align-items:center;gap:6px}
-.zoom button,#th{min-width:44px;height:38px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font:700 15px var(--sans);cursor:pointer;line-height:1;transition:border-color .15s}
-#th{font-size:17px}
-.zoom button:hover,#th:hover{border-color:var(--edge)}
+/* nagłówek */
+.topbar{display:flex;justify-content:flex-end;gap:8px}
+.zoom button{min-width:48px;height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font:600 16px Poppins,system-ui,sans-serif;cursor:pointer}
 .zoom button:disabled{opacity:.35}
+.top{text-align:center;padding:4px 0 2px}
+.top .greet{margin:0;font-size:16px;font-weight:500;color:var(--mute)}
+.top h1{margin:2px 0 0;font:800 clamp(36px,11.5vw,50px)/1.05 Poppins,system-ui,sans-serif;letter-spacing:-.02em}
+.top h1 span{color:var(--accent)}
+.top .where{margin:8px 0 0;font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 
-/* ---------- nagłówek ---------- */
-.top{padding:10px 0 4px}
-.top .greet{margin:0;font:italic 500 22px/1.2 var(--serif);color:var(--mute)}
-.top h1{margin:0;font:900 clamp(46px,15vw,64px)/.98 var(--serif);letter-spacing:-.015em;color:var(--accent)}
-.top h1 span{color:var(--alert);font-size:.7em;vertical-align:.12em;margin:0 .04em}
-.top .where{margin:8px 0 0;font-size:15px;color:var(--mute)}
+/* karta pogody */
+.hero{display:block;position:relative;overflow:hidden;margin-top:18px;border-radius:28px;padding:20px 20px 84px;color:#fff;text-decoration:none;box-shadow:var(--shadow);
+  background:linear-gradient(180deg,#1d2347,#3b3a74);--sil:#12152e}
+.hero.day{background:linear-gradient(180deg,#2e6fd6,#62a8f2);--sil:#1b4a99}
+.hero.cloud{background:linear-gradient(180deg,#56667c,#8393a8);--sil:#2c3747}
+.hero.night::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.8;
+  background-image:radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 30% 40%,#fff,transparent),
+  radial-gradient(1.5px 1.5px at 55% 14%,#fff,transparent),radial-gradient(1px 1px at 70% 48%,#fff,transparent),radial-gradient(1px 1px at 88% 30%,#fff,transparent),
+  radial-gradient(1.5px 1.5px at 42% 62%,#fff,transparent)}
+.hero>*{position:relative;z-index:1}
+.hero .lab{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.92}
+.hero .r1{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+.hero .date{font-size:clamp(22px,6.4vw,27px);font-weight:700;line-height:1.15}
+.hero .big{display:flex;align-items:center;gap:8px;flex:none}
+.hero .big .i{font-size:42px;line-height:1}
+.hero .big .t{font-size:46px;font-weight:700;line-height:1}
+.hero .line{margin-top:12px;font-size:17px;line-height:1.4}
+.hero .cta{display:inline-block;margin-top:14px;background:#fff;color:#1d2347;border-radius:999px;padding:11px 20px;font-size:16px;font-weight:600}
+.hero svg.sil{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:58px;fill:var(--sil);z-index:0}
 
-/* ---------- talerz z pogodą ---------- /
-.hero{--pf:#f6f8ff;--pr:#1a3a9c;--pt:#10236b;
-display:block;position:relative;overflow:hidden;margin-top:16px;
-padding:20px 18px;border:1.5px solid var(--edge);border-radius:var(--r);background:var(--card);color:var(--ink);text-decoration:none;
-box-shadow:inset 0 0 0 4px var(--card),inset 0 0 0 5px var(--line),var(--shadow);transition:transform .18s var(--ease),border-color .18s}
-.hero.night{--pf:#1a3a9c;--pr:#f6f8ff;--pt:#ffffff}
-.hero.cloud{--pf:#e4e9f5;--pr:#5a6ea6;--pt:#1c2a63}
-.hero::before{content:"";position:absolute;top:18px;right:18px;width:112px;height:112px;border-radius:50%;background:var(--pf);color:var(--pt);
-box-shadow:0 0 0 2px var(--pr),0 6px 16px rgba(14,28,85,.22);z-index:0}
-.hero::after{content:"";position:absolute;top:27px;right:27px;width:94px;height:94px;border-radius:50%;border:5px dotted var(--pr);animation:plate 1.1s var(--ease) both;z-index:0}
-@keyframes plate{from{transform:rotate(-100deg);opacity:0}to{transform:none;opacity:1}}
-.hero>{position:relative;z-index:1}
-.hero .lab{font-size:15px;color:var(--mute);font-weight:700}
-.hero .r1{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:2px;max-width:calc(100% - 120px)}
-.hero .date{font:800 clamp(22px,6.6vw,28px)/1.1 var(--serif)}
-.hero .big{display:flex;align-items:center;gap:4px;flex:none}
-.hero .big .i{font-size:26px;line-height:1}
-.hero .big .t{font:800 32px/1 var(--serif)}
-.hero .line{margin-top:8px;font-size:16px;line-height:1.4}
-.hero .cta{display:inline-block;margin-top:12px;background:var(--accent);color:var(--onaccent);border-radius:8px;padding:9px 16px;font-size:15px;font-weight:700}
-.hero svg.sil{display:none}
+/* ogłoszenia */
+.notices{margin-top:16px;display:grid;gap:10px}
+.notice{border-left:6px solid var(--accent);background:var(--card);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow)}
+.notice.urgent{background:var(--accent);color:var(--onaccent)}
+.notice b{display:block;font-size:17px}
+.notice p{margin:2px 0 0;font-size:16px}
+.notice small{display:block;margin-top:4px;opacity:.8;font-size:13px}
 
-/* ---------- ogłoszenia ---------- */
-.notices{margin-top:14px;display:grid;gap:10px}
-.notice{border:1.5px solid var(--edge);background:var(--card);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
-.notice.urgent{background:var(--alert);border-color:var(--alert);color:var(--onalert)}
-.notice b{display:block;font:800 19px/1.2 var(--serif)}
-.notice p{margin:3px 0 0;font-size:16px}
-.notice small{display:block;margin-top:4px;opacity:.85;font-size:13px}
-
-/* ---------- kafle ---------- */
-.tiles{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tile{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;min-height:136px;padding:16px;
-border:1.5px solid var(--edge);border-radius:var(--r);background:var(--card);color:var(--ink);text-decoration:none;
-box-shadow:inset 0 0 0 4px var(--card),inset 0 0 0 5px var(--line),var(--shadow);transition:transform .18s var(--ease),border-color .18s}
+/* kafle */
+.tiles{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:158px;padding:16px;border-radius:26px;background:var(--card);color:var(--ink);text-decoration:none;box-shadow:var(--shadow);border:1px solid var(--line);--tc:var(--accent);position:relative}
 .tile[hidden]{display:none}
-.tile .ico{position:absolute;top:14px;right:14px;width:34px;height:34px;color:var(--accent);display:grid;place-items:center}
-.tile .ico svg{width:30px;height:30px}
+.tile.wide{grid-column:1/-1;min-height:0;flex-direction:row;align-items:center}
+.tile .ico{flex:none;width:54px;height:54px;border-radius:18px;background:color-mix(in srgb,var(--tc) 16%,var(--card));color:var(--tc);display:grid;place-items:center}
+.tile .ico svg{width:28px;height:28px}
 .tile .txt{display:flex;flex-direction:column;gap:3px;min-width:0}
-.tile .tt{font:800 22px/1.1 var(--serif);padding-right:30px}
-.tile .ss{font-size:15px;line-height:1.35;color:var(--mute)}
-.tile.wide,.tile.t-wyd{grid-column:1/-1;min-height:0}
-.tile.wide{flex-direction:row;align-items:center;justify-content:flex-start;gap:14px;padding:16px 60px 16px 16px}
-.tile.wide .ico{top:50%;right:16px;transform:translateY(-50%)}
-.tile.wide .tt{padding-right:0}
-.tile.t-wyd{min-height:104px}
-.tile.t-wyd .tt{font-size:28px}
-.tile:active{transform:scale(.985)}
-.tile.soon{background:var(--accent);border-color:var(--accent);color:var(--onaccent);box-shadow:inset 0 0 0 4px var(--accent),inset 0 0 0 5px color-mix(in srgb,var(--onaccent) 45%,transparent),var(--shadow)}
+.tile .tt{font-size:18px;font-weight:700;line-height:1.25}
+.tile .ss{font-size:14px;color:var(--mute);line-height:1.4}
+.tile .chev{display:none}
+.tile:active{transform:scale(.98)}
+.tile.soon{background:var(--accent);color:var(--onaccent);border-color:var(--accent)}
 .tile.soon .ss{color:var(--onaccent);opacity:.92}
-.tile.soon .ico{color:var(--onaccent)}
 .tile.soon .bag{fill:var(--onaccent)}
-#t-warn.soon,#t-imgw.soon{background:var(--alert);border-color:var(--alert);color:var(--onalert);box-shadow:inset 0 0 0 4px var(--alert),inset 0 0 0 5px color-mix(in srgb,var(--onalert) 45%,transparent),var(--shadow)}
-#t-warn.soon .ss,#t-imgw.soon .ss,#t-warn.soon .ico,#t-imgw.soon .ico{color:var(--onalert)}
-.tile.t-pszok.soon{background:#1d7a4a;border-color:#1d7a4a;color:#fff;box-shadow:inset 0 0 0 4px #1d7a4a,inset 0 0 0 5px rgba(255,255,255,.45),var(--shadow)}
-.tile.t-pszok.soon .ss,.tile.t-pszok.soon .ico{color:#fff}
-.bag{width:17px;height:17px;fill:var(--c);vertical-align:-3px;margin-right:2px}
+.tile.soon .ico{background:var(--onaccent);color:var(--accent)}
+.t-pszok{--tc:#2e9b5f}.t-waste{--tc:#2e9b5f}.t-msza{--tc:#7a5af8}.t-prad{--tc:#d98a00}.t-apt{--tc:#e0293a}.t-air{--tc:#0f9fb0}.t-tel{--tc:#3b82f6}
+.bag{width:17px;height:17px;fill:var(--c);vertical-align:-3px}
 .aq{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--c);margin-right:6px}
-@media (hover:hover){.tile:hover{transform:translateY(-3px);border-color:var(--ink)}.tile.soon:hover{border-color:var(--ink)}.hero:hover{transform:translateY(-2px);border-color:var(--ink)}}
-.frm{display:flex;gap:4px;margin-top:6px}
-.frm i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:5px;font-size:11px;font-weight:700;color:#fff;background:#8a8f98}
-.frm i.w{background:#1d7a4a}.frm i.p{background:#c4122f}
-.tile.soon .frm i{outline:1px solid rgba(255,255,255,.7)}
-
-/* ---------- stopka ---------- */
 .foot{margin-top:22px;text-align:center;font-size:14px;color:var(--mute)}
-.foot.contact{margin-top:34px;padding-top:0}
+.foot.contact{margin-top:28px;padding-top:6px}
 footer.contact[hidden]{display:none}
-footer.contact::before{content:"";display:block;height:20px;margin:0 -50vw 22px;background:var(--frieze) 0 0/20px 20px repeat-x;opacity:.9}
-.coffee{margin:0 auto;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px;border:1.5px solid var(--edge);border-radius:var(--r);background:var(--card);
-box-shadow:inset 0 0 0 4px var(--card),inset 0 0 0 5px var(--line);font-size:15px;line-height:1.5;color:var(--ink)}
-.coffee .cmsg{display:block}.coffee .cmsg b{display:block;font:800 22px/1.2 var(--serif);margin-bottom:3px}
+.coffee{margin:0 auto;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--shadow);font-size:14px;line-height:1.5;color:var(--ink)}
+.coffee .cmsg{display:block}.coffee .cmsg b{display:block;font-size:16px;margin-bottom:2px}
 .coffee .cbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
-.coffee .cx,.coffee .cbtn{flex:1 1 170px;max-width:240px;text-align:center;text-decoration:none;font-weight:700;font-size:16px;border-radius:8px;padding:11px 16px;white-space:nowrap}
-.coffee .cx{border:1.5px solid var(--edge);color:var(--accent);background:transparent}
-.coffee .cx:hover{background:var(--tile)}
-.coffee .cbtn{color:var(--onalert);background:var(--alert);border:1.5px solid var(--alert)}
+.coffee .cx,.coffee .cbtn{flex:1 1 170px;max-width:240px;box-sizing:border-box;text-align:center;text-decoration:none;font-weight:600;font-size:15px;border-radius:999px;padding:11px 16px;white-space:nowrap}
+.coffee .cx{border:1.5px solid var(--ink);color:var(--ink);background:transparent}
+.coffee .cx:hover{border-color:var(--accent);color:var(--accent)}
+.coffee .cbtn{color:var(--onaccent);background:var(--accent);border:1.5px solid var(--accent)}
 .coffee .cbtn:hover{filter:brightness(1.08)}
 .coffee .cbtn[hidden]{display:none}
-.foot .srcs{margin:16px 0 0;font-size:12.5px}
+.foot .srcs{margin:16px 0 0;font-size:12px;opacity:.85}
 
-/* ---------- widoki szczegółowe ---------- */
-.bar{display:flex;align-items:center;gap:14px;margin:10px 0 14px}
-.bar a.back{display:inline-flex;align-items:center;min-height:46px;padding:0 16px 0 12px;border-radius:8px;background:var(--card);color:var(--accent);text-decoration:none;font-weight:700;border:1.5px solid var(--edge);transition:transform .18s var(--ease)}
-.bar a.back:hover{background:var(--tile)}
-.bar h2{margin:0;font:900 clamp(30px,9vw,38px)/1 var(--serif);letter-spacing:-.01em;color:var(--accent)}
-.card{background:var(--card);border:1.5px solid var(--edge);border-radius:var(--r);padding:18px 20px 10px;margin-top:14px;
-box-shadow:inset 0 0 0 4px var(--card),inset 0 0 0 5px var(--line),var(--shadow);break-inside:avoid}
-.card h3{margin:0 0 10px;font:800 21px/1.2 var(--serif);color:var(--ink)}
-.card h3::after{content:"";display:block;width:50px;height:6px;margin-top:7px;background:radial-gradient(circle,var(--accent) 0 2px,transparent 2.6px) 0 0/10px 6px repeat-x}
-.banner{background:var(--alert);color:var(--onalert);border-radius:var(--r);padding:14px 18px;font-weight:700;font-size:18px}
-.row{display:flex;gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}
+/* widoki szczegółowe */
+.bar{display:flex;align-items:center;gap:12px;margin:8px 0 14px}
+.bar a.back{display:inline-flex;align-items:center;min-height:48px;padding:0 18px 0 14px;border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;font-weight:600;box-shadow:var(--shadow);border:1px solid var(--line)}
+.bar h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.01em}
+.card{background:var(--card);border-radius:24px;padding:16px 18px 8px;margin-top:14px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.card h3{margin:0 0 6px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--mute)}
+.banner{background:var(--accent);color:var(--onaccent);border-radius:20px;padding:14px 18px;font-weight:700;font-size:18px}
+.row{display:flex;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}
 .row:first-of-type{border-top:0}
-.row .dot{flex:none;width:16px;height:16px;border-radius:50%;background:var(--c,var(--accent))}
-.row.sos .dot{--c:var(--alert)}
-.row.sos .call{background:var(--alert);color:var(--onalert);border-color:var(--alert)}
+.row .dot{flex:none;width:16px;height:16px;border-radius:50%;background:var(--c)}
+.row.sos .dot{--c:var(--accent)}
 .grow{flex:1;min-width:0}
-.name{font-weight:700}
+.name{font-weight:600}
 .when{text-align:right;white-space:nowrap}
 .when b{display:block}
-.when .s{color:var(--alert);font-weight:700}
-.call,.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:8px;background:var(--accent);color:var(--onaccent);font-weight:700;text-decoration:none;white-space:nowrap;border:1.5px solid var(--accent);transition:filter .15s}
-.call{flex:none}
-.call.alt{background:transparent;color:var(--accent);border-color:var(--edge)}
-.call:hover,.btn:hover{filter:brightness(1.1)}
+.when .s{color:var(--accent)}
+.call{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:999px;background:var(--accent);color:var(--onaccent);font-weight:700;text-decoration:none;white-space:nowrap}
+.call.alt{background:transparent;color:var(--ink);border:2px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.nav button{border:1.5px solid var(--line);background:var(--tile);color:var(--ink);border-radius:8px;width:52px;height:44px;font-size:22px;cursor:pointer}
+.nav button{border:1px solid var(--line);background:var(--tile);color:var(--ink);border-radius:14px;width:52px;height:46px;font-size:22px}
 .nav button:disabled{opacity:.35}
-.nav strong{text-transform:capitalize;font:800 22px var(--serif)}
+.nav strong{text-transform:capitalize;font-size:19px}
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px}
-.dow{font-size:13px;color:var(--mute);text-align:center;padding:2px 0;font-weight:700}
-.grid .day{border:2px solid transparent;background:var(--tile);color:var(--ink);border-radius:8px;min-height:54px;padding:4px 2px;font:inherit;font-size:15px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
-.grid .day.empty{background:none;border:0;visibility:hidden;cursor:default}
-.grid .day.past{opacity:.45}
-.grid .day.today{border-color:var(--accent);font-weight:700}
-.grid .day.sel{outline:2px solid var(--accent);background:var(--card)}
+.dow{font-size:13px;color:var(--mute);text-align:center;padding:2px 0}
+.day{border:2px solid transparent;background:var(--tile);color:var(--ink);border-radius:12px;min-height:52px;padding:4px 2px;font:inherit;font-size:15px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.day.empty{background:none;border:0;visibility:hidden}
+.day.past{opacity:.45}
+.day.today{border-color:var(--accent)}
+.day.sel{outline:2px solid var(--accent);background:var(--card)}
 .dots{display:flex;flex-wrap:wrap;gap:2px;justify-content:center}
 .dots i{width:8px;height:8px;border-radius:50%;background:var(--c)}
 #detail{font-size:16px;margin:0 0 10px;color:var(--mute);min-height:24px}
 .wnow{display:flex;align-items:center;gap:14px;padding:4px 0 12px}
 .wnow .ico{font-size:52px;line-height:1}
-.wnow .t{font:800 46px/1 var(--serif);letter-spacing:-.01em}
+.wnow .t{font-size:42px;font-weight:700;letter-spacing:-.02em;line-height:1}
 .hours{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:12px 0;border-top:1px solid var(--line);text-align:center;font-size:14px}
 .hours span{display:block;color:var(--mute);font-size:13px}
 .hours b{display:block;font-size:17px}
 .drow{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
-.drow .d{width:64px;font-weight:700;text-transform:capitalize}
+.drow .d{width:64px;font-weight:600;text-transform:capitalize}
 .drow .i{font-size:26px;width:32px;text-align:center}
 .drow .mm{flex:1;color:var(--mute);font-size:15px}
 .drow .tt2{white-space:nowrap}
 .drow .tt2 span{color:var(--mute)}
-.wwarn{background:var(--tile);border-radius:8px;padding:12px 14px;font-size:16px;margin:0 0 10px;border-left:4px solid var(--alert)}
-.apt24{background:var(--card);border:2px solid var(--alert);border-radius:var(--r);padding:18px;margin-top:14px;box-shadow:var(--shadow)}
-.apt24 .badge{display:inline-block;background:var(--alert);color:var(--onalert);font-size:14px;font-weight:700;border-radius:6px;padding:3px 10px}
-.apt24 h3{margin:10px 0 2px;font-size:24px}
-.apt24 h3::after{display:none}
+.wwarn{background:var(--tile);border-radius:14px;padding:12px 14px;font-size:16px;margin:0 0 10px}
+.apt24{background:var(--card);border:2px solid var(--accent);border-radius:24px;padding:18px;margin-top:14px;box-shadow:var(--shadow)}
+.apt24 .badge{display:inline-block;background:var(--accent);color:var(--onaccent);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:4px 12px}
+.apt24 h3{margin:10px 0 2px;font-size:22px}
 .apt24 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-details summary{cursor:pointer;font:800 20px var(--serif);padding:6px 0 10px;list-style:none}
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--accent);color:var(--onaccent);font-weight:700;text-decoration:none}
+details summary{cursor:pointer;font-weight:700;font-size:18px;padding:6px 0 10px;list-style:none}
 details summary::-webkit-details-marker{display:none}
 details summary::after{content:"＋";float:right;color:var(--accent)}
 details[open] summary::after{content:"－"}
 .plist{margin:0;padding:0 0 10px 20px;line-height:1.55;font-size:16px}
 .plist li{margin:4px 0}
-.res{flex:none;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:6px;font-weight:700;font-size:14px;color:#fff;background:#8a8f98}
-.res.w{background:#1d7a4a}.res.p{background:#c4122f}
+
+/* ===== NOWOCZESNY UKŁAD: telefon (1 kolumna) → tablet → komputer ===== */
+:root{--bg2:#f1e9dc;--r:28px;--ease:cubic-bezier(.2,.7,.2,1)}
+@media (prefers-color-scheme:dark){:root{--bg2:#0d0b09}}
+html{background:var(--bg2)}
+.notices[hidden],#v-home[hidden]{display:none}
+body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 60%),radial-gradient(900px 480px at -10% 8%,color-mix(in srgb,#2e6fd6 10%,transparent),transparent 60%),linear-gradient(180deg,var(--bg),var(--bg2)) fixed}
+.wrap{padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(48px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.card,.tile,.hero,.notice,.apt24{border-radius:var(--r)}
+.card{padding:18px 20px 10px;break-inside:avoid}
+.tile,.hero,.bar a.back,.call,.btn,.zoom button{transition:transform .18s var(--ease),box-shadow .18s var(--ease),background-color .18s}
+@media (hover:hover){
+  .tile:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(60,40,10,.06),0 18px 36px rgba(60,40,10,.14)}
+  .hero:hover{transform:translateY(-2px)}
+  .call:hover,.btn:hover{filter:brightness(1.08)}
+  .bar a.back:hover{transform:translateX(-2px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.tile .ico{width:56px;height:56px;border-radius:20px}
+.hero{background-size:140% 140%}
+
+/* tablet */
+@media (min-width:700px){
+  body{font-size:18px}
+  .wrap{max-width:860px;padding-top:28px}
+  .tiles{grid-template-columns:repeat(3,1fr);gap:14px}
+  .tile.wide{grid-column:span 3}
+  .hero{padding:28px 28px 100px;margin-top:22px}
+  .hero .date{font-size:30px}.hero .big .i{font-size:54px}.hero .big .t{font-size:60px}
+  .hero svg.sil{height:72px}
+  .top h1{font-size:60px}
+  .grid{gap:6px}.day{min-height:60px;font-size:16px}
+  /* widoki szczegółowe w dwóch kolumnach */
+  .view:not(#v-home){column-count:2;column-gap:18px}
+  .view:not(#v-home)>.bar,.view:not(#v-home)>.banner,.view:not(#v-home)>.foot,.view:not(#v-home)>#phones{column-span:all}
+  #phones{column-count:2;column-gap:18px}
+  .view:not(#v-home)>.card,.view:not(#v-home)>.apt24,#apt24{break-inside:avoid;margin-top:0;margin-bottom:18px}
+  .bar{margin:4px 0 20px}
+  .bar h2{font-size:34px}
+}
+
+/* komputer */
+@media (min-width:1100px){
+  .wrap{max-width:1180px;padding:36px 32px 64px}
+  #v-home{display:grid;grid-template-columns:minmax(400px,1fr) 1.45fr;column-gap:28px;align-items:start}
+  #v-home>.topbar,#v-home>.top,#v-home>.notices,#v-home>.foot{grid-column:1/-1}
+  #v-home>.topbar{grid-row:1}#v-home>.top{grid-row:2}#v-home>.notices{grid-row:3}#v-home>.foot{grid-row:5}
+  #v-home>.topbar{margin-bottom:-6px}
+  #v-home>.hero{grid-column:1;grid-row:4;margin-top:8px;position:sticky;top:24px;min-height:360px;padding:32px 32px 110px}
+  #v-home>.tiles{grid-column:2;grid-row:4;margin-top:8px;grid-template-columns:repeat(2,1fr);gap:16px}
+  .tile.wide{grid-column:span 2}
+  .tile{min-height:170px;padding:20px}
+  .tile .tt{font-size:20px}.tile .ss{font-size:15px}
+  .hero .date{font-size:34px}.hero .line{font-size:19px}.hero .cta{font-size:17px}
+  .top h1{font-size:72px}
+  .top .where{font-size:14px}
+  .view:not(#v-home){column-count:2;column-gap:24px}
+  .view:not(#v-home)>.bar h2,.bar h2{font-size:38px}
+}
+@media (min-width:1500px){
+  .wrap{max-width:1320px}
+  #v-home>.tiles{grid-template-columns:repeat(3,1fr)}
+  .tile.wide{grid-column:span 3}
+}
+.tile.t-pszok.soon{background:#2e9b5f;border-color:#2e9b5f;color:#fff}.tile.t-pszok.soon .ss{color:#fff}.tile.t-pszok.soon .ico{background:#fff;color:#2e9b5f}
+
+/* ===== PRZEŁĄCZNIK MOTYWU (jasny/ciemny) ===== */
+:root[data-theme="dark"]{--bg:#14110e;--card:#1f1c18;--ink:#f6f1e9;--mute:#bbb2a4;--line:#312c26;--accent:#ff5263;--tile:#2a2621;--onaccent:#25060a;--shadow:none;
+  --c-zmieszane:#aeb4b0;--c-bio:#c99562;--c-plastik:#f0c43a;--c-szklo:#5fc08a;--c-makulatura:#6aa5e6;--c-odziez:#c98bc9;--c-gabaryty:#f08c4d;;--bg2:#0d0b09;color-scheme:dark}
+:root[data-theme="light"]{  --bg:#fbf7f0;--card:#fff;--ink:#1d1b18;--mute:#5d574e;--line:#ebe3d6;--accent:#d6001c;--tile:#f3ede2;--onaccent:#fff;--shadow:0 1px 2px rgba(60,40,10,.06),0 10px 28px rgba(60,40,10,.08);--c-zmieszane:#55605a;--c-bio:#8a5a2b;--c-plastik:#d9a400;--c-szklo:#2e8b57;--c-makulatura:#2f6fb5;--c-odziez:#9b4f9b;--c-gabaryty:#d1621f;--bg2:#f1e9dc;color-scheme:light}
+#th{min-width:48px;height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font:600 18px Poppins,system-ui,sans-serif;cursor:pointer;line-height:1}
+.topbar{align-items:center}
+.t-znicz{--tc:#2e6fd6}
+.res{flex:none;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;font-weight:700;font-size:14px;color:#fff;background:#8a8f98}
+.res.w{background:#2e9b5f}.res.p{background:#d6001c}
 .tbl{width:100%;border-collapse:collapse;font-size:15px}
-.tbl th{font-size:13px;font-weight:700;color:var(--mute);text-align:right;padding:4px 6px}
+.tbl th{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);text-align:right;padding:4px 6px}
 .tbl th:nth-child(2),.tbl td:nth-child(2){text-align:left}
 .tbl td{padding:9px 6px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
 .tbl td:nth-child(2){white-space:normal}
-.tbl tr.me td{background:var(--tile);font-weight:700}
-.tbl tr.me td:first-child{border-radius:8px 0 0 8px}.tbl tr.me td:last-child{border-radius:0 8px 8px 0}
-.dbadge{flex:none;width:56px;border:1.5px solid var(--edge);border-radius:8px;background:var(--card);text-align:center;padding:5px 0;line-height:1.1}
-.dbadge b{display:block;font:800 24px var(--serif);color:var(--accent)}.dbadge span{font-size:13px;color:var(--mute)}
+.tbl tr.me td{background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:700}
+.tbl tr.me td:first-child{border-radius:10px 0 0 10px}.tbl tr.me td:last-child{border-radius:0 10px 10px 0}
+.frm{display:flex;gap:4px;margin-top:6px}
+.frm i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;font-size:11px;font-weight:700;color:#fff;background:#8a8f98}
+.frm i.w{background:#2e9b5f}.frm i.p{background:#d6001c}
+.tile.soon .frm i{outline:1px solid rgba(255,255,255,.7)}
+#v-home>#inst{margin-top:16px}
+@media (min-width:1100px){#v-home>#inst{grid-column:1/-1;grid-row:6}}
+.t-wyd{--tc:#e07a1f}
+.dbadge{flex:none;width:54px;border-radius:14px;background:color-mix(in srgb,var(--accent) 12%,var(--card));text-align:center;padding:7px 0;line-height:1.1}
+.dbadge b{display:block;font-size:21px}.dbadge span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
 .evt{border-top:1px solid var(--line)}.evt:first-child{border-top:0}
-.evt summary{display:flex;align-items:center;gap:12px;padding:12px 0;font:inherit;font-weight:400}
+.evt summary{display:flex;align-items:center;gap:12px;padding:12px 0;font-weight:400;font-size:inherit}
 .evt summary::after{margin-left:auto;float:none}
-.evt-t{display:flex;flex-direction:column;min-width:0}.evt-t b{font:800 20px/1.25 var(--serif)}
-.evt-b{padding:0 0 12px 68px;font-size:16px;line-height:1.5}.evt-b p{margin:6px 0}
+.evt-t{display:flex;flex-direction:column;min-width:0}.evt-t b{font-size:18px;line-height:1.3}
+.evt-b{padding:0 0 12px 66px;font-size:16px;line-height:1.5}.evt-b p{margin:6px 0}
 .evt.past{opacity:.6}
-#v-home>#inst{margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
 
-/* ---------- tablet ---------- */
-@media (min-width:700px){
-.wrap{max-width:880px}
-.top h1{font-size:76px}
-.tiles{grid-template-columns:repeat(3,1fr);gap:14px}
-.tile.wide,.tile.t-wyd{grid-column:span 3}
-.hero{padding:26px 28px}
-.hero::before{width:160px;height:160px;top:22px;right:28px}
-.hero::after{width:140px;height:140px;top:32px;right:38px;border-width:7px}
-.hero .r1{max-width:calc(100% - 180px)}
-.hero .date{font-size:32px}
-.hero .big .i{font-size:36px}
-.hero .big .t{font-size:42px}
-.hero .line{font-size:18px}
-.view:not(#v-home){column-count:2;column-gap:18px}
-.view:not(#v-home)>.bar,.view:not(#v-home)>.banner,.view:not(#v-home)>.foot,.view:not(#v-home)>#phones{column-span:all}
-#phones{column-count:2;column-gap:18px}
-.view:not(#v-home)>.card,.view:not(#v-home)>.apt24,#apt24{margin-top:0;margin-bottom:18px;break-inside:avoid}
-.bar{margin:6px 0 20px}
-.bar h2{font-size:42px}
-}
+<!-- EKRAN GŁÓWNY -->
+<section class="view" id="v-home">
+  <div class="topbar zoom" role="group" aria-label="Wielkość tekstu"><button id="th" aria-label="Przełącz motyw jasny/ciemny" title="Jasny / ciemny">🌙</button><button id="zm" aria-label="Mniejszy tekst">A−</button><button id="zp" aria-label="Większy tekst">A+</button></div>
+  <header class="top">
+    <p class="greet" id="greet">Dzień dobry</p>
+    <h1>Mój <span>♥</span> Kruszyn</h1>
+    <p class="where">gmina Bolesławiec · woj. dolnośląskie</p>
+  </header>
 
-/* ---------- komputer ---------- /
-@media (min-width:1100px){
-.wrap{max-width:1180px}
-#v-home{display:grid;grid-template-columns:1.05fr 1fr;column-gap:36px;align-items:center}
-#v-home>.topbar{grid-column:1/-1;grid-row:1}
-#v-home>.top{grid-column:1;grid-row:2;padding:18px 0}
-#v-home>.hero{grid-column:2;grid-row:2;margin-top:10px}
-#v-home>.notices{grid-column:1/-1;grid-row:3}
-#v-home>.tiles{grid-column:1/-1;grid-row:4;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px}
-#v-home>#inst{grid-column:1/-1;grid-row:5}
-.tile.wide{grid-column:span 2}
-.tile.t-wyd{grid-column:span 2;min-height:136px}
-.tile{min-height:150px;padding:18px}
-.tile .tt{font-size:24px}.tile .ss{font-size:16px}
-.top h1{font-size:100px}
-.top .greet{font-size:28px}
-.top .where{font-size:17px}
-.view:not(#v-home){column-count:2;column-gap:24px}
-.bar h2{font-size:48px}
-}
-@media (min-width:1500px){
-.wrap{max-width:1320px}
-#v-home>.tiles{grid-template-columns:repeat(5,1fr)}
-}
-@media (prefers-reduced-motion:reduce){,::before,::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+  <a class="hero night" id="hero" href="#/pogoda" aria-label="Pogoda w Kruszynie – szczegóły">
+    <div class="lab">Dziś w Kruszynie</div>
+    <div class="r1"><div class="date" id="h-date"></div><div class="big"><span class="i" id="h-ico"></span><span class="t" id="h-temp"></span></div></div>
+    <div class="line" id="h-line">Ładuję pogodę…</div>
+    <span class="cta">Prognoza na 5 dni ›</span>
+    <svg class="sil" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60V44H20V36L30 28L40 36V44H70V38L82 30L94 38V46H130V40H150V46H172V30H178L184 12L190 30H196V46H230V38L244 28L258 38V44H290V36L300 28L310 36V46H345V40L357 32L369 40V44H400V60Z"/></svg>
+  </a>
 
+  <div class="notices" id="notices" hidden></div>
 
-[
+  <div class="tiles">
+    <a class="tile soon wide" id="t-warn" href="#/pogoda" hidden>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2zM12 10v5M12 18h.01"/></svg></span>
+      <span class="txt"><span class="tt">Ostrzeżenie pogodowe</span><span class="ss" id="tw-s"></span></span>
+    </a>
+    <a class="tile soon wide" id="t-imgw" href="#/pogoda" hidden>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2zM12 10v5M12 18h.01"/></svg></span>
+      <span class="txt"><span class="tt" id="ti-t"></span><span class="ss" id="ti-s"></span></span>
+    </a>
+    <a class="tile t-wyd" id="t-wyd" href="#/wydarzenia">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M9 15h6"/></svg></span>
+      <span class="txt"><span class="tt" id="wy-t">Wydarzenia</span><span class="ss" id="wy-s">Dodaj wydarzenie do kalendarza wsi</span></span>
+    </a>
+    <a class="tile t-waste" id="t-waste" href="#/smieci">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg></span>
+      <span class="txt"><span class="tt" id="tr-t">Wywóz śmieci</span><span class="ss" id="tr-s">Ładuję…</span></span>
+    </a>
+    <a class="tile t-znicz" id="t-znicz" href="#/znicz" hidden>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.8 2.8-1.4 4.4H9.6l-1.4-4.4zM12 7.5V3M15.8 10.3l4.2-1.3M14.4 14.7l2.6 3.5M9.6 14.7l-2.6 3.5M8.2 10.3L4 9"/></svg></span>
+      <span class="txt"><span class="tt" id="zn-t">Znicz Kruszyn</span><span class="ss" id="zn-s"></span></span>
+    </a>
+    <a class="tile t-prad" id="t-prad" href="#/prad">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+      <span class="txt"><span class="tt" id="pr-t">Prąd</span><span class="ss" id="pr-s">awarie i wyłączenia</span></span>
+    </a>
+    <a class="tile t-msza" id="t-msza" href="#/msze">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1.5v4M10 3.5h4M12 5.5l5 4V21H7V9.5zM10 21v-4.5a2 2 0 0 1 4 0V21M3 21h18"/></svg></span>
+      <span class="txt"><span class="tt" id="tm-t">Msze święte</span><span class="ss" id="tm-s"></span></span>
+    </a>
+    <a class="tile t-apt" id="t-apt" href="#/apteki" hidden>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zM12 8v8M8 12h8"/></svg></span>
+      <span class="txt"><span class="tt">Apteka całodobowa</span><span class="ss" id="apt-s"></span></span>
+    </a>
+    <a class="tile t-pszok" id="t-pszok" href="#/pszok" hidden>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6M5 10v10h14V10M9 20v-6h6v6"/></svg></span>
+      <span class="txt"><span class="tt" id="ps-t">PSZOK</span><span class="ss" id="ps-s"></span></span>
+    </a>
+    <div class="tile t-air" id="t-air" hidden>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/></svg></span>
+      <span class="txt"><span class="tt" id="air-t">Powietrze</span><span class="ss" id="air-s"></span></span>
+    </div>
+    <a class="tile t-tel wide" href="#/telefony">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span>
+      <span class="txt"><span class="tt">Ważne telefony</span><span class="ss">alarmowe, awarie, urząd</span></span>
+    </a>
+  </div>
+  <div class="card" id="inst" hidden>
+    <h3>Aplikacja w telefonie</h3>
+    <p class="sub" id="inst-txt" style="line-height:1.6;margin:0 0 10px"></p>
+    <p style="margin:0 0 12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="inst-btn" type="button" hidden>Zainstaluj aplikację</button><button class="call alt" id="inst-no" type="button" style="font:inherit;font-weight:600;cursor:pointer">Nie teraz</button></p>
+  </div>
+</section>
 
-Prognoza na 5 dni ›
+<!-- POGODA -->
+<section class="view" id="v-pogoda" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Pogoda</h2></div>
+  <div class="card" id="imgw-card" hidden><h3>Ostrzeżenia IMGW dla powiatu bolesławieckiego</h3><div id="imgw-list"></div></div>
+  <div class="card" id="wdetail"><p class="sub">Ładuję pogodę…</p></div>
+</section>
 
-<svg class="sil" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60V44H20V36L30 28L40 36V44H70V38L82 30L94 38V46H130V40H150V46H172V30H178L184 12L190 30H196V46H230V38L244 28L258 38V44H290V36L300 28L310 36V46H345V40L357 32L369 40V44H400V60Z" /></svg>
+<!-- TELEFONY -->
+<section class="view" id="v-telefony" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Ważne telefony</h2></div>
+  <div id="phones"></div>
+</section>
+
+<!-- PRĄD -->
+<section class="view" id="v-prad" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Prąd</h2></div>
+  <div class="card">
+    <h3>Zgłoszone w Kruszynie</h3>
+    <div id="prad-list"></div>
+  </div>
+  <div class="card">
+    <h3>Sprawdź na Tauron Dystrybucja</h3>
+    <div class="row"><div class="grow"><div class="name">Awarie i planowane wyłączenia</div><div class="sub">wpisz miejscowość, ulicę i numer</div></div><a class="call" href="https://www.tauron-dystrybucja.pl/wylaczenia">Otwórz</a></div>
+    <div class="row"><div class="grow"><div class="name">Powiadomienia SMS / e-mail</div><div class="sub">Tauron wyśle info o wyłączeniu pod Twój adres</div></div><a class="call alt" href="https://www.tauron-dystrybucja.pl/powiadomienia">Zapisz się</a></div>
+    <div class="row sos"><span class="dot"></span><div class="grow"><div class="name">Pogotowie energetyczne</div><div class="sub">awaria, zerwany przewód, zagrożenie</div></div><a class="call" href="tel:991">991</a></div>
+  </div>
+  <div class="card"><h3>Gdy zabraknie prądu</h3><div class="sub" style="padding-bottom:10px;line-height:1.6">Sprawdź bezpieczniki w domu i czy prąd mają sąsiedzi. Jeśli nie, zgłoś awarię pod 991. Nie zbliżaj się do zerwanych przewodów.</div></div>
+  <p class="foot" id="prad-foot">Wiążące informacje: <a href="https://www.tauron-dystrybucja.pl/wylaczenia">tauron-dystrybucja.pl</a>.</p>
+</section>
+
+<!-- APTEKI -->
+<section class="view" id="v-apteki" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Apteki</h2></div>
+  <div id="apt24"></div>
+  <div class="card"><h3>Inne apteki w Bolesławcu</h3><div id="aptlist"></div></div>
+  <p class="foot">Dyżury nocne i świąteczne wyznacza powiat. Stały dyżur całodobowy ma apteka „U Nelli”, ale przed wyjazdem warto zadzwonić.<br>Sprawdź też: <a href="https://powiatboleslawiecki.pl/dyzury-aptek/">powiatboleslawiecki.pl</a> · <a href="https://www.bolec.info/boleslawiec/apteki">bolec.info</a></p>
+</section>
+
+<!-- MSZE -->
+<section class="view" id="v-msze" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Msze święte</h2></div>
+  <div class="card"><h3>Kruszyn · św. Jana Chrzciciela</h3><div id="m-kr"></div></div>
+  <div class="card" id="int-card" hidden><h3>Intencje mszalne · Kruszyn</h3><div id="int-list"></div></div>
+  <div class="card"><h3>Łaziska</h3><div id="m-lz"></div></div>
+  <div class="card"><h3>Stały porządek</h3><div id="m-rule" class="sub" style="padding-bottom:10px;line-height:1.6"></div></div>
+  <p class="foot">Źródło: <a href="https://kruszyn.com/porzadek-nabozenstw/">kruszyn.com</a> · <a href="https://kruszyn.com/ogloszenia-parafialne/">intencje mszalne</a><br>W święta i uroczystości godziny mogą się różnić – sprawdź ogłoszenia parafialne lub zadzwoń: <a href="tel:757321414">75 732 14 14</a>.</p>
+</section>
+
+<!-- PSZOK -->
+<section class="view" id="v-pszok" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>PSZOK</h2></div>
+  <div class="banner" id="ps-banner"></div>
+  <div class="card"><h3>Punkt Selektywnej Zbiórki Odpadów</h3><div id="ps-info"></div></div>
+  <div class="card"><h3>Godziny otwarcia</h3><div id="ps-hours"></div></div>
+  <div class="card"><h3>Zasady</h3><ul class="plist" id="ps-rules"></ul></div>
+  <div class="card"><details><summary>Co przyjmuje PSZOK</summary><ul class="plist" id="ps-yes"></ul></details></div>
+  <div class="card"><details><summary>Czego NIE przyjmuje</summary><ul class="plist" id="ps-no"></ul></details></div>
+  <div class="card"><h3>Zbiórka sprzed domu</h3><p class="sub" id="ps-mob" style="line-height:1.6;padding-bottom:10px"></p><p style="margin:0 0 14px"><a class="btn" href="#/smieci">Zobacz terminy</a></p></div>
+  <p class="foot" id="ps-foot"></p>
+</section>
+
+<!-- ZNICZ -->
+<section class="view" id="v-znicz" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Znicz Kruszyn</h2></div>
+  <div class="banner" id="zn-banner" hidden></div>
+  <div class="card" id="zn-next-card" hidden><h3>Najbliższe mecze</h3><div id="zn-next"></div></div>
+  <div class="card" id="zn-last-card" hidden><h3>Ostatnie mecze</h3><div id="zn-last"></div></div>
+  <div class="card" id="zn-tab-card" hidden><h3 id="zn-tab-h">Tabela</h3><div style="overflow-x:auto"><table class="tbl" id="zn-tab"></table></div><p class="sub" id="zn-tab-note" style="margin:6px 0 10px"></p></div>
+  <p class="foot" id="zn-foot"></p>
+</section>
+
+<!-- WYDARZENIA -->
+<section class="view" id="v-wydarzenia" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wydarzenia</h2></div>
+  <div class="card"><h3>Organizujesz coś we wsi?</h3><p class="sub" style="margin:0 0 12px;line-height:1.6">Wypełnij krótki formularz. Wydarzenie pojawi się tutaj po zatwierdzeniu, zwykle w ciągu kilku godzin.</p><p style="margin:0 0 12px"><a class="btn" id="wy-form" href="#" target="_blank" rel="noopener">Dodaj wydarzenie</a></p></div>
+  <div class="card"><h3>Nadchodzące</h3><div id="wy-up"></div></div>
+  <div class="card" id="wy-past-card" hidden><h3>Minione (ostatnie 5)</h3><div id="wy-past"></div></div>
+  <div class="card" id="wy-sub-card" hidden><h3>Kalendarz w telefonie</h3><p class="sub" style="margin:0 0 12px;line-height:1.6">Wszystkie wydarzenia będą same pojawiać się w kalendarzu telefonu.</p><p style="margin:0 0 14px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn" id="wy-web" href="#">Dodaj do kalendarza</a><a class="call alt" id="wy-ics" href="data/kruszyn-wydarzenia.ics" download>Pobierz plik .ics</a></p></div>
+  <p class="foot" id="wy-foot">Wydarzenia zgłaszają mieszkańcy, a administrator aplikacji je zatwierdza. Za treść odpowiada organizator.</p>
+</section>
+
+<!-- ŚMIECI -->
+<section class="view" id="v-smieci" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wywóz śmieci</h2></div>
+  <div class="banner" id="walert" hidden></div>
+  <div class="card"><h3>Najbliższe odbiory</h3><div id="list"></div></div>
+  <div class="card">
+    <h3>Kalendarz odbiorów</h3>
+    <div class="nav"><button id="prev" aria-label="Poprzedni miesiąc">‹</button><strong id="mname"></strong><button id="next" aria-label="Następny miesiąc">›</button></div>
+    <div class="grid" id="grid"></div>
+    <p id="detail"></p>
+  </div>
+  <div class="card" id="cal-card" hidden>
+    <h3>Przypomnienia w telefonie</h3>
+    <p class="sub" style="margin:0 0 12px">Dodaj terminy wywozu do kalendarza w telefonie – będą się same aktualizować.</p>
+    <p style="margin:0 0 12px"><a class="btn" id="cal-web" href="#">Dodaj do kalendarza</a></p>
+    <p class="sub" style="margin:0 0 8px"><a id="cal-ics" href="data/kruszyn-smieci.ics" download>Pobierz plik .ics</a> (jeśli przycisk nie działa)</p>
+  </div>
+  <p class="foot" id="foot"></p>
+</section>
+
+<footer class="foot contact">
+  <div class="coffee" id="coffee">
+    <span class="cmsg"><b>Podoba Ci się aplikacja?</b>Jest darmowa i tworzona społecznie. Masz pomysł albo zauważyłeś błąd? Daj znać. Chcesz wesprzeć rozwój? Dziękuję!</span>
+    <div class="cbtns">
+      <a class="cx" href="https://forms.gle/PQtFD4dm6tY9ub5KA" target="_blank" rel="noopener">💬 Napisz do twórcy</a>
+      <a class="cbtn" id="coffee-a" href="#" target="_blank" rel="noopener" hidden>☕ Postaw kawę</a>
+    </div>
+  </div>
+  <p class="srcs">Pogoda: Open-Meteo · Wywóz śmieci: COM-D · Msze: kruszyn.com</p>
+</footer>
+</div>
+<script>
+// ---------- Wsparcie autora (buycoffee.to) ----------
+const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
+const COFFEE_URL  = 'https://buycoffee.to/fraktai';
+if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "pdf", "fetched": "2026-11-15", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&','<':'<','>':'>','"':'"'}[c]));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pad = n => String(n).padStart(2, '0');
-const iso = (y, m, d) => ${y}-${pad(m)}-${pad(d)};
+const iso = (y, m, d) => `${y}-${pad(m)}-${pad(d)}`;
 const utc = s => { const [y, m, d] = s.split('-').map(Number); return Date.UTC(y, m - 1, d); };
 const fmt = (s, o) => new Intl.DateTimeFormat('pl-PL', {timeZone: 'UTC', ...o}).format(new Date(utc(s)));
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const now = new Date();
 const today = iso(now.getFullYear(), now.getMonth() + 1, now.getDate());
 const diff = s => Math.round((utc(s) - utc(today)) / 864e5);
-const rel = n => n === 0 ? 'dziś' : n === 1 ? 'jutro' : za ${n} dni;
-const col = id => style="--c:var(--c-${esc(id)})";
-const bag = id => <svg class="bag" viewBox="0 0 24 24" ${col(id)} aria-hidden="true"><path d="M9 3h6l-1 3h-4L9 3zm-2 5h10c1.7 0 3 1.5 2.8 3.2l-1 8C18.6 20.8 17.3 22 15.7 22H8.3c-1.6 0-2.9-1.2-3.1-2.8l-1-8C4 9.5 5.3 8 7 8z"/></svg>;
+const rel = n => n === 0 ? 'dziś' : n === 1 ? 'jutro' : `za ${n} dni`;
+const col = id => `style="--c:var(--c-${esc(id)})"`;
+const bag = id => `<svg class="bag" viewBox="0 0 24 24" ${col(id)} aria-hidden="true"><path d="M9 2h6l-1 3c3 1 6 4 6 9a8 8 0 0 1-16 0c0-5 3-8 6-9z"/></svg>`;
 
 // ---------- nawigacja (#/pogoda, #/smieci) ----------
 const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony', 'apteki', 'prad', 'pszok', 'znicz', 'wydarzenia'];
 function route() {
-const h = (location.hash || '').replace(/^#/?/, '');
-const v = VIEWS.includes(h) ? h : 'home';
-VIEWS.forEach(x => { $('v-' + x).hidden = x !== v; });
-const ft = document.querySelector('footer.contact'); if (ft) ft.hidden = v !== 'home';   // stopka tylko na stronie głównej
-window.scrollTo(0, 0);
+  const h = (location.hash || '').replace(/^#\/?/, '');
+  const v = VIEWS.includes(h) ? h : 'home';
+  VIEWS.forEach(x => { $('v-' + x).hidden = x !== v; });
+  const ft = document.querySelector('footer.contact'); if (ft) ft.hidden = v !== 'home';   // stopka tylko na stronie głównej
+  window.scrollTo(0, 0);
 }
 addEventListener('hashchange', route);
 route();
@@ -270,518 +483,521 @@ $('h-date').textContent = cap(fmt(today, {weekday: 'long', day: 'numeric', month
 
 // ---------- MSZE ŚWIĘTE (kruszyn.com/porzadek-nabozenstw) ----------
 (function () {
-const ymd = s => s.split('-').map(Number);
-const addDays = (s, n) => { const d = new Date(utc(s) + n * 864e5); return iso(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()); };
-const dow = s => new Date(utc(s)).getUTCDay();
-const easter = y => { const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
-g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7,
-m = Math.floor((a + 11 * h + 22 * l) / 451), t = h + l - 7 * m + 114; return iso(y, Math.floor(t / 31), t % 31 + 1); };
-const FIXED = {'01-01': 'Nowy Rok', '01-06': 'Trzech Króli', '08-15': 'Wniebowzięcie NMP', '11-01': 'Wszystkich Świętych', '12-25': 'Boże Narodzenie', '12-26': 'św. Szczepana'};
-function holiday(s) {
-const [y, m, d] = ymd(s); const f = FIXED[pad(m) + '-' + pad(d)]; if (f) return f;
-const e = easter(y); return s === addDays(e, 1) ? 'Poniedziałek Wielkanocny' : s === addDays(e, 60) ? 'Boże Ciało' : null;
-}
-function roraty(s) {
-const y = ymd(s)[0], c = iso(y, 12, 25), adv = addDays(c, -(dow(c) || 7) - 21);
-return s >= adv && s <= iso(y, 12, 24) && dow(s) !== 0;
-}
-function kruszyn(s) {
-const hol = holiday(s), w = dow(s), m = ymd(s)[1];
-if (w === 0 || hol) return {t: ['8:00', '12:00'], note: hol || 'niedziela'};
-if (roraty(s)) return {t: ['6:30', '17:00'], note: 'roraty + wieczorna'};
-if (m === 1) return {t: ['10:00'], note: 'w czasie kolędy'};
-if (m === 10 || m === 11) return {t: ['17:00'], note: ''};
-return {t: ['18:00'], note: ''};
-}
-function laziska(s) {
-const hol = holiday(s), w = dow(s), [, m, d] = ymd(s), winter = m === 10 || m === 11;
-if (w === 0 || hol) return {t: ['10:00'], note: hol || 'niedziela'};
-const t = []; let note = '';
-if (w === 3) t.push(m === 1 ? '10:00' : winter ? '17:00' : '18:00');
-if (w === 5 && d <= 7) { t.push(winter ? '15:30' : '16:30'); note = 'pierwszy piątek'; }
-return {t, note};
-}
-const mins = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-const nowMin = now.getHours() * 60 + now.getMinutes();
-const dayName = (s, k) => k === 0 ? 'Dziś' : k === 1 ? 'Jutro' : cap(fmt(s, {weekday: 'long'})) + ' ' + fmt(s, {day: 'numeric', month: 'numeric'});
+  const ymd = s => s.split('-').map(Number);
+  const addDays = (s, n) => { const d = new Date(utc(s) + n * 864e5); return iso(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()); };
+  const dow = s => new Date(utc(s)).getUTCDay();
+  const easter = y => { const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
+    g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7,
+    m = Math.floor((a + 11 * h + 22 * l) / 451), t = h + l - 7 * m + 114; return iso(y, Math.floor(t / 31), t % 31 + 1); };
+  const FIXED = {'01-01': 'Nowy Rok', '01-06': 'Trzech Króli', '08-15': 'Wniebowzięcie NMP', '11-01': 'Wszystkich Świętych', '12-25': 'Boże Narodzenie', '12-26': 'św. Szczepana'};
+  function holiday(s) {
+    const [y, m, d] = ymd(s); const f = FIXED[pad(m) + '-' + pad(d)]; if (f) return f;
+    const e = easter(y); return s === addDays(e, 1) ? 'Poniedziałek Wielkanocny' : s === addDays(e, 60) ? 'Boże Ciało' : null;
+  }
+  function roraty(s) {
+    const y = ymd(s)[0], c = iso(y, 12, 25), adv = addDays(c, -(dow(c) || 7) - 21);
+    return s >= adv && s <= iso(y, 12, 24) && dow(s) !== 0;
+  }
+  function kruszyn(s) {
+    const hol = holiday(s), w = dow(s), m = ymd(s)[1];
+    if (w === 0 || hol) return {t: ['8:00', '12:00'], note: hol || 'niedziela'};
+    if (roraty(s)) return {t: ['6:30', '17:00'], note: 'roraty + wieczorna'};
+    if (m === 1) return {t: ['10:00'], note: 'w czasie kolędy'};
+    if (m === 10 || m === 11) return {t: ['17:00'], note: ''};
+    return {t: ['18:00'], note: ''};
+  }
+  function laziska(s) {
+    const hol = holiday(s), w = dow(s), [, m, d] = ymd(s), winter = m === 10 || m === 11;
+    if (w === 0 || hol) return {t: ['10:00'], note: hol || 'niedziela'};
+    const t = []; let note = '';
+    if (w === 3) t.push(m === 1 ? '10:00' : winter ? '17:00' : '18:00');
+    if (w === 5 && d <= 7) { t.push(winter ? '15:30' : '16:30'); note = 'pierwszy piątek'; }
+    return {t, note};
+  }
+  const mins = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+  const dayName = (s, k) => k === 0 ? 'Dziś' : k === 1 ? 'Jutro' : cap(fmt(s, {weekday: 'long'})) + ' ' + fmt(s, {day: 'numeric', month: 'numeric'});
 
-// kafelek: najbliższa msza w Kruszynie
-let found = null;
-for (let k = 0; k < 14 && !found; k++) {
-const s = addDays(today, k), r = kruszyn(s);
-const t = r.t.find(x => k > 0 || mins(x) > nowMin);
-if (t) found = {k, s, t, r};
-}
-if (found) {
-const when = found.k === 0 ? 'dziś' : found.k === 1 ? 'jutro' : fmt(found.s, {weekday: 'long'});
-$('tm-t').textContent = Msza: ${when}, ${found.t};
-$('tm-s').textContent = 'Kruszyn' + (found.r.note ? ' · ' + found.r.note : '');
-if (found.k === 0) $('t-msza').classList.add('soon');
-window.__nm = {s: found.s, t: found.t};
-}
+  // kafelek: najbliższa msza w Kruszynie
+  let found = null;
+  for (let k = 0; k < 14 && !found; k++) {
+    const s = addDays(today, k), r = kruszyn(s);
+    const t = r.t.find(x => k > 0 || mins(x) > nowMin);
+    if (t) found = {k, s, t, r};
+  }
+  if (found) {
+    const when = found.k === 0 ? 'dziś' : found.k === 1 ? 'jutro' : fmt(found.s, {weekday: 'long'});
+    $('tm-t').textContent = `Msza: ${when}, ${found.t}`;
+    $('tm-s').textContent = 'Kruszyn' + (found.r.note ? ' · ' + found.r.note : '');
+    if (found.k === 0) $('t-msza').classList.add('soon');
+    window.__nm = {s: found.s, t: found.t};
+  }
 
-// widok: 7 dni Kruszyn, najbliższe Łaziska
-const row = (name, note, times, soon) => <div class="row"><span class="dot"></span><div class="grow"><div class="name">${esc(name)}</div>${note ? ${esc(note)} : ''}</div><div class="when"><b class="${soon ? 's' : ''}">${esc(times)}</b></div></div>;
-let h = '';
-for (let k = 0; k < 7; k++) { const s = addDays(today, k), r = kruszyn(s); h += row(dayName(s, k), r.note, r.t.join(' · '), k <= 1); }
-$('m-kr').innerHTML = h;
-h = '';
-for (let k = 0, n = 0; k < 21 && n < 5; k++) { const s = addDays(today, k), r = laziska(s); if (r.t.length) { n++; h += row(dayName(s, k), r.note, r.t.join(' · '), k <= 1); } }
-$('m-lz').innerHTML = h;
-$('m-rule').innerHTML = 'Kruszyn: niedziele i święta 8:00, 12:00 · dni powszednie 18:00 (październik/listopad 17:00) · roraty 6:30 · styczeń (kolęda) 10:00
-
-
-
-Łaziska: niedziele i święta 10:00 · środa 18:00 (paźdz./listop. 17:00) · pierwszy piątek 16:30 (paźdz./listop. 15:30)';
+  // widok: 7 dni Kruszyn, najbliższe Łaziska
+  const row = (name, note, times, soon) => `<div class="row"><div class="grow"><div class="name">${esc(name)}</div>${note ? `<div class="sub">${esc(note)}</div>` : ''}</div><div class="when"><b class="${soon ? 's' : ''}">${esc(times)}</b></div></div>`;
+  let h = '';
+  for (let k = 0; k < 7; k++) { const s = addDays(today, k), r = kruszyn(s); h += row(dayName(s, k), r.note, r.t.join(' · '), k <= 1); }
+  $('m-kr').innerHTML = h;
+  h = '';
+  for (let k = 0, n = 0; k < 21 && n < 5; k++) { const s = addDays(today, k), r = laziska(s); if (r.t.length) { n++; h += row(dayName(s, k), r.note, r.t.join(' · '), k <= 1); } }
+  $('m-lz').innerHTML = h;
+  $('m-rule').innerHTML = '<b>Kruszyn:</b> niedziele i święta 8:00, 12:00 · dni powszednie 18:00 (październik/listopad 17:00) · roraty 6:30 · styczeń (kolęda) 10:00<br><b>Łaziska:</b> niedziele i święta 10:00 · środa 18:00 (paźdz./listop. 17:00) · pierwszy piątek 16:30 (paźdz./listop. 15:30)';
 })();
 
 // ---------- PSZOK (dane z wies.json -> "pszok") ----------
 function renderPszok(P) {
-if (!P || !P.godziny) return;
-const tel = t => 'tel:' + String(t).replace(/\s/g, '');
-const mins = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-const nowM = now.getHours() * 60 + now.getMinutes();
-const dn = ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota'], dn2 = ['nd', 'pn', 'wt', 'śr', 'cz', 'pt', 'so'];
-const H = P.godziny, dow = now.getDay(), td = H[dow];
-let title, sub, open = false;
-if (td && nowM >= mins(td[0]) && nowM < mins(td[1])) { open = true; title = 'PSZOK: otwarty do ' + td[1]; sub = P.adres.split(' (')[0]; }
-else {
-let k = td && nowM < mins(td[0]) ? 0 : 1;
-for (; k <= 7 && !H[(dow + k) % 7]; k++);
-const d = (dow + k) % 7, hh = H[d];
-title = 'PSZOK: ' + (k === 0 ? 'dziś' : k === 1 ? 'jutro' : dn[d]) + ' od ' + hh[0];
-sub = 'zamknięty teraz · ' + P.adres.split(' (')[0];
-}
-$('ps-t').textContent = title; $('ps-s').textContent = sub; $('t-pszok').hidden = false;
-if (open) $('t-pszok').classList.add('soon');
-$('ps-banner').textContent = open ? 'Teraz otwarty – do ' + td[1] : 'Teraz zamknięty';
-$('ps-info').innerHTML = <div class="row"><span class="dot"></span><div class="grow"><div class="name">${esc(P.adres)}</div><div class="sub">prowadzi: ${esc(P.operator || '')}</div></div></div> <div class="row"><div class="grow"><a class="call" href="${esc(tel(P.tel))}">Zadzwoń ${esc(P.tel)}</a></div><a class="call alt" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(P.mapa || P.adres)}">Mapa</a></div> +
-(P.tel2 ? <div class="row"><span class="dot"></span><div class="grow"><div class="sub">Telefon komórkowy</div></div><a class="call alt" href="${esc(tel(P.tel2))}">${esc(P.tel2)}</a></div> : '');
-$('ps-hours').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(d => <div class="row"><span class="dot"></span><div class="grow name" style="text-transform:capitalize${d === dow ? ';color:var(--accent)' : ''}">${dn[d]}</div><div class="when"><b>${H[d] ? esc(H[d][0] + ' – ' + H[d][1]) : '<span class="sub" style="font-weight:400">nieczynne</span>'}</b></div></div>).join('');
-const ul = a => (a || []).map(x => <li>${esc(x)}</li>).join('');
-$('ps-rules').innerHTML = ul(P.zasady); $('ps-yes').innerHTML = ul(P.przyjmuje); $('ps-no').innerHTML = ul(P.nie_przyjmuje);
-$('ps-mob').textContent = P.zbiorki || '';
-$('ps-foot').innerHTML = Źródło: <a href="${esc(P.zrodlo || '#')}">gminaboleslawiec.pl</a>. Godziny w święta i dni wolne mogą się różnić – przed wyjazdem zadzwoń.;
+  if (!P || !P.godziny) return;
+  const tel = t => 'tel:' + String(t).replace(/\s/g, '');
+  const mins = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const nowM = now.getHours() * 60 + now.getMinutes();
+  const dn = ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota'], dn2 = ['nd', 'pn', 'wt', 'śr', 'cz', 'pt', 'so'];
+  const H = P.godziny, dow = now.getDay(), td = H[dow];
+  let title, sub, open = false;
+  if (td && nowM >= mins(td[0]) && nowM < mins(td[1])) { open = true; title = 'PSZOK: otwarty do ' + td[1]; sub = P.adres.split(' (')[0]; }
+  else {
+    let k = td && nowM < mins(td[0]) ? 0 : 1;
+    for (; k <= 7 && !H[(dow + k) % 7]; k++);
+    const d = (dow + k) % 7, hh = H[d];
+    title = 'PSZOK: ' + (k === 0 ? 'dziś' : k === 1 ? 'jutro' : dn[d]) + ' od ' + hh[0];
+    sub = 'zamknięty teraz · ' + P.adres.split(' (')[0];
+  }
+  $('ps-t').textContent = title; $('ps-s').textContent = sub; $('t-pszok').hidden = false;
+  if (open) $('t-pszok').classList.add('soon');
+  $('ps-banner').textContent = open ? 'Teraz otwarty – do ' + td[1] : 'Teraz zamknięty';
+  $('ps-info').innerHTML = `<div class="row"><div class="grow"><div class="name">${esc(P.adres)}</div><div class="sub">prowadzi: ${esc(P.operator || '')}</div></div></div>
+    <div class="row"><div class="grow"><a class="call" href="${esc(tel(P.tel))}">Zadzwoń ${esc(P.tel)}</a></div><a class="call alt" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(P.mapa || P.adres)}">Mapa</a></div>` +
+    (P.tel2 ? `<div class="row"><div class="grow"><div class="sub">Telefon komórkowy</div></div><a class="call alt" href="${esc(tel(P.tel2))}">${esc(P.tel2)}</a></div>` : '');
+  $('ps-hours').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(d => `<div class="row"><div class="grow name" style="text-transform:capitalize${d === dow ? ';color:var(--accent)' : ''}">${dn[d]}</div><div class="when"><b>${H[d] ? esc(H[d][0] + ' – ' + H[d][1]) : '<span class="sub" style="font-weight:400">nieczynne</span>'}</b></div></div>`).join('');
+  const ul = a => (a || []).map(x => `<li>${esc(x)}</li>`).join('');
+  $('ps-rules').innerHTML = ul(P.zasady); $('ps-yes').innerHTML = ul(P.przyjmuje); $('ps-no').innerHTML = ul(P.nie_przyjmuje);
+  $('ps-mob').textContent = P.zbiorki || '';
+  $('ps-foot').innerHTML = `Źródło: <a href="${esc(P.zrodlo || '#')}">gminaboleslawiec.pl</a>. Godziny w święta i dni wolne mogą się różnić – przed wyjazdem zadzwoń.`;
 }
 
 // ---------- OGŁOSZENIA I TELEFONY (wies.json) ----------
 (async function () {
-const FB = {"ogloszenia": [], "telefony": [{"grupa": "Alarmowe", "nazwa": "Numer alarmowy", "opis": "każda służba", "tel": "112", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Pogotowie ratunkowe", "tel": "999", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Straż pożarna", "tel": "998", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Policja", "tel": "997", "sos": true}, {"grupa": "Awarie", "nazwa": "Pogotowie gazowe", "tel": "992"}, {"grupa": "Awarie", "nazwa": "Pogotowie energetyczne", "tel": "991"}, {"grupa": "Nasza wieś", "nazwa": "Parafia św. Jana Chrzciciela", "opis": "kancelaria, Kruszyn", "tel": "75 732 14 14"}, {"grupa": "Nasza wieś", "nazwa": "Urząd Gminy Bolesławiec", "opis": "ul. Teatralna 1a", "tel": "75 732 32 21"}, {"grupa": "Nasza wieś", "nazwa": "COM-D – odbiór odpadów", "tel": "76 870 21 68"}], "apteki": [{"nazwa": "Apteka „U Nelli”", "adres": "ul. Dolne Młyny 21c, Bolesławiec", "tel": "75 640 92 13", "cala_doba": true}, {"nazwa": "Apteka Nova", "adres": "ul. 10 Marca 2, Bolesławiec", "tel": "75 644 35 70"}, {"nazwa": "Apteka Centrum", "adres": "ul. Karola Miarki 29b, Bolesławiec", "tel": "75 732 39 34"}, {"nazwa": "Apteka im. Szymona Fabiana", "adres": "ul. Asnyka 21/9a, Bolesławiec", "tel": "75 643 58 43"}, {"nazwa": "Apteka Pod Klonami+", "adres": "ul. Asnyka 1, Bolesławiec", "tel": "75 612 10 85"}, {"nazwa": "Apteka DR.MAX", "adres": "ul. Kościuszki 15, Bolesławiec", "tel": "75 734 87 73"}], "prad": [], "pszok": {"nazwa": "PSZOK Gminy Bolesławiec", "adres": "Łąka 2P (przy drodze wojewódzkiej 297, naprzeciwko marketu budowlanego)", "mapa": "Łąka 2P, Bolesławiec PSZOK", "tel": "76 870 21 68", "tel2": "606 816 836", "email": "dzial@com-d.pl", "operator": "COM-D Sp. z o.o.", "godziny": {"2": ["10:00", "18:00"], "4": ["10:00", "18:00"], "6": ["10:00", "18:00"]}, "przyjmuje": ["Papier i tektura", "Metale", "Tworzywa sztuczne, także styropian opakowaniowy", "Szkło", "Opakowania wielomateriałowe", "Bioodpady i odpady zielone z ogrodów", "Żarówki, świetlówki i inne odpady z rtęcią", "Leki przeterminowane i chemikalia domowe (farby, lakiery, środki ochrony roślin, rozpuszczalniki) w oryginalnych opakowaniach", "Igły i strzykawki z domowego leczenia", "Baterie i akumulatory", "Zużyty sprzęt elektryczny i elektroniczny", "Meble i odpady wielkogabarytowe", "Opony: osobowe, rowerowe, wózków, hulajnóg, motocykli", "„Czysty” gruz i ceramika budowlana", "Tekstylia, odzież i obuwie"], "nie_przyjmuje": ["Odpadów z działalności gospodarczej, także rolniczej", "Zmieszanych odpadów komunalnych", "Azbestu", "Nieoznaczonych odpadów niebezpiecznych", "Opon rolniczych i ciężarowych", "Zmieszanego gruzu i odpadów budowlanych z prac zleconych firmom", "Części samochodowych i płynów eksploatacyjnych", "Szyb samochodowych, szkła zbrojonego i hartowanego", "Płynów i sypkich odpadów w nieszczelnych lub uszkodzonych opakowaniach"], "zasady": ["Oddać można bezpłatnie, ale tylko odpady z gospodarstwa domowego mieszkańca gminy.", "Weź dokument potwierdzający adres zamieszkania w gminie lub opłatę za odpady.", "Pracownik może odmówić przyjęcia, np. gdy podejrzewa odpady z firmy lub opakowanie jest uszkodzone.", "Strona gminy nie podaje limitów ilości ani godzin w święta – w razie wątpliwości zadzwoń."], "zbiorki": "Dwa razy w roku odpady są odbierane sprzed domu: meble i wielkogabarytowe, sprzęt elektryczny i elektroniczny, opony i tekstylia. Wystaw je w dniu zbiórki przed godz. 6:00 przy pojemnikach. Terminy są w sekcji „Wywóz śmieci”.", "zrodlo": "https://gminaboleslawiec.pl/1524/punkt-selektywnego-zbierania-odpadow-komunalnych-pszok.html"}};
-let w;
-try { const r = await fetch('wies.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch () { w = FB; }
-renderPszok(w.pszok || FB.pszok);
-const tel = t => 'tel:' + String(t).replace(/\s/g, '');
-const act = (w.ogloszenia || []).filter(o => (!o.od || o.od <= today) && (!o.do || o.do >= today))
-.sort((a, b) => (b.pilne ? 1 : 0) - (a.pilne ? 1 : 0));
-if (act.length) {
-$('notices').innerHTML = act.map(o => `<div class="notice${o.pilne ? ' urgent' : ''}"><b>${esc(o.tytul || '')}</b>${o.tresc ? `<p>${esc(o.tresc)}: ''}${o.do ?do ${esc(fmt(o.do, {day: 'numeric', month: 'long'}))} : ''}</div>).join('');
-$('notices').hidden = false;
-}
-const groups = [];
-(w.telefony || []).forEach(p => { let g = groups.find(x => x.n === p.grupa); if (!g) groups.push(g = {n: p.grupa, l: []}); g.l.push(p); });
-$('phones').innerHTML = groups.map(g => `<div class="card"><h3>${esc(g.n)}</h3>` + g.l.map(p =>
-`<div class="row${p.sos ? ' sos' : ''}"><span class="dot"></span><div class="grow"><div class="name">${esc(p.nazwa)}</div>${p.opis ? `<div class="sub">${esc(p.opis)} : ''}</div><a class="call" href="${esc(tel(p.tel))}" aria-label="Zadzwoń: ${esc(p.nazwa)}">${esc(p.tel)}</a></div>).join('') + '').join('');
-// prąd: wpisy z wies.json
-let auto = {items: [], updated: null};
-try { const r = await fetch('wylaczenia.json', {cache: 'no-cache'}); if (r.ok) auto = await r.json(); } catch () {}
-const hm = t => t ? t.slice(11, 16) : '';
-const fromAuto = (auto.items || []).filter(o => o.od).map(o => ({
-typ: o.typ, dzien: o.od.slice(0, 10), dzien_do: o.do ? o.do.slice(0, 10) : null,
-godz: o.typ === 'awaria' ? 'od ' + hm(o.od) : hm(o.od) + ' – ' + hm(o.do),
-gdzie: o.tekst, koniec: o.typ === 'awaria' ? hm(o.do) : ''}));
-const pr = fromAuto.concat(w.prad || []).filter(p => (p.dzien_do || p.dzien) >= today).sort((a, b) => a.dzien < b.dzien ? -1 : 1);
-const upd = auto.updated ? new Date(auto.updated) : null;
-const stale = !upd || (Date.now() - upd.getTime()) > 36 * 36e5;
-$('prad-foot').innerHTML = (upd ? Dane z Tauron Dystrybucja pobierane automatycznie co godzinę (ostatnio: ${esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(upd))}). : 'Automatyczne pobieranie danych z Tauron nie jest jeszcze włączone.') +
-(stale && upd ? ' Dane mogą być nieaktualne.' : '') + ' Wiążące informacje: tauron-dystrybucja.pl.';
-$('prad-list').innerHTML = pr.length ? pr.map(p => {
-const k = diff(p.dzien), aw = p.typ === 'awaria';
-const when = k < 0 ? 'trwa' : rel(k);
-return <div class="row${aw ? ' sos' : ''}"><span class="dot"></span><div class="grow"><div class="name">${esc(p.gdzie)}</div><div class="sub">${aw ? 'awaria' : 'planowane wyłączenie'}${p.godz ? ' · ' + esc(p.godz) : ''}${p.koniec ? ' · koniec ok. ' + esc(p.koniec) : ''}</div></div><div class="when"><b class="${k <= 1 ? 's' : ''}">${esc(fmt(p.dzien, {weekday: 'short', day: 'numeric', month: 'short'}))}</b><span class="sub">${when}</span></div></div>;
-}).join('') : 'Brak wpisów. Sprawdź swój adres w Tauron poniżej.';
-const soonP = pr.filter(p => diff(p.dzien) <= 1);
-if (soonP.length) {
-const p = soonP[0], k = diff(p.dzien);
-$('pr-t').textContent = p.typ === 'awaria' ? 'Awaria prądu w Kruszynie' : Wyłączenie prądu: ${k <= 0 ? 'dziś' : 'jutro'};
-$('pr-s').textContent = p.gdzie + (p.godz ? ' · ' + p.godz : '') + (soonP.length > 1 ?  · +${soonP.length - 1} : '');
-$('t-prad').classList.add('soon');
-}
-// apteki
-const map = a => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a.nazwa.replace(/[„”]/g, '') + ' ' + a.adres);
-const ap = w.apteki || [], a24 = ap.filter(a => a.cala_doba), rest = ap.filter(a => !a.cala_doba);
-$('apt24').innerHTML = a24.map(a => <div class="apt24"><span class="badge">całodobowo</span><h3>${esc(a.nazwa)}</h3><div class="sub">${esc(a.adres)}</div><div class="btns"><a class="call" href="${esc(tel(a.tel))}">Zadzwoń ${esc(a.tel)}</a><a class="call alt" href="${esc(map(a))}">Mapa</a></div></div>).join('');
-$('aptlist').innerHTML = rest.map(a => <div class="row"><span class="dot"></span><div class="grow"><div class="name">${esc(a.nazwa)}</div><div class="sub">${esc(a.adres)}</div></div><a class="call" href="${esc(tel(a.tel))}" aria-label="Zadzwoń: ${esc(a.nazwa)}">${esc(a.tel)}</a></div>).join('');
-if (a24.length) { $('apt-s').textContent = a24[0].nazwa.replace(/^Apteka\s*/, '').replace(/[„”]/g, '') + ' · ' + a24[0].adres.split(',')[0]; $('t-apt').hidden = false; }
+  const FB = {"ogloszenia": [], "telefony": [{"grupa": "Alarmowe", "nazwa": "Numer alarmowy", "opis": "każda służba", "tel": "112", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Pogotowie ratunkowe", "tel": "999", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Straż pożarna", "tel": "998", "sos": true}, {"grupa": "Alarmowe", "nazwa": "Policja", "tel": "997", "sos": true}, {"grupa": "Awarie", "nazwa": "Pogotowie gazowe", "tel": "992"}, {"grupa": "Awarie", "nazwa": "Pogotowie energetyczne", "tel": "991"}, {"grupa": "Nasza wieś", "nazwa": "Parafia św. Jana Chrzciciela", "opis": "kancelaria, Kruszyn", "tel": "75 732 14 14"}, {"grupa": "Nasza wieś", "nazwa": "Urząd Gminy Bolesławiec", "opis": "ul. Teatralna 1a", "tel": "75 732 32 21"}, {"grupa": "Nasza wieś", "nazwa": "COM-D – odbiór odpadów", "tel": "76 870 21 68"}], "apteki": [{"nazwa": "Apteka „U Nelli”", "adres": "ul. Dolne Młyny 21c, Bolesławiec", "tel": "75 640 92 13", "cala_doba": true}, {"nazwa": "Apteka Nova", "adres": "ul. 10 Marca 2, Bolesławiec", "tel": "75 644 35 70"}, {"nazwa": "Apteka Centrum", "adres": "ul. Karola Miarki 29b, Bolesławiec", "tel": "75 732 39 34"}, {"nazwa": "Apteka im. Szymona Fabiana", "adres": "ul. Asnyka 21/9a, Bolesławiec", "tel": "75 643 58 43"}, {"nazwa": "Apteka Pod Klonami+", "adres": "ul. Asnyka 1, Bolesławiec", "tel": "75 612 10 85"}, {"nazwa": "Apteka DR.MAX", "adres": "ul. Kościuszki 15, Bolesławiec", "tel": "75 734 87 73"}], "prad": [], "pszok": {"nazwa": "PSZOK Gminy Bolesławiec", "adres": "Łąka 2P (przy drodze wojewódzkiej 297, naprzeciwko marketu budowlanego)", "mapa": "Łąka 2P, Bolesławiec PSZOK", "tel": "76 870 21 68", "tel2": "606 816 836", "email": "dzial@com-d.pl", "operator": "COM-D Sp. z o.o.", "godziny": {"2": ["10:00", "18:00"], "4": ["10:00", "18:00"], "6": ["10:00", "18:00"]}, "przyjmuje": ["Papier i tektura", "Metale", "Tworzywa sztuczne, także styropian opakowaniowy", "Szkło", "Opakowania wielomateriałowe", "Bioodpady i odpady zielone z ogrodów", "Żarówki, świetlówki i inne odpady z rtęcią", "Leki przeterminowane i chemikalia domowe (farby, lakiery, środki ochrony roślin, rozpuszczalniki) w oryginalnych opakowaniach", "Igły i strzykawki z domowego leczenia", "Baterie i akumulatory", "Zużyty sprzęt elektryczny i elektroniczny", "Meble i odpady wielkogabarytowe", "Opony: osobowe, rowerowe, wózków, hulajnóg, motocykli", "„Czysty” gruz i ceramika budowlana", "Tekstylia, odzież i obuwie"], "nie_przyjmuje": ["Odpadów z działalności gospodarczej, także rolniczej", "Zmieszanych odpadów komunalnych", "Azbestu", "Nieoznaczonych odpadów niebezpiecznych", "Opon rolniczych i ciężarowych", "Zmieszanego gruzu i odpadów budowlanych z prac zleconych firmom", "Części samochodowych i płynów eksploatacyjnych", "Szyb samochodowych, szkła zbrojonego i hartowanego", "Płynów i sypkich odpadów w nieszczelnych lub uszkodzonych opakowaniach"], "zasady": ["Oddać można bezpłatnie, ale tylko odpady z gospodarstwa domowego mieszkańca gminy.", "Weź dokument potwierdzający adres zamieszkania w gminie lub opłatę za odpady.", "Pracownik może odmówić przyjęcia, np. gdy podejrzewa odpady z firmy lub opakowanie jest uszkodzone.", "Strona gminy nie podaje limitów ilości ani godzin w święta – w razie wątpliwości zadzwoń."], "zbiorki": "Dwa razy w roku odpady są odbierane sprzed domu: meble i wielkogabarytowe, sprzęt elektryczny i elektroniczny, opony i tekstylia. Wystaw je w dniu zbiórki przed godz. 6:00 przy pojemnikach. Terminy są w sekcji „Wywóz śmieci”.", "zrodlo": "https://gminaboleslawiec.pl/1524/punkt-selektywnego-zbierania-odpadow-komunalnych-pszok.html"}};
+  let w;
+  try { const r = await fetch('wies.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { w = FB; }
+  renderPszok(w.pszok || FB.pszok);
+  const tel = t => 'tel:' + String(t).replace(/\s/g, '');
+  const act = (w.ogloszenia || []).filter(o => (!o.od || o.od <= today) && (!o.do || o.do >= today))
+    .sort((a, b) => (b.pilne ? 1 : 0) - (a.pilne ? 1 : 0));
+  if (act.length) {
+    $('notices').innerHTML = act.map(o => `<div class="notice${o.pilne ? ' urgent' : ''}"><b>${esc(o.tytul || '')}</b>${o.tresc ? `<p>${esc(o.tresc)}</p>` : ''}${o.do ? `<small>do ${esc(fmt(o.do, {day: 'numeric', month: 'long'}))}</small>` : ''}</div>`).join('');
+    $('notices').hidden = false;
+  }
+  const groups = [];
+  (w.telefony || []).forEach(p => { let g = groups.find(x => x.n === p.grupa); if (!g) groups.push(g = {n: p.grupa, l: []}); g.l.push(p); });
+  $('phones').innerHTML = groups.map(g => `<div class="card"><h3>${esc(g.n)}</h3>` + g.l.map(p =>
+    `<div class="row${p.sos ? ' sos' : ''}"><div class="grow"><div class="name">${esc(p.nazwa)}</div>${p.opis ? `<div class="sub">${esc(p.opis)}</div>` : ''}</div><a class="call" href="${esc(tel(p.tel))}" aria-label="Zadzwoń: ${esc(p.nazwa)}">${esc(p.tel)}</a></div>`).join('') + '</div>').join('');
+  // prąd: wpisy z wies.json
+  let auto = {items: [], updated: null};
+  try { const r = await fetch('wylaczenia.json', {cache: 'no-cache'}); if (r.ok) auto = await r.json(); } catch (_) {}
+  const hm = t => t ? t.slice(11, 16) : '';
+  const fromAuto = (auto.items || []).filter(o => o.od).map(o => ({
+    typ: o.typ, dzien: o.od.slice(0, 10), dzien_do: o.do ? o.do.slice(0, 10) : null,
+    godz: o.typ === 'awaria' ? 'od ' + hm(o.od) : hm(o.od) + ' – ' + hm(o.do),
+    gdzie: o.tekst, koniec: o.typ === 'awaria' ? hm(o.do) : ''}));
+  const pr = fromAuto.concat(w.prad || []).filter(p => (p.dzien_do || p.dzien) >= today).sort((a, b) => a.dzien < b.dzien ? -1 : 1);
+  const upd = auto.updated ? new Date(auto.updated) : null;
+  const stale = !upd || (Date.now() - upd.getTime()) > 36 * 36e5;
+  $('prad-foot').innerHTML = (upd ? `Dane z Tauron Dystrybucja pobierane automatycznie co godzinę (ostatnio: ${esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(upd))}).` : 'Automatyczne pobieranie danych z Tauron nie jest jeszcze włączone.') +
+    (stale && upd ? ' <b>Dane mogą być nieaktualne.</b>' : '') + ' Wiążące informacje: <a href="https://www.tauron-dystrybucja.pl/wylaczenia">tauron-dystrybucja.pl</a>.';
+  $('prad-list').innerHTML = pr.length ? pr.map(p => {
+    const k = diff(p.dzien), aw = p.typ === 'awaria';
+    const when = k < 0 ? 'trwa' : rel(k);
+    return `<div class="row${aw ? ' sos' : ''}"><div class="grow"><div class="name">${esc(p.gdzie)}</div><div class="sub">${aw ? 'awaria' : 'planowane wyłączenie'}${p.godz ? ' · ' + esc(p.godz) : ''}${p.koniec ? ' · koniec ok. ' + esc(p.koniec) : ''}</div></div><div class="when"><b class="${k <= 1 ? 's' : ''}">${esc(fmt(p.dzien, {weekday: 'short', day: 'numeric', month: 'short'}))}</b><span class="sub">${when}</span></div></div>`;
+  }).join('') : '<p class="sub" style="padding:4px 0 10px">Brak wpisów. Sprawdź swój adres w Tauron poniżej.</p>';
+  const soonP = pr.filter(p => diff(p.dzien) <= 1);
+  if (soonP.length) {
+    const p = soonP[0], k = diff(p.dzien);
+    $('pr-t').textContent = p.typ === 'awaria' ? 'Awaria prądu w Kruszynie' : `Wyłączenie prądu: ${k <= 0 ? 'dziś' : 'jutro'}`;
+    $('pr-s').textContent = p.gdzie + (p.godz ? ' · ' + p.godz : '') + (soonP.length > 1 ? ` · +${soonP.length - 1}` : '');
+    $('t-prad').classList.add('soon');
+  }
+  // apteki
+  const map = a => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a.nazwa.replace(/[„”]/g, '') + ' ' + a.adres);
+  const ap = w.apteki || [], a24 = ap.filter(a => a.cala_doba), rest = ap.filter(a => !a.cala_doba);
+  $('apt24').innerHTML = a24.map(a => `<div class="apt24"><span class="badge">całodobowo</span><h3>${esc(a.nazwa)}</h3><div class="sub">${esc(a.adres)}</div><div class="btns"><a class="call" href="${esc(tel(a.tel))}">Zadzwoń ${esc(a.tel)}</a><a class="call alt" href="${esc(map(a))}">Mapa</a></div></div>`).join('');
+  $('aptlist').innerHTML = rest.map(a => `<div class="row"><div class="grow"><div class="name">${esc(a.nazwa)}</div><div class="sub">${esc(a.adres)}</div></div><a class="call" href="${esc(tel(a.tel))}" aria-label="Zadzwoń: ${esc(a.nazwa)}">${esc(a.tel)}</a></div>`).join('');
+  if (a24.length) { $('apt-s').textContent = a24[0].nazwa.replace(/^Apteka\s*/, '').replace(/[„”]/g, '') + ' · ' + a24[0].adres.split(',')[0]; $('t-apt').hidden = false; }
 })();
 
 // ---------- JAKOŚĆ POWIETRZA (Open-Meteo) ----------
 (async function () {
-try {
-const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 10000);
-const r = await fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=51.2604&longitude=15.6163&current=european_aqi,pm2_5,pm10&timezone=Europe%2FWarsaw', {signal: ctl.signal});
-clearTimeout(to); if (!r.ok) throw 0;
-const c = (await r.json()).current; if (c.european_aqi == null) throw 0;
-const a = c.european_aqi;
-const L = a <= 20 ? ['bardzo dobra', '#3fcf7a'] : a <= 40 ? ['dobra', '#9ad94a'] : a <= 60 ? ['umiarkowana', '#f0c43a'] : a <= 80 ? ['dostateczna', '#f08c4d'] : a <= 100 ? ['zła', '#ff2a3d'] : ['bardzo zła', '#b3001b'];
-$('air-t').innerHTML = <i class="aq" style="--c:${L[1]}"></i>Powietrze ${L[0]};
-$('air-s').textContent = PM2,5: ${Math.round(c.pm2_5)} · PM10: ${Math.round(c.pm10)} µg/m³ + (a > 60 ? ' · ogranicz wysiłek na dworze' : '');
-$('t-air').hidden = false;
-} catch (_) {}
+  try {
+    const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 10000);
+    const r = await fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=51.2604&longitude=15.6163&current=european_aqi,pm2_5,pm10&timezone=Europe%2FWarsaw', {signal: ctl.signal});
+    clearTimeout(to); if (!r.ok) throw 0;
+    const c = (await r.json()).current; if (c.european_aqi == null) throw 0;
+    const a = c.european_aqi;
+    const L = a <= 20 ? ['bardzo dobra', '#3fcf7a'] : a <= 40 ? ['dobra', '#9ad94a'] : a <= 60 ? ['umiarkowana', '#f0c43a'] : a <= 80 ? ['dostateczna', '#f08c4d'] : a <= 100 ? ['zła', '#ff2a3d'] : ['bardzo zła', '#b3001b'];
+    $('air-t').innerHTML = `<i class="aq" style="--c:${L[1]}"></i>Powietrze ${L[0]}`;
+    $('air-s').textContent = `PM2,5: ${Math.round(c.pm2_5)} · PM10: ${Math.round(c.pm10)} µg/m³` + (a > 60 ? ' · ogranicz wysiłek na dworze' : '');
+    $('t-air').hidden = false;
+  } catch (_) {}
 })();
 
 // ---------- powitanie i wielkość tekstu ----------
 (function () {
-const h = now.getHours();
-$('greet').textContent = h >= 5 && h < 18 ? 'Dzień dobry' : h >= 18 && h < 23 ? 'Dobry wieczór' : 'Dobrej nocy';
-const L = [1, 1.15, 1.3]; let i = 0;
-try { i = Math.min(2, Math.max(0, +localStorage.getItem('kr-zoom') || 0)); } catch () {}
-const apply = () => {
-document.documentElement.style.setProperty('--z', L[i]);
-$('zm').disabled = i === 0; $('zp').disabled = i === 2;
-try { localStorage.setItem('kr-zoom', i); } catch () {}
-};
-$('zm').onclick = () => { i = Math.max(0, i - 1); apply(); };
-$('zp').onclick = () => { i = Math.min(2, i + 1); apply(); };
-apply();
+  const h = now.getHours();
+  $('greet').textContent = h >= 5 && h < 18 ? 'Dzień dobry' : h >= 18 && h < 23 ? 'Dobry wieczór' : 'Dobrej nocy';
+  const L = [1, 1.15, 1.3]; let i = 0;
+  try { i = Math.min(2, Math.max(0, +localStorage.getItem('kr-zoom') || 0)); } catch (_) {}
+  const apply = () => {
+    document.documentElement.style.setProperty('--z', L[i]);
+    $('zm').disabled = i === 0; $('zp').disabled = i === 2;
+    try { localStorage.setItem('kr-zoom', i); } catch (_) {}
+  };
+  $('zm').onclick = () => { i = Math.max(0, i - 1); apply(); };
+  $('zp').onclick = () => { i = Math.min(2, i + 1); apply(); };
+  apply();
 })();
 
 // ---------- ŚMIECI ----------
 (async function () {
-let data;
-try { const r = await fetch('data/waste.json', {cache: 'no-cache'}); if (!r.ok) throw 0; data = await r.json(); }
-catch (_) { data = FALLBACK; }
-if (!data) { $('tr-s').textContent = 'Brak danych o wywozie.'; return; }
-const fr = data.fractions;
-const items = fr.map(f => ({f, n: f.dates.find(d => diff(d) >= 0) || null}));
-const upcoming = items.filter(x => x.n).sort((a, b) => utc(a.n) - utc(b.n));
+  let data;
+  try { const r = await fetch('data/waste.json', {cache: 'no-cache'}); if (!r.ok) throw 0; data = await r.json(); }
+  catch (_) { data = FALLBACK; }
+  if (!data) { $('tr-s').textContent = 'Brak danych o wywozie.'; return; }
+  const fr = data.fractions;
+  const items = fr.map(f => ({f, n: f.dates.find(d => diff(d) >= 0) || null}));
+  const upcoming = items.filter(x => x.n).sort((a, b) => utc(a.n) - utc(b.n));
 
-// kafelek na ekranie głównym: tylko najbliższy termin
-if (upcoming.length) {
-const first = upcoming[0], k = diff(first.n);
-const group = upcoming.filter(x => x.n === first.n).map(x => x.f);
-const dateTxt = fmt(first.n, {day: 'numeric', month: 'long'});
-$('tr-t').textContent = k === 0 ? 'Dziś wywóz śmieci' : k === 1 ? 'Jutro wywóz śmieci' : Wywóz śmieci: ${dateTxt};
-$('tr-s').innerHTML = group.map(f => bag(f.id) + ' ' + esc(f.label.toLowerCase())).join(', ') +
- · ${k <= 1 ? esc(dateTxt) : rel(k)};
-if (k <= 1) $('t-waste').classList.add('soon');
-} else {
-$('tr-t').textContent = 'Wywóz śmieci';
-$('tr-s').textContent = 'Brak kolejnych terminów. Nowy harmonogram pojawi się na początku roku.';
-}
+  // kafelek na ekranie głównym: tylko najbliższy termin
+  if (upcoming.length) {
+    const first = upcoming[0], k = diff(first.n);
+    const group = upcoming.filter(x => x.n === first.n).map(x => x.f);
+    const dateTxt = fmt(first.n, {day: 'numeric', month: 'long'});
+    $('tr-t').textContent = k === 0 ? 'Dziś wywóz śmieci' : k === 1 ? 'Jutro wywóz śmieci' : `Wywóz śmieci: ${dateTxt}`;
+    $('tr-s').innerHTML = group.map(f => bag(f.id) + ' ' + esc(f.label.toLowerCase())).join(', ') +
+      ` · ${k <= 1 ? esc(dateTxt) : rel(k)}`;
+    if (k <= 1) $('t-waste').classList.add('soon');
+  } else {
+    $('tr-t').textContent = 'Wywóz śmieci';
+    $('tr-s').textContent = 'Brak kolejnych terminów. Nowy harmonogram pojawi się na początku roku.';
+  }
 
-// widok szczegółowy: alert, lista, kalendarz
-const names = n => fr.filter(f => f.dates.some(d => diff(d) === n)).map(f => f.label.toLowerCase());
-const parts = [];
-if (names(0).length) parts.push('Dziś odbiór: ' + names(0).join(', '));
-if (names(1).length) parts.push('Jutro odbiór: ' + names(1).join(', '));
-if (parts.length) { $('walert').textContent = parts.join(' · '); $('walert').hidden = false; }
+  // widok szczegółowy: alert, lista, kalendarz
+  const names = n => fr.filter(f => f.dates.some(d => diff(d) === n)).map(f => f.label.toLowerCase());
+  const parts = [];
+  if (names(0).length) parts.push('Dziś odbiór: ' + names(0).join(', '));
+  if (names(1).length) parts.push('Jutro odbiór: ' + names(1).join(', '));
+  if (parts.length) { $('walert').textContent = parts.join(' · '); $('walert').hidden = false; }
 
-const rows = items.slice().sort((a, b) => (a.n ? utc(a.n) : Infinity) - (b.n ? utc(b.n) : Infinity));
-$('list').innerHTML = rows.map(({f, n}) => {
-let right;
-if (n) {
-const k = diff(n);
-right = <div class="when"><b class="${k <= 1 ? 's' : ''}">${esc(fmt(n, {weekday: 'short', day: 'numeric', month: 'short'}))}</b><span class="sub">${rel(k)}</span></div>;
-} else if (f.dates.length) {
-right = <div class="when sub">brak kolejnego terminu<br><a href="tel:${esc(data.phone.replace(/\s/g, ''))}">${esc(data.phone)}</a></div>;
-} else {
-right = <div class="when sub">brak terminu<br><a href="tel:${esc(f.contact.replace(/\s/g, ''))}">${esc(f.contact)}</a></div>;
-}
-return <div class="row"><span class="dot" ${col(f.id)}></span><div class="grow"><div class="name">${esc(f.label)}</div><div class="sub">${esc(f.frequency)}</div></div>${right}</div>;
-}).join('');
+  const rows = items.slice().sort((a, b) => (a.n ? utc(a.n) : Infinity) - (b.n ? utc(b.n) : Infinity));
+  $('list').innerHTML = rows.map(({f, n}) => {
+    let right;
+    if (n) {
+      const k = diff(n);
+      right = `<div class="when"><b class="${k <= 1 ? 's' : ''}">${esc(fmt(n, {weekday: 'short', day: 'numeric', month: 'short'}))}</b><span class="sub">${rel(k)}</span></div>`;
+    } else if (f.dates.length) {
+      right = `<div class="when sub">brak kolejnego terminu<br><a href="tel:${esc(data.phone.replace(/\s/g, ''))}">${esc(data.phone)}</a></div>`;
+    } else {
+      right = `<div class="when sub">brak terminu<br><a href="tel:${esc(f.contact.replace(/\s/g, ''))}">${esc(f.contact)}</a></div>`;
+    }
+    return `<div class="row"><span class="dot" ${col(f.id)}></span><div class="grow"><div class="name">${esc(f.label)}</div><div class="sub">${esc(f.frequency)}</div></div>${right}</div>`;
+  }).join('');
 
-const byDate = {};
-fr.forEach(f => f.dates.forEach(d => (byDate[d] = byDate[d] || []).push(f)));
-const all = Object.keys(byDate).sort();
-const [ty, tm] = today.split('-').map(Number);
-const last = all.length ? all[all.length - 1].split('-').map(Number) : [ty, tm];
-const minI = ty * 12 + tm - 1, maxI = Math.max(minI, last[0] * 12 + last[1] - 1);
-let cur = minI, sel = today;
-const grid = $('grid');
-const showDetail = d => {
-const l = byDate[d] || [];
-$('detail').textContent = fmt(d, {weekday: 'long', day: 'numeric', month: 'long'}) + ': ' +
-(l.length ? l.map(f => f.label.toLowerCase()).join(', ') : 'brak odbiorów');
-};
-function draw() {
-const y = Math.floor(cur / 12), m = cur % 12 + 1;
-$('mname').textContent = fmt(iso(y, m, 1), {month: 'long', year: 'numeric'});
-$('prev').disabled = cur <= minI; $('next').disabled = cur >= maxI;
-const first = (new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 6) % 7;
-const dim = new Date(Date.UTC(y, m, 0)).getUTCDate();
-let h = ['pn', 'wt', 'śr', 'cz', 'pt', 'so', 'nd'].map(x => <div class="dow">${x}</div>).join('');
-for (let i = 0; i < first; i++) h += '';
-for (let d = 1; d <= dim; d++) {
-const s = iso(y, m, d), l = byDate[s] || [];
-const cls = ['day', diff(s) < 0 ? 'past' : '', s === today ? 'today' : '', s === sel ? 'sel' : ''].join(' ');
-h += <button class="${cls}" data-d="${s}" aria-label="${esc(d + ': ' + (l.map(f => f.label).join(', ') || 'brak odbiorów'))}">${d}<span class="dots">${l.map(f => <i ${col(f.id)}>).join('')}</span></button>;
-}
-grid.innerHTML = h; showDetail(sel);
-}
-grid.addEventListener('click', e => { const b = e.target.closest('.day[data-d]'); if (b) { sel = b.dataset.d; draw(); } });
-$('prev').onclick = () => { cur--; draw(); };
-$('next').onclick = () => { cur++; draw(); };
-draw();
+  const byDate = {};
+  fr.forEach(f => f.dates.forEach(d => (byDate[d] = byDate[d] || []).push(f)));
+  const all = Object.keys(byDate).sort();
+  const [ty, tm] = today.split('-').map(Number);
+  const last = all.length ? all[all.length - 1].split('-').map(Number) : [ty, tm];
+  const minI = ty * 12 + tm - 1, maxI = Math.max(minI, last[0] * 12 + last[1] - 1);
+  let cur = minI, sel = today;
+  const grid = $('grid');
+  const showDetail = d => {
+    const l = byDate[d] || [];
+    $('detail').textContent = fmt(d, {weekday: 'long', day: 'numeric', month: 'long'}) + ': ' +
+      (l.length ? l.map(f => f.label.toLowerCase()).join(', ') : 'brak odbiorów');
+  };
+  function draw() {
+    const y = Math.floor(cur / 12), m = cur % 12 + 1;
+    $('mname').textContent = fmt(iso(y, m, 1), {month: 'long', year: 'numeric'});
+    $('prev').disabled = cur <= minI; $('next').disabled = cur >= maxI;
+    const first = (new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 6) % 7;
+    const dim = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    let h = ['pn', 'wt', 'śr', 'cz', 'pt', 'so', 'nd'].map(x => `<div class="dow">${x}</div>`).join('');
+    for (let i = 0; i < first; i++) h += '<div class="day empty"></div>';
+    for (let d = 1; d <= dim; d++) {
+      const s = iso(y, m, d), l = byDate[s] || [];
+      const cls = ['day', diff(s) < 0 ? 'past' : '', s === today ? 'today' : '', s === sel ? 'sel' : ''].join(' ');
+      h += `<button class="${cls}" data-d="${s}" aria-label="${esc(d + ': ' + (l.map(f => f.label).join(', ') || 'brak odbiorów'))}">${d}<span class="dots">${l.map(f => `<i ${col(f.id)}></i>`).join('')}</span></button>`;
+    }
+    grid.innerHTML = h; showDetail(sel);
+  }
+  grid.addEventListener('click', e => { const b = e.target.closest('.day[data-d]'); if (b) { sel = b.dataset.d; draw(); } });
+  $('prev').onclick = () => { cur--; draw(); };
+  $('next').onclick = () => { cur++; draw(); };
+  draw();
 
-const src = data.mode === 'pdf' ? 'kalendarz PDF COM-D z ' : data.mode === 'seed' ? 'odczyt ręczny ' : 'pobrano ';
-$('foot').innerHTML = Źródło: <a href="${esc(data.source)}">COM-D (com-d.pl)</a> · ${src}${esc(String(data.fetched).slice(0, 10))}.<br> +
-Terminy mogą ulec zmianie – w razie wątpliwości zadzwoń: <a href="tel:${esc(data.phone.replace(/\s/g, ''))}">${esc(data.phone)}</a>.;
+  const src = data.mode === 'pdf' ? 'kalendarz PDF COM-D z ' : data.mode === 'seed' ? 'odczyt ręczny ' : 'pobrano ';
+  $('foot').innerHTML = `Źródło: <a href="${esc(data.source)}">COM-D (com-d.pl)</a> · ${src}${esc(String(data.fetched).slice(0, 10))}.<br>` +
+    `Terminy mogą ulec zmianie – w razie wątpliwości zadzwoń: <a href="tel:${esc(data.phone.replace(/\s/g, ''))}">${esc(data.phone)}</a>.`;
 })();
 
 // ---------- POGODA (Open-Meteo, bez klucza) ----------
 (async function () {
-const LAT = 51.2604, LON = 15.6163, KEY = 'kruszyn-weather';
-const URL = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
-'&current=temperature_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_gusts_10m,precipitation' +
-'&hourly=temperature_2m,precipitation_probability,weather_code' +
-'&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_gusts_10m_max' +
-'&timezone=Europe%2FWarsaw&forecast_days=5';
-const WMO = c => c === 0 ? ['Bezchmurnie', '☀️'] : c === 1 ? ['Prawie bezchmurnie', '🌤️'] : c === 2 ? ['Częściowe zachmurzenie', '⛅'] :
-c === 3 ? ['Pochmurno', '☁️'] : c <= 48 ? ['Mgła', '🌫️'] : c <= 55 ? ['Mżawka', '🌦️'] : c <= 57 ? ['Marznąca mżawka', '🌧️'] :
-c <= 65 ? ['Deszcz', '🌧️'] : c <= 67 ? ['Marznący deszcz', '🌧️'] : c <= 75 ? ['Śnieg', '🌨️'] : c === 77 ? ['Ziarna śnieżne', '🌨️'] :
-c <= 82 ? ['Przelotny deszcz', '🌦️'] : c <= 86 ? ['Przelotny śnieg', '🌨️'] : c === 95 ? ['Burza', '⛈️'] : ['Burza z gradem', '⛈️'];
-const r = Math.round;
+  const LAT = 51.2604, LON = 15.6163, KEY = 'kruszyn-weather';
+  const URL = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
+    '&current=temperature_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_gusts_10m,precipitation' +
+    '&hourly=temperature_2m,precipitation_probability,weather_code' +
+    '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_gusts_10m_max' +
+    '&timezone=Europe%2FWarsaw&forecast_days=5';
+  const WMO = c => c === 0 ? ['Bezchmurnie', '☀️'] : c === 1 ? ['Prawie bezchmurnie', '🌤️'] : c === 2 ? ['Częściowe zachmurzenie', '⛅'] :
+    c === 3 ? ['Pochmurno', '☁️'] : c <= 48 ? ['Mgła', '🌫️'] : c <= 55 ? ['Mżawka', '🌦️'] : c <= 57 ? ['Marznąca mżawka', '🌧️'] :
+    c <= 65 ? ['Deszcz', '🌧️'] : c <= 67 ? ['Marznący deszcz', '🌧️'] : c <= 75 ? ['Śnieg', '🌨️'] : c === 77 ? ['Ziarna śnieżne', '🌨️'] :
+    c <= 82 ? ['Przelotny deszcz', '🌦️'] : c <= 86 ? ['Przelotny śnieg', '🌨️'] : c === 95 ? ['Burza', '⛈️'] : ['Burza z gradem', '⛈️'];
+  const r = Math.round;
 
-async function get() {
-try {
-const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 10000);
-const res = await fetch(URL, {signal: ctl.signal}); clearTimeout(to);
-if (!res.ok) throw new Error(res.status);
-const data = await res.json();
-try { localStorage.setItem(KEY, JSON.stringify({t: Date.now(), data})); } catch () {}
-return {data, age: 0};
-} catch () {
-try { const c = JSON.parse(localStorage.getItem(KEY)); if (c) return {data: c.data, age: Date.now() - c.t}; } catch (_) {}
-return null;
-}
-}
+  async function get() {
+    try {
+      const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 10000);
+      const res = await fetch(URL, {signal: ctl.signal}); clearTimeout(to);
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      try { localStorage.setItem(KEY, JSON.stringify({t: Date.now(), data})); } catch (_) {}
+      return {data, age: 0};
+    } catch (_) {
+      try { const c = JSON.parse(localStorage.getItem(KEY)); if (c) return {data: c.data, age: Date.now() - c.t}; } catch (_) {}
+      return null;
+    }
+  }
 
-const got = await get();
-if (!got) {
-$('h-line').textContent = 'Pogoda niedostępna – brak połączenia z internetem.';
-$('wdetail').innerHTML = 'Nie udało się pobrać pogody. Sprawdź połączenie z internetem.';
-return;
-}
-const {data: w, age} = got, c = w.current, d = w.daily, hr = w.hourly;
-const code = c.weather_code, night = !c.is_day;
-const [txt0, ico0] = WMO(code);
-const clearNight = night && code <= 1;
-const txt = clearNight ? 'Pogodna noc' : txt0;
+  const got = await get();
+  if (!got) {
+    $('h-line').textContent = 'Pogoda niedostępna – brak połączenia z internetem.';
+    $('wdetail').innerHTML = '<p class="sub">Nie udało się pobrać pogody. Sprawdź połączenie z internetem.</p>';
+    return;
+  }
+  const {data: w, age} = got, c = w.current, d = w.daily, hr = w.hourly;
+  const code = c.weather_code, night = !c.is_day;
+  const [txt0, ico0] = WMO(code);
+  const clearNight = night && code <= 1;
+  const txt = clearNight ? 'Pogodna noc' : txt0;
 
-// karta na ekranie głównym
-$('hero').className = 'hero ' + (night ? 'night' : code >= 3 ? 'cloud' : 'day');
-$('h-ico').textContent = clearNight ? '🌙' : ico0;
-$('h-temp').textContent = r(c.temperature_2m) + '°';
-$('h-line').textContent = ${txt} · dziś ${r(d.temperature_2m_min[0])}° / ${r(d.temperature_2m_max[0])}° · jutro ${r(d.temperature_2m_min[1])}° / ${r(d.temperature_2m_max[1])}° +
-(d.precipitation_sum[1] >= 0.1 ? ', ' + WMO(d.weather_code[1])[0].toLowerCase() : '');
+  // karta na ekranie głównym
+  $('hero').className = 'hero ' + (night ? 'night' : code >= 3 ? 'cloud' : 'day');
+  $('h-ico').textContent = clearNight ? '🌙' : ico0;
+  $('h-temp').textContent = r(c.temperature_2m) + '°';
+  $('h-line').textContent = `${txt} · dziś ${r(d.temperature_2m_min[0])}° / ${r(d.temperature_2m_max[0])}° · jutro ${r(d.temperature_2m_min[1])}° / ${r(d.temperature_2m_max[1])}°` +
+    (d.precipitation_sum[1] >= 0.1 ? ', ' + WMO(d.weather_code[1])[0].toLowerCase() : '');
 
-// ostrzeżenia
-const warn = [];
-[0, 1].forEach(i => {
-const when = i ? 'jutro' : 'dziś';
-if (d.wind_gusts_10m_max[i] >= 60) warn.push(${when}: silne porywy wiatru do ${r(d.wind_gusts_10m_max[i])} km/h);
-if (d.weather_code[i] >= 95) warn.push(${when}: możliwa burza);
-if (d.temperature_2m_min[i] <= 0) warn.push(${when}: przymrozek (min ${r(d.temperature_2m_min[i])}°C));
-});
-if (warn.length) { $('tw-s').textContent = warn.join(' · '); $('t-warn').hidden = false; }
+  // ostrzeżenia
+  const warn = [];
+  [0, 1].forEach(i => {
+    const when = i ? 'jutro' : 'dziś';
+    if (d.wind_gusts_10m_max[i] >= 60) warn.push(`${when}: silne porywy wiatru do ${r(d.wind_gusts_10m_max[i])} km/h`);
+    if (d.weather_code[i] >= 95) warn.push(`${when}: możliwa burza`);
+    if (d.temperature_2m_min[i] <= 0) warn.push(`${when}: przymrozek (min ${r(d.temperature_2m_min[i])}°C)`);
+  });
+  if (warn.length) { $('tw-s').textContent = warn.join(' · '); $('t-warn').hidden = false; }
 
-// widok szczegółowy
-let html = <div class="wnow"><span class="ico">${clearNight ? '🌙' : ico0}</span><div><div class="t">${r(c.temperature_2m)}°C</div> <div>${esc(txt)}</div><div class="sub">odczuwalna ${r(c.apparent_temperature)}° · wiatr ${r(c.wind_speed_10m)} km/h, porywy ${r(c.wind_gusts_10m)}</div></div></div>;
-if (warn.length) html += <div class="wwarn">⚠️ ${esc(warn.join(' · '))}</div>;
-const start = Math.max(0, hr.time.findIndex(t => t >= c.time.slice(0, 13)));
-let hh = '';
-for (let k = 0; k < 6; k++) {
-const i = start + k * 2; if (i >= hr.time.length) break;
-hh += <div><span>${hr.time[i].slice(11, 16)}</span><b>${r(hr.temperature_2m[i])}°</b><span>${WMO(hr.weather_code[i])[1]} ${hr.precipitation_probability[i] ?? 0}%</span></div>;
-}
-html += <div class="hours">${hh}</div>;
-html += d.time.map((s, i) => {
-const dn = i === 0 ? 'dziś' : i === 1 ? 'jutro' : new Intl.DateTimeFormat('pl-PL', {timeZone: 'UTC', weekday: 'short'}).format(new Date(s + 'T00:00:00Z'));
-const mm = d.precipitation_sum[i] >= 0.1 ? ${d.precipitation_sum[i].toFixed(1).replace('.', ',')} mm · ${d.precipitation_probability_max[i] ?? 0}% : 'bez opadów';
-return <div class="drow"><span class="d">${esc(dn)}</span><span class="i">${WMO(d.weather_code[i])[1]}</span><span class="mm">${mm}</span><span class="tt2"><b>${r(d.temperature_2m_max[i])}°</b> <span>${r(d.temperature_2m_min[i])}°</span></span></div>;
-}).join('');
-html += age > 6e5 ? <p class="sub">Brak połączenia – dane sprzed ${Math.round(age / 6e4)} min.</p> : <p class="sub">Dane: Open-Meteo.com</p>;
-$('wdetail').innerHTML = html;
+  // widok szczegółowy
+  let html = `<div class="wnow"><span class="ico">${clearNight ? '🌙' : ico0}</span><div><div class="t">${r(c.temperature_2m)}°C</div>
+    <div>${esc(txt)}</div><div class="sub">odczuwalna ${r(c.apparent_temperature)}° · wiatr ${r(c.wind_speed_10m)} km/h, porywy ${r(c.wind_gusts_10m)}</div></div></div>`;
+  if (warn.length) html += `<div class="wwarn">⚠️ ${esc(warn.join(' · '))}</div>`;
+  const start = Math.max(0, hr.time.findIndex(t => t >= c.time.slice(0, 13)));
+  let hh = '';
+  for (let k = 0; k < 6; k++) {
+    const i = start + k * 2; if (i >= hr.time.length) break;
+    hh += `<div><span>${hr.time[i].slice(11, 16)}</span><b>${r(hr.temperature_2m[i])}°</b><span>${WMO(hr.weather_code[i])[1]} ${hr.precipitation_probability[i] ?? 0}%</span></div>`;
+  }
+  html += `<div class="hours">${hh}</div>`;
+  html += d.time.map((s, i) => {
+    const dn = i === 0 ? 'dziś' : i === 1 ? 'jutro' : new Intl.DateTimeFormat('pl-PL', {timeZone: 'UTC', weekday: 'short'}).format(new Date(s + 'T00:00:00Z'));
+    const mm = d.precipitation_sum[i] >= 0.1 ? `${d.precipitation_sum[i].toFixed(1).replace('.', ',')} mm · ${d.precipitation_probability_max[i] ?? 0}%` : 'bez opadów';
+    return `<div class="drow"><span class="d">${esc(dn)}</span><span class="i">${WMO(d.weather_code[i])[1]}</span><span class="mm">${mm}</span><span class="tt2"><b>${r(d.temperature_2m_max[i])}°</b> <span>${r(d.temperature_2m_min[i])}°</span></span></div>`;
+  }).join('');
+  html += age > 6e5 ? `<p class="sub">Brak połączenia – dane sprzed ${Math.round(age / 6e4)} min.</p>` : `<p class="sub">Dane: Open-Meteo.com</p>`;
+  $('wdetail').innerHTML = html;
 })();
 // ---------- OSTRZEŻENIA IMGW (ostrzezenia.json, odświeżane co godzinę przez robota) ----------
 (async function () {
-let w; try { const r = await fetch('ostrzezenia.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { return; }
-const nowS = new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
-const act = (w.items || []).filter(o => !o.do || o.do >= nowS).sort((a, b) => b.stopien - a.stopien);
-if (!act.length) return;
-const fm = s => s ? new Intl.DateTimeFormat('pl-PL', {weekday: 'short', day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit'}).format(new Date(s)) : '';
-const top = act[0];
-$('ti-t').textContent = Ostrzeżenie IMGW: ${top.zdarzenie.toLowerCase()} + (top.stopien ? , stopień ${top.stopien} : '');
-$('ti-s').textContent = (act.length > 1 ? +${act.length - 1}  + (act.length === 2 ? 'inne · ' : 'innych · ') : '') + (top.do ? 'do ' + fm(top.do) : 'szczegóły w Pogodzie');
-$('t-imgw').hidden = false;
-$('imgw-list').innerHTML = act.map(o => <div class="row sos"><span class="dot"></span><div class="grow"><div class="name">${esc(o.zdarzenie)}${o.stopien ?  · stopień ${o.stopien} z 3` : ''}</div>
-<div class="sub">${esc(fm(o.od))} – ${esc(fm(o.do))}${o.prawdopodobienstwo ? ' · prawdop. ' + esc(o.prawdopodobienstwo) + '%' : ''}</div>
-${o.tresc ? `<div class="sub" style="margin-top:4px;color:var(--ink)">${esc(o.tresc)} : ''}</div></div>).join('') +
-<p class="sub" style="margin:8px 0 10px">Źródło: <a href="https://meteo.imgw.pl/">IMGW-PIB</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}.</p>;
-$('imgw-card').hidden = false;
+  let w; try { const r = await fetch('ostrzezenia.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { return; }
+  const nowS = new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
+  const act = (w.items || []).filter(o => !o.do || o.do >= nowS).sort((a, b) => b.stopien - a.stopien);
+  if (!act.length) return;
+  const fm = s => s ? new Intl.DateTimeFormat('pl-PL', {weekday: 'short', day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit'}).format(new Date(s)) : '';
+  const top = act[0];
+  $('ti-t').textContent = `Ostrzeżenie IMGW: ${top.zdarzenie.toLowerCase()}` + (top.stopien ? `, stopień ${top.stopien}` : '');
+  $('ti-s').textContent = (act.length > 1 ? `+${act.length - 1} ` + (act.length === 2 ? 'inne · ' : 'innych · ') : '') + (top.do ? 'do ' + fm(top.do) : 'szczegóły w Pogodzie');
+  $('t-imgw').hidden = false;
+  $('imgw-list').innerHTML = act.map(o => `<div class="row sos"><span class="dot"></span><div class="grow"><div class="name">${esc(o.zdarzenie)}${o.stopien ? ` · stopień ${o.stopien} z 3` : ''}</div>
+    <div class="sub">${esc(fm(o.od))} – ${esc(fm(o.do))}${o.prawdopodobienstwo ? ' · prawdop. ' + esc(o.prawdopodobienstwo) + '%' : ''}</div>
+    ${o.tresc ? `<div class="sub" style="margin-top:4px;color:var(--ink)">${esc(o.tresc)}</div>` : ''}</div></div>`).join('') +
+    `<p class="sub" style="margin:8px 0 10px">Źródło: <a href="https://meteo.imgw.pl/">IMGW-PIB</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}.</p>`;
+  $('imgw-card').hidden = false;
 })();
 
 // ---------- przełącznik motywu ----------
 (function () {
-const root = document.documentElement, mq = matchMedia('(prefers-color-scheme: dark)');
-const cur = () => root.getAttribute('data-theme') || (mq.matches ? 'dark' : 'light');
-const apply = () => {
-const t = cur(), meta = document.querySelector('meta[name=theme-color]');
-$('th').textContent = t === 'dark' ? '☀️' : '🌙';
-$('th').setAttribute('aria-label', t === 'dark' ? 'Włącz jasny motyw' : 'Włącz ciemny motyw');
-if (meta) meta.content = t === 'dark' ? '#0a1138' : '#eef2f8';
-};
-$('th').onclick = () => {
-const n = cur() === 'dark' ? 'light' : 'dark';
-root.setAttribute('data-theme', n);
-try { localStorage.setItem('kr-theme', n); } catch (_) {}
-apply();
-};
-mq.addEventListener && mq.addEventListener('change', apply);
-apply();
+  const root = document.documentElement, mq = matchMedia('(prefers-color-scheme: dark)');
+  const cur = () => root.getAttribute('data-theme') || (mq.matches ? 'dark' : 'light');
+  const apply = () => {
+    const t = cur(), meta = document.querySelector('meta[name=theme-color]');
+    $('th').textContent = t === 'dark' ? '☀️' : '🌙';
+    $('th').setAttribute('aria-label', t === 'dark' ? 'Włącz jasny motyw' : 'Włącz ciemny motyw');
+    if (meta) meta.content = t === 'dark' ? '#14110e' : '#fbf7f0';
+  };
+  $('th').onclick = () => {
+    const n = cur() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', n);
+    try { localStorage.setItem('kr-theme', n); } catch (_) {}
+    apply();
+  };
+  mq.addEventListener && mq.addEventListener('change', apply);
+  apply();
 })();
 
 // ---------- INTENCJE MSZALNE (intencje.json, robot z kruszyn.com) ----------
 (async function () {
-let w; try { const r = await fetch('intencje.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { return; }
-const mn = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-const nowM = now.getHours() * 60 + now.getMinutes();
-const act = (w.items || []).filter(i => i.data > today || (i.data === today && mn(i.godz) + 60 > nowM)).slice(0, 40);
-if (!act.length) return;
-const dl = s => { const k = diff(s); return k === 0 ? 'Dziś' : k === 1 ? 'Jutro' : cap(fmt(s, {weekday: 'long'})) + ' ' + fmt(s, {day: 'numeric', month: 'numeric'}); };
-$('int-list').innerHTML = act.map(i => <div class="row"><span class="dot"></span><div class="grow"><div class="name">${esc(i.tresc || 'Msza święta')}</div><div class="sub">${esc(dl(i.data))} · ${esc(i.godz)}</div></div></div>).join('') +
-<p class="sub" style="margin:8px 0 10px">Źródło: <a href="${esc(w.source || 'https://kruszyn.com/ogloszenia-parafialne/')}">kruszyn.com</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}. Intencje mogą się zmienić – obowiązują ogłoszenia parafialne.</p>;
-$('int-card').hidden = false;
-// kafelek: intencja najbliższej mszy
-const nm = window.__nm;
-const hit = nm && act.find(i => i.data === nm.s && mn(i.godz) === mn(nm.t));
-if (hit && hit.tresc) { const t = hit.tresc.length > 70 ? hit.tresc.slice(0, 67).trim() + '…' : hit.tresc; $('tm-s').textContent = 'Kruszyn · ' + t; }
+  let w; try { const r = await fetch('intencje.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { return; }
+  const mn = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const nowM = now.getHours() * 60 + now.getMinutes();
+  const act = (w.items || []).filter(i => i.data > today || (i.data === today && mn(i.godz) + 60 > nowM)).slice(0, 40);
+  if (!act.length) return;
+  const dl = s => { const k = diff(s); return k === 0 ? 'Dziś' : k === 1 ? 'Jutro' : cap(fmt(s, {weekday: 'long'})) + ' ' + fmt(s, {day: 'numeric', month: 'numeric'}); };
+  $('int-list').innerHTML = act.map(i => `<div class="row"><div class="grow"><div class="name">${esc(i.tresc || 'Msza święta')}</div><div class="sub">${esc(dl(i.data))} · ${esc(i.godz)}</div></div></div>`).join('') +
+    `<p class="sub" style="margin:8px 0 10px">Źródło: <a href="${esc(w.source || 'https://kruszyn.com/ogloszenia-parafialne/')}">kruszyn.com</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}. Intencje mogą się zmienić – obowiązują ogłoszenia parafialne.</p>`;
+  $('int-card').hidden = false;
+  // kafelek: intencja najbliższej mszy
+  const nm = window.__nm;
+  const hit = nm && act.find(i => i.data === nm.s && mn(i.godz) === mn(nm.t));
+  if (hit && hit.tresc) { const t = hit.tresc.length > 70 ? hit.tresc.slice(0, 67).trim() + '…' : hit.tresc; $('tm-s').textContent = 'Kruszyn · ' + t; }
 })();
 
 // ---------- ZNICZ KRUSZYN (znicz.json, robot z regiowyniki.pl) ----------
 (async function () {
-let w; try { const r = await fetch('znicz.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { return; }
-const T = w.druzyna || 'Znicz Kruszyn';
-const mine = m => m.gospodarz === T;
-const opp = m => mine(m) ? m.gosc : m.gospodarz;
-const dshort = s => s ? fmt(s, {day: 'numeric', month: 'numeric'}) : 'termin do ustalenia';
-const dlong = s => s ? cap(fmt(s, {weekday: 'long', day: 'numeric', month: 'long'})) : 'termin do ustalenia';
-const last = (w.ostatnie || [])[0], next = (w.najblizsze || []).filter(m => m.data >= today)[0], pos = w.pozycja;
+  let w; try { const r = await fetch('znicz.json', {cache: 'no-cache'}); if (!r.ok) throw 0; w = await r.json(); } catch (_) { return; }
+  const T = w.druzyna || 'Znicz Kruszyn';
+  const mine = m => m.gospodarz === T;
+  const opp = m => mine(m) ? m.gosc : m.gospodarz;
+  const dshort = s => s ? fmt(s, {day: 'numeric', month: 'numeric'}) : 'termin do ustalenia';
+  const dlong = s => s ? cap(fmt(s, {weekday: 'long', day: 'numeric', month: 'long'})) : 'termin do ustalenia';
+  const last = (w.ostatnie || [])[0], next = (w.najblizsze || []).filter(m => m.data >= today)[0], pos = w.pozycja;
 
-// kafelek: ostatnie mecze (forma) + najbliższy mecz lub ostatni wynik
-let title = T, sub = '';
-if (next && diff(next.data) <= 7) {
-const k = diff(next.data);
-title = 'Mecz: ' + (k === 0 ? 'dziś' : k === 1 ? 'jutro' : fmt(next.data, {weekday: 'long'})) + (next.godz ? ', ' + next.godz : '');
-sub = esc((mine(next) ? 'u siebie z ' : 'wyjazd do ') + opp(next));
-if (k <= 1) $('t-znicz').classList.add('soon');
-} else if (last) {
-sub = esc(`${last.wynik} z ${opp(last)}` + (pos ? ` · ${pos.poz}. miejsce` : ''));
-} else if (pos) sub = esc(`${pos.poz}. miejsce · ${pos.pkt} pkt`);
-const form = (w.ostatnie || []).slice(0, 5).reverse();       // od najstarszego do najnowszego
-if (form.length) sub += `<span class="frm" aria-label="Forma: ${esc(form.map(m => m.rezultat).join(' '))}">${form.map(m => `<i class="${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : ''}">${esc(m.rezultat)}).join('')}</span>;
-$('zn-t').textContent = title; $('zn-s').innerHTML = sub; $('t-znicz').hidden = false;
+  // kafelek: ostatnie mecze (forma) + najbliższy mecz lub ostatni wynik
+  let title = T, sub = '';
+  if (next && diff(next.data) <= 7) {
+    const k = diff(next.data);
+    title = 'Mecz: ' + (k === 0 ? 'dziś' : k === 1 ? 'jutro' : fmt(next.data, {weekday: 'long'})) + (next.godz ? ', ' + next.godz : '');
+    sub = esc((mine(next) ? 'u siebie z ' : 'wyjazd do ') + opp(next));
+    if (k <= 1) $('t-znicz').classList.add('soon');
+  } else if (last) {
+    sub = esc(`${last.wynik} z ${opp(last)}` + (pos ? ` · ${pos.poz}. miejsce` : ''));
+  } else if (pos) sub = esc(`${pos.poz}. miejsce · ${pos.pkt} pkt`);
+  const form = (w.ostatnie || []).slice(0, 5).reverse();       // od najstarszego do najnowszego
+  if (form.length) sub += `<span class="frm" aria-label="Forma: ${esc(form.map(m => m.rezultat).join(' '))}">${form.map(m => `<i class="${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : ''}">${esc(m.rezultat)}</i>`).join('')}</span>`;
+  $('zn-t').textContent = title; $('zn-s').innerHTML = sub; $('t-znicz').hidden = false;
 
-// widok szczegółowy
-const banner = $('zn-banner');
-if (next) banner.textContent = `Następny mecz: ${dlong(next.data)}${next.godz ? ', ' + next.godz : ''} · ${mine(next) ? 'u siebie z ' : 'wyjazd do '}${opp(next)}`;
-else if (w.bez_terminu) banner.textContent = `Terminy kolejnych meczów (${w.bez_terminu}) nie są jeszcze ustalone.`;
-if (banner.textContent) banner.hidden = false;
-const row = (m, badge) => `<div class="row">${badge ? `<span class="res ${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : ''}">${esc(m.rezultat)} : '<span class="dot"></span>'}<div class="grow"><div class="name">${esc(m.gospodarz)} ${m.wynik ? '<b>' + esc(m.wynik) + '</b> ' : '– '}${esc(m.gosc)}</div><div class="sub">${esc(dshort(m.data))}${m.godz ? ', ' + esc(m.godz) : ''}${m.rozgrywki ? ' · ' + esc(m.rozgrywki) : ''}${mine(m) ? ' · u siebie' : ' · wyjazd'}</div></div></div>;
-const nx = (w.najblizsze || []).filter(m => m.data >= today);
-if (nx.length) { $('zn-next').innerHTML = nx.map(m => row(m, false)).join(''); $('zn-next-card').hidden = false; }
-if ((w.ostatnie || []).length) { $('zn-last').innerHTML = w.ostatnie.map(m => row(m, true)).join(''); $('zn-last-card').hidden = false; }
-if ((w.tabela || []).length) {
-$('zn-tab-h').textContent = Tabela · ${w.liga || ''} · ${w.sezon || ''};
-$('zn-tab').innerHTML = '#DrużynaMPktBramki' + w.tabela.map(r =>
-<tr class="${r.druzyna === T ? 'me' : ''}"><td>${r.poz}</td><td>${esc(r.druzyna)}</td><td>${r.m}</td><td><b>${r.pkt}</b></td><td>${esc(r.bramki)}</td></tr>).join('');
-$('zn-tab-note').textContent = 'M – mecze, Pkt – punkty. Tabela może różnić się o ostatnią kolejkę.';
-$('zn-tab-card').hidden = false;
-}
-$('zn-foot').innerHTML = Źródło: <a href="${esc(w.source || 'https://regiowyniki.pl')}">regiowyniki.pl</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}.;
+  // widok szczegółowy
+  const banner = $('zn-banner');
+  if (next) banner.textContent = `Następny mecz: ${dlong(next.data)}${next.godz ? ', ' + next.godz : ''} · ${mine(next) ? 'u siebie z ' : 'wyjazd do '}${opp(next)}`;
+  else if (w.bez_terminu) banner.textContent = `Terminy kolejnych meczów (${w.bez_terminu}) nie są jeszcze ustalone.`;
+  if (banner.textContent) banner.hidden = false;
+  const row = (m, badge) => `<div class="row">${badge ? `<span class="res ${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : ''}">${esc(m.rezultat)}</span>` : ''}<div class="grow"><div class="name">${esc(m.gospodarz)} ${m.wynik ? '<b>' + esc(m.wynik) + '</b> ' : '– '}${esc(m.gosc)}</div><div class="sub">${esc(dshort(m.data))}${m.godz ? ', ' + esc(m.godz) : ''}${m.rozgrywki ? ' · ' + esc(m.rozgrywki) : ''}${mine(m) ? ' · u siebie' : ' · wyjazd'}</div></div></div>`;
+  const nx = (w.najblizsze || []).filter(m => m.data >= today);
+  if (nx.length) { $('zn-next').innerHTML = nx.map(m => row(m, false)).join(''); $('zn-next-card').hidden = false; }
+  if ((w.ostatnie || []).length) { $('zn-last').innerHTML = w.ostatnie.map(m => row(m, true)).join(''); $('zn-last-card').hidden = false; }
+  if ((w.tabela || []).length) {
+    $('zn-tab-h').textContent = `Tabela · ${w.liga || ''} · ${w.sezon || ''}`;
+    $('zn-tab').innerHTML = '<tr><th>#</th><th>Drużyna</th><th>M</th><th>Pkt</th><th>Bramki</th></tr>' + w.tabela.map(r =>
+      `<tr class="${r.druzyna === T ? 'me' : ''}"><td>${r.poz}</td><td>${esc(r.druzyna)}</td><td>${r.m}</td><td><b>${r.pkt}</b></td><td>${esc(r.bramki)}</td></tr>`).join('');
+    $('zn-tab-note').textContent = 'M – mecze, Pkt – punkty. Tabela może różnić się o ostatnią kolejkę.';
+    $('zn-tab-card').hidden = false;
+  }
+  $('zn-foot').innerHTML = `Źródło: <a href="${esc(w.source || 'https://regiowyniki.pl')}">regiowyniki.pl</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}.`;
 })();
 
 // ---------- INSTALACJA JAKO APLIKACJA (PWA) i praca offline ----------
 (function () {
-if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
-addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
-}
-const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-let dismissed = false; try { dismissed = localStorage.getItem('kr-inst') === '1'; } catch () {}
-if (standalone || dismissed) return;
-const box = $('inst'), btn = $('inst-btn'); let ev = null;
-$('inst-no').onclick = () => { box.hidden = true; try { localStorage.setItem('kr-inst', '1'); } catch () {} };
-addEventListener('beforeinstallprompt', e => {            // Android, Chrome/Edge na komputerze
-e.preventDefault(); ev = e;
-$('inst-txt').textContent = 'Dodaj Kruszyn do ekranu głównego – otwiera się jak zwykła aplikacja, bez paska przeglądarki, i działa też bez internetu (pokazuje ostatnie dane).';
-btn.hidden = false; box.hidden = false;
-});
-btn.onclick = async () => { if (!ev) return; ev.prompt(); await ev.userChoice.catch(() => {}); ev = null; box.hidden = true; };
-addEventListener('appinstalled', () => { box.hidden = true; });
-const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-if (ios && /^https?:$/.test(location.protocol)) {            // iPhone/iPad: ręcznie przez Safari
-$('inst-txt').innerHTML = 'Aby dodać aplikację na ekran główny: w Safari kliknij przycisk Udostępnij (kwadrat ze strzałką) i wybierz „Do ekranu początkowego”.';
-box.hidden = false;
-}
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  }
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  let dismissed = false; try { dismissed = localStorage.getItem('kr-inst') === '1'; } catch (_) {}
+  if (standalone || dismissed) return;
+  const box = $('inst'), btn = $('inst-btn'); let ev = null;
+  $('inst-no').onclick = () => { box.hidden = true; try { localStorage.setItem('kr-inst', '1'); } catch (_) {} };
+  addEventListener('beforeinstallprompt', e => {            // Android, Chrome/Edge na komputerze
+    e.preventDefault(); ev = e;
+    $('inst-txt').textContent = 'Dodaj Kruszyn do ekranu głównego – otwiera się jak zwykła aplikacja, bez paska przeglądarki, i działa też bez internetu (pokazuje ostatnie dane).';
+    btn.hidden = false; box.hidden = false;
+  });
+  btn.onclick = async () => { if (!ev) return; ev.prompt(); await ev.userChoice.catch(() => {}); ev = null; box.hidden = true; };
+  addEventListener('appinstalled', () => { box.hidden = true; });
+  const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (ios && /^https?:$/.test(location.protocol)) {            // iPhone/iPad: ręcznie przez Safari
+    $('inst-txt').innerHTML = 'Aby dodać aplikację na ekran główny: w Safari kliknij przycisk <b>Udostępnij</b> (kwadrat ze strzałką) i wybierz <b>„Do ekranu początkowego”</b>.';
+    box.hidden = false;
+  }
 })();
 
 // ---------- WYDARZENIA (data/wydarzenia.json <- arkusz Google <- formularz) ----------
 (async function () {
-const FORM = 'https://forms.gle/5WF3eW9qoKxSCxCT8';          // adres formularza: tu można go zmienić
-$('wy-form').href = FORM;
-let w = {}; try { const r = await fetch('data/wydarzenia.json', {cache: 'no-cache'}); if (r.ok) w = await r.json(); } catch (_) {}
-const end = e => e.data_do || e.data;
-const all = [...(w.nadchodzace || []), ...(w.minione || [])].filter((e, i, a) => a.findIndex(x => x.data === e.data && x.nazwa === e.nazwa) === i);
-const up = all.filter(e => end(e) >= today).sort((a, b) => (a.data + (a.godz || '')) < (b.data + (b.godz || '')) ? -1 : 1);
-const past = all.filter(e => end(e) < today).sort((a, b) => (a.data + (a.godz || '')) < (b.data + (b.godz || '')) ? 1 : -1).slice(0, 5);
-const wd = s => cap(fmt(s, {weekday: 'long'}));
-const dm = s => fmt(s, {day: 'numeric', month: 'numeric'});
-const line = e => [e.data_do ? ${dm(e.data)} – ${dm(e.data_do)} : wd(e.data) + ' ' + dm(e.data), e.godz, e.miejsce].filter(Boolean).join(' · ');
+  const FORM = 'https://forms.gle/5WF3eW9qoKxSCxCT8';          // adres formularza: tu można go zmienić
+  $('wy-form').href = FORM;
+  let w = {}; try { const r = await fetch('data/wydarzenia.json', {cache: 'no-cache'}); if (r.ok) w = await r.json(); } catch (_) {}
+  const end = e => e.data_do || e.data;
+  const all = [...(w.nadchodzace || []), ...(w.minione || [])].filter((e, i, a) => a.findIndex(x => x.data === e.data && x.nazwa === e.nazwa) === i);
+  const up = all.filter(e => end(e) >= today).sort((a, b) => (a.data + (a.godz || '')) < (b.data + (b.godz || '')) ? -1 : 1);
+  const past = all.filter(e => end(e) < today).sort((a, b) => (a.data + (a.godz || '')) < (b.data + (b.godz || '')) ? 1 : -1).slice(0, 5);
+  const wd = s => cap(fmt(s, {weekday: 'long'}));
+  const dm = s => fmt(s, {day: 'numeric', month: 'numeric'});
+  const line = e => [e.data_do ? `${dm(e.data)} – ${dm(e.data_do)}` : wd(e.data) + ' ' + dm(e.data), e.godz, e.miejsce].filter(Boolean).join(' · ');
 
-// kafelek
-const nx = up[0];
-if (nx) {
-const k = diff(nx.data), on = k <= 0;
-$('wy-t').textContent = on ? 'Dziś: ' + nx.nazwa : k === 1 ? 'Jutro' + (nx.godz ? ', ' + nx.godz : '') : wd(nx.data) + ' ' + dm(nx.data) + (nx.godz ? ', ' + nx.godz : '');
-$('wy-s').textContent = on ? [nx.godz, nx.miejsce].filter(Boolean).join(' · ') : nx.nazwa + (nx.miejsce ? ' · ' + nx.miejsce : '');
-if (k <= 1) $('t-wyd').classList.add('soon');
-}
+  // kafelek
+  const nx = up[0];
+  if (nx) {
+    const k = diff(nx.data), on = k <= 0;
+    $('wy-t').textContent = on ? 'Dziś: ' + nx.nazwa : k === 1 ? 'Jutro' + (nx.godz ? ', ' + nx.godz : '') : wd(nx.data) + ' ' + dm(nx.data) + (nx.godz ? ', ' + nx.godz : '');
+    $('wy-s').textContent = on ? [nx.godz, nx.miejsce].filter(Boolean).join(' · ') : nx.nazwa + (nx.miejsce ? ' · ' + nx.miejsce : '');
+    if (k <= 1) $('t-wyd').classList.add('soon');
+  }
 
-// lista
-const badge = s => <div class="dbadge"><b>${esc(fmt(s, {day: 'numeric'}))}</b><span>${esc(fmt(s, {month: 'short'}).replace('.', ''))}</span></div>;
-const row = (e, i, isPast) => {
-const phone = e.telefon ? <p>Tel.: <a href="tel:${esc(e.telefon.replace(/[^0-9+]/g, ''))}">${esc(e.telefon)}</a></p> : '';
-const link = /^https?:///i.test(e.link || '') ? <p><a href="${esc(e.link)}" target="_blank" rel="noopener">Więcej informacji</a></p> : '';
-return <details class="evt${isPast ? ' past' : ''}"><summary>${badge(e.data)}<span class="evt-t"><b>${esc(e.nazwa)}</b><span class="sub">${esc(line(e))}</span></span></summary> <div class="evt-b">${e.kategoria ? ${esc(e.kategoria)}${e.organizator ? ' · ' + esc(e.organizator) : ''}: ''}${e.opis ?${esc(e.opis)}: ''}${phone}${link} ${isPast ? '' :Dodaj do kalendarza}</div></details>;
-};
-$('wy-up').innerHTML = up.length ? up.map((e, i) => row(e, i, false)).join('') : 'Brak zaplanowanych wydarzeń. Dodaj pierwsze!';
-if (past.length) { $('wy-past').innerHTML = past.map((e, i) => row(e, i, true)).join(''); $('wy-past-card').hidden = false; }
+  // lista
+  const badge = s => `<div class="dbadge"><b>${esc(fmt(s, {day: 'numeric'}))}</b><span>${esc(fmt(s, {month: 'short'}).replace('.', ''))}</span></div>`;
+  const row = (e, i, isPast) => {
+    const phone = e.telefon ? `<p>Tel.: <a href="tel:${esc(e.telefon.replace(/[^0-9+]/g, ''))}">${esc(e.telefon)}</a></p>` : '';
+    const link = /^https?:\/\//i.test(e.link || '') ? `<p><a href="${esc(e.link)}" target="_blank" rel="noopener">Więcej informacji</a></p>` : '';
+    return `<details class="evt${isPast ? ' past' : ''}"><summary>${badge(e.data)}<span class="evt-t"><b>${esc(e.nazwa)}</b><span class="sub">${esc(line(e))}</span></span></summary>
+      <div class="evt-b">${e.kategoria ? `<p class="sub">${esc(e.kategoria)}${e.organizator ? ' · ' + esc(e.organizator) : ''}</p>` : ''}${e.opis ? `<p>${esc(e.opis)}</p>` : ''}${phone}${link}
+      ${isPast ? '' : `<p><button class="btn" data-ics="${i}" type="button">Dodaj do kalendarza</button></p>`}</div></details>`;
+  };
+  $('wy-up').innerHTML = up.length ? up.map((e, i) => row(e, i, false)).join('') : '<p class="sub" style="padding:4px 0 12px">Brak zaplanowanych wydarzeń. Dodaj pierwsze!</p>';
+  if (past.length) { $('wy-past').innerHTML = past.map((e, i) => row(e, i, true)).join(''); $('wy-past-card').hidden = false; }
 
-// pojedyncze wydarzenie do kalendarza telefonu (plik .ics tworzony w przeglądarce)
-const ics = e => {
-const z = s => s.replace(/-/g, ''), t = h => h.replace(':', '') + '00', x = s => String(s || '').replace(/[\;,]/g, m => '\' + m).replace(/\n/g, '\n');
-const addDay = (s, n) => { const d = new Date(utc(s) + n * 864e5); return iso(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()); };
-const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Kruszyn//Wydarzenie//PL', 'BEGIN:VEVENT', 'UID:' + z(e.data) + '-' + Math.abs([...e.nazwa].reduce((a, c) => a * 31 + c.charCodeAt(0) | 0, 7)) + '@kruszyn', 'DTSTAMP:20260101T000000Z'];
-if (e.godz) { const h = +e.godz.slice(0, 2); L.push('DTSTART:' + z(e.data) + 'T' + t(e.godz), 'DTEND:' + z(e.data) + 'T' + String(Math.min(23, h + 2)).padStart(2, '0') + e.godz.slice(3, 5) + '00'); }
-else L.push('DTSTART;VALUE=DATE:' + z(e.data), 'DTEND;VALUE=DATE:' + z(addDay(e.data_do || e.data, 1)));
-L.push('SUMMARY:' + x(e.nazwa)); if (e.miejsce) L.push('LOCATION:' + x(e.miejsce)); if (e.opis) L.push('DESCRIPTION:' + x(e.opis));
-L.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + x(e.nazwa), 'TRIGGER:-PT2H', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR');
-return L.join('\r\n') + '\r\n';
-};
-$('wy-up').addEventListener('click', ev => {
-const b = ev.target.closest('[data-ics]'); if (!b) return;
-const blob = new Blob([ics(up[+b.dataset.ics])], {type: 'text/calendar;charset=utf-8'}), a = document.createElement('a');
-a.href = URL.createObjectURL(blob); a.download = 'wydarzenie.ics'; document.body.appendChild(a); a.click(); a.remove();
-setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-});
-if (w.updated && /^https?:$/.test(location.protocol)) {
-$('wy-web').href = new URL('data/kruszyn-wydarzenia.ics', location.href).href.replace(/^https?:/, 'webcal:');
-$('wy-sub-card').hidden = false;
-}
+  // pojedyncze wydarzenie do kalendarza telefonu (plik .ics tworzony w przeglądarce)
+  const ics = e => {
+    const z = s => s.replace(/-/g, ''), t = h => h.replace(':', '') + '00', x = s => String(s || '').replace(/[\\;,]/g, m => '\\' + m).replace(/\n/g, '\\n');
+    const addDay = (s, n) => { const d = new Date(utc(s) + n * 864e5); return iso(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()); };
+    const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Kruszyn//Wydarzenie//PL', 'BEGIN:VEVENT', 'UID:' + z(e.data) + '-' + Math.abs([...e.nazwa].reduce((a, c) => a * 31 + c.charCodeAt(0) | 0, 7)) + '@kruszyn', 'DTSTAMP:20260101T000000Z'];
+    if (e.godz) { const h = +e.godz.slice(0, 2); L.push('DTSTART:' + z(e.data) + 'T' + t(e.godz), 'DTEND:' + z(e.data) + 'T' + String(Math.min(23, h + 2)).padStart(2, '0') + e.godz.slice(3, 5) + '00'); }
+    else L.push('DTSTART;VALUE=DATE:' + z(e.data), 'DTEND;VALUE=DATE:' + z(addDay(e.data_do || e.data, 1)));
+    L.push('SUMMARY:' + x(e.nazwa)); if (e.miejsce) L.push('LOCATION:' + x(e.miejsce)); if (e.opis) L.push('DESCRIPTION:' + x(e.opis));
+    L.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + x(e.nazwa), 'TRIGGER:-PT2H', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR');
+    return L.join('\r\n') + '\r\n';
+  };
+  $('wy-up').addEventListener('click', ev => {
+    const b = ev.target.closest('[data-ics]'); if (!b) return;
+    const blob = new Blob([ics(up[+b.dataset.ics])], {type: 'text/calendar;charset=utf-8'}), a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'wydarzenie.ics'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  });
+  if (w.updated && /^https?:$/.test(location.protocol)) {
+    $('wy-web').href = new URL('data/kruszyn-wydarzenia.ics', location.href).href.replace(/^https?:/, 'webcal:');
+    $('wy-sub-card').hidden = false;
+  }
 })();
 
 // ---------- kalendarz .ics (tylko gdy strona jest opublikowana w internecie) ----------
 if (/^https?:$/.test(location.protocol)) {
-$('cal-card').hidden = false;
-$('cal-web').href = new URL('data/kruszyn-smieci.ics', location.href).href.replace(/^https?:/, 'webcal:');
+  $('cal-card').hidden = false;
+  $('cal-web').href = new URL('data/kruszyn-smieci.ics', location.href).href.replace(/^https?:/, 'webcal:');
 }
+</script>
+</body>
+</html>
