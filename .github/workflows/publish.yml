@@ -38,7 +38,7 @@ jobs:
       - name: Sprawdź, czy wszystkie pliki są w repozytorium
         run: |
           brak=0
-          for f in index.html wies.json favicon.svg manifest.webmanifest icon-192.png icon-512.png data/waste.json scripts/kruszyn_scraper.py scripts/make_ics.py scripts/tauron_outages.py scripts/imgw_warnings.py scripts/kruszyn_intencje.py scripts/znicz_mecze.py; do
+          for f in index.html wies.json favicon.svg manifest.webmanifest sw.js icon-180.png icon-192.png icon-512.png icon-maskable-512.png data/waste.json scripts/kruszyn_scraper.py scripts/make_ics.py scripts/tauron_outages.py scripts/imgw_warnings.py scripts/kruszyn_intencje.py scripts/znicz_mecze.py; do
             if [ ! -f "$f" ]; then echo "::error::Brakuje pliku w repozytorium: $f (dodaj go: Add file -> Upload files / Create new file)"; brak=1; fi
           done
           exit $brak
@@ -97,7 +97,7 @@ jobs:
       - name: Przygotuj pliki strony
         run: |
           mkdir -p ../_site/kruszyn
-          cp index.html wies.json favicon.svg manifest.webmanifest icon-192.png icon-512.png ../_site/kruszyn/
+          cp index.html wies.json favicon.svg manifest.webmanifest sw.js icon-180.png icon-192.png icon-512.png icon-maskable-512.png ../_site/kruszyn/
           cp -r data ../_site/kruszyn/data
           [ -f wylaczenia.json ] && cp wylaczenia.json ../_site/kruszyn/ || true
           [ -f ostrzezenia.json ] && cp ostrzezenia.json ../_site/kruszyn/ || true
