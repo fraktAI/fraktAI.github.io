@@ -1,5 +1,18 @@
 {
- "updated": "2026-11-18T12:20:42+00:00",
- "nadchodzace": [],
+ "updated": "2026-11-18T12:26:21+00:00",
+ "nadchodzace": [
+  {
+   "nazwa": "Zabawa Andrzejkowa",
+   "kategoria": "Dla dzieci",
+   "data": "2026-11-26",
+   "godz": "17:00",
+   "data_do": null,
+   "miejsce": "sala domu ludowego w Kruszynie",
+   "opis": "obowiązują zapisy SMS",
+   "organizator": "Sołtys i Rada Sołecka Kruszyna",
+   "telefon": "665788896",
+   "link": "https://www.facebook.com/photo?fbid=122237782796532801&locale=pl_PL"
+  }
+ ],
  "minione": []
 }
