@@ -38,4 +38,24 @@ DESCRIPTION:Wydarzenie: Zabawa Andrzejkowa
 TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
+BEGIN:VEVENT
+UID:d1291733b1d09ced@kruszyn
+DTSTAMP:20260101T000000Z
+DTSTART;TZID=Europe/Warsaw:20261206T173000
+DTEND;TZID=Europe/Warsaw:20261206T193000
+SUMMARY:Mikołajki w Kruszynie
+LOCATION:sala GOKiS w Kruszynie
+DESCRIPTION:Sołtys i Rada Sołecka Kruszyna serdecznie zapraszają wszystk
+ ie dzieci na wspólne świętowanie Mikołajek!\n\n🎄 Co na Was czeka?\n
+ ✨ Warsztaty świąteczne\n🎅 Spotkanie z Mikołajem\n🧝 Zabawa z elf
+ ami\n📸 Możliwość skorzystania z odpłatnej sesji fotograficznej\n\nO
+ bowiązują zapisy! Organizator: Sołtys i Rada Sołecka Kruszyn. Tel. 796
+ 555830. https://www.facebook.com/photo?fbid=122237727392532801&locale=pl_P
+ L
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Wydarzenie: Mikołajki w Kruszynie
+TRIGGER:-PT2H
+END:VALARM
+END:VEVENT
 END:VCALENDAR

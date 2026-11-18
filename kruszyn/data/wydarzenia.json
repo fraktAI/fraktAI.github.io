@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T13:10:59+00:00",
+ "updated": "2026-11-18T13:16:00+00:00",
  "nadchodzace": [
   {
    "nazwa": "Zabawa Andrzejkowa",
@@ -12,6 +12,18 @@
    "organizator": "Sołtys i Rada Sołecka Kruszyna",
    "telefon": "665788896",
    "link": "https://www.facebook.com/photo?fbid=122237782796532801&locale=pl_PL"
+  },
+  {
+   "nazwa": "Mikołajki w Kruszynie",
+   "kategoria": "Dla dzieci",
+   "data": "2026-12-06",
+   "godz": "17:30",
+   "data_do": null,
+   "miejsce": "sala GOKiS w Kruszynie",
+   "opis": "Sołtys i Rada Sołecka Kruszyna serdecznie zapraszają wszystkie dzieci na wspólne świętowanie Mikołajek!\n\n🎄 Co na Was czeka?\n✨ Warsztaty świąteczne\n🎅 Spotkanie z Mikołajem\n🧝 Zabawa z elfami\n📸 Możliwość skorzystania z odpłatnej sesji fotograficznej\n\nObowiązują zapisy!",
+   "organizator": "Sołtys i Rada Sołecka Kruszyn",
+   "telefon": "796555830",
+   "link": "https://www.facebook.com/photo?fbid=122237727392532801&locale=pl_PL"
   }
  ],
  "minione": []
