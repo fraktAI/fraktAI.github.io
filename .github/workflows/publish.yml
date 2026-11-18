@@ -32,13 +32,14 @@ jobs:
       imgw: ${{ steps.imgw.outcome }}
       intencje: ${{ steps.intencje.outcome }}
       znicz: ${{ steps.znicz.outcome }}
+      wydarzenia: ${{ steps.wydarzenia.outcome }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Sprawdź, czy wszystkie pliki są w repozytorium
         run: |
           brak=0
-          for f in index.html wies.json favicon.svg manifest.webmanifest sw.js icon-180.png icon-192.png icon-512.png icon-maskable-512.png data/waste.json scripts/kruszyn_scraper.py scripts/make_ics.py scripts/tauron_outages.py scripts/imgw_warnings.py scripts/kruszyn_intencje.py scripts/znicz_mecze.py; do
+          for f in index.html wies.json favicon.svg manifest.webmanifest sw.js icon-180.png icon-192.png icon-512.png icon-maskable-512.png data/waste.json scripts/kruszyn_scraper.py scripts/make_ics.py scripts/tauron_outages.py scripts/imgw_warnings.py scripts/kruszyn_intencje.py scripts/znicz_mecze.py scripts/wydarzenia.py; do
             if [ ! -f "$f" ]; then echo "::error::Brakuje pliku w repozytorium: $f (dodaj go: Add file -> Upload files / Create new file)"; brak=1; fi
           done
           exit $brak
@@ -74,6 +75,11 @@ jobs:
         if: github.event.schedule != '7 * * * *'
         continue-on-error: true
         run: python scripts/znicz_mecze.py
+
+      - name: Pobierz wydarzenia z arkusza Google
+        id: wydarzenia
+        continue-on-error: true
+        run: python scripts/wydarzenia.py
 
       - name: Zbuduj kalendarz .ics
         run: python scripts/make_ics.py
@@ -140,3 +146,7 @@ jobs:
       - name: Ostrzeżenie o danych Znicza
         if: needs.build.outputs.znicz == 'failure'
         run: echo "::warning::Nie udało się pobrać meczów Znicza z regiowyniki.pl. Aplikacja pokazuje ostatnie dane."
+
+      - name: Ostrzeżenie o wydarzeniach
+        if: needs.build.outputs.wydarzenia == 'failure'
+        run: echo "::warning::Nie udało się pobrać wydarzeń z arkusza Google. Aplikacja pokazuje ostatnie dane."
