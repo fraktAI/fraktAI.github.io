@@ -267,7 +267,7 @@ const STAWKI = [
   {k:"B2B_rent", l:"Składka rentowa", u:"%", t:"pct", d:0.08},
   {k:"B2B_chor", l:"Składka chorobowa (dobrowolna)", u:"%", t:"pct", d:0.0245, n:"2,45% podstawy ZUS. Naliczana tylko gdy w danej współpracy wybrano „Dobrowolna składka chorobowa: Tak”."},
   {k:"B2B_wyp", l:"Składka wypadkowa", u:"%", t:"pct", d:0.0167},
-  {k:"B2B_FP", l:"Fundusz Pracy", u:"%", t:"pct", d:0.0245, n:"Naliczany, gdy podstawa ZUS ≥ minimalne wynagrodzenie."},
+  {k:"B2B_FP", l:"Fundusz Pracy", u:"%", t:"pct", d:0.0245, n:"Fundusz Pracy wraz z Solidarnościowym. Naliczany, gdy podstawa ZUS ≥ minimalne wynagrodzenie. Przy ryczałcie nie podlega odliczeniu od przychodu."},
   {k:"Zdrow_lin", l:"Składka zdrowotna – podatek liniowy", u:"%", t:"pct", d:0.049, n:"Minimum: składka zdrowotna (9%) × minimalne wynagrodzenie."},
   {k:"Liniowy_st", l:"Stawka podatku liniowego", u:"%", t:"pct", d:0.19},
   {k:"Liniowy_limit_zdrow", l:"Limit odliczenia składki zdrowotnej – podatek liniowy (roczny)", u:"zł / rok", t:"pln", d:14100, n:"Stosowany raz na osobę."},
@@ -319,11 +319,13 @@ function evalPerson(items, osoba, amt){
   /* --- ZUS B2B: stałe składki RAZ NA OSOBĘ (wiersz o najwyższej podstawie, bez „innego tytułu”) --- */
   let zi=-1, zT=0;
   items.forEach((it,k)=>{ if(it.kat==="DG" && it.fl.U===1){ const T=zusBaza(it); if(T>zT){ zT=T; zi=k; } } });
-  const AEdg=Array(n).fill(0);
+  const AEdg=Array(n).fill(0), AEfp=Array(n).fill(0); /* AEfp: Fundusz Pracy / Solidarnościowy – wchodzi do AEdg, ale nie jest odliczany od przychodu przy ryczałcie */
   if(zi>=0){
     const fl=items[zi].fl, T=zT;
     const chorOn=items.some(it=>it.kat==="DG"&&it.fl.U===1&&it.fl.W===1)?1:0; /* dobrowolna – wystarczy wybór w którejkolwiek współpracy DG tej osoby */
-    AEdg[zi]=r2(T*s.B2B_emer*fl.U)+r2(T*s.B2B_rent*fl.V)+r2(T*s.B2B_chor*chorOn)+r2(T*s.B2B_wyp*fl.X)+r2(T*s.B2B_FP*fl.Y*(T>=s.Placa_min?1:0));
+    AEdg[zi]=r2(T*s.B2B_emer*fl.U)+r2(T*s.B2B_rent*fl.V)+r2(T*s.B2B_chor*chorOn)+r2(T*s.B2B_wyp*fl.X);
+    AEfp[zi]=r2(T*s.B2B_FP*fl.Y*(T>=s.Placa_min?1:0));
+    AEdg[zi]+=AEfp[zi];
   }
   const sumGH = zi>=0 ? zT*Math.max(items[zi].fl.U,items[zi].fl.V) : 0;
   /* --- limit 30-krotności, KUP --- */
@@ -369,7 +371,7 @@ function evalPerson(items, osoba, amt){
     }
     let scale=true, AI=0, fixedTax=null;
     if(dg && it.opod==="RYCZALT"){
-      scale=false; const AK=r0(Math.max(0,12*(AC-AE-s.Ryczalt_odl_zdrow*AF)));
+      scale=false; const AK=r0(Math.max(0,12*(AC-(AE-(AEfp[k]||0))-s.Ryczalt_odl_zdrow*AF)));
       fixedTax=r0(AK*it.rate)/12;
     } else if(dg && it.opod==="LINIOWY"){
       scale=false; const ded=sL>0?Math.min(AF,s.Liniowy_limit_zdrow/12*AC/sL):0;
