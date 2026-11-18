@@ -9,7 +9,8 @@
 <meta name="description" content="Pogoda, wywóz śmieci i ważne informacje z Kruszyna.">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta property="og:image" content="icon-512.png"><meta property="og:title" content="Mój Kruszyn"><meta property="og:description" content="Pogoda, wywóz śmieci i ważne informacje z Kruszyna.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-title" content="Kruszyn"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
@@ -193,8 +194,8 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 @media (min-width:1100px){
   .wrap{max-width:1180px;padding:36px 32px 64px}
   #v-home{display:grid;grid-template-columns:minmax(400px,1fr) 1.45fr;column-gap:28px;align-items:start}
-  #v-home>.topbar,#v-home>.top,#v-home>.notices,#buycoffee-container,#v-home>.foot{grid-column:1/-1}
-  #v-home>.topbar{grid-row:1}#v-home>.top{grid-row:2}#v-home>.notices{grid-row:3}#buycoffee-container{grid-row:5}#v-home>.foot{grid-row:6}
+  #v-home>.topbar,#v-home>.top,#v-home>.notices,#v-home>.foot{grid-column:1/-1}
+  #v-home>.topbar{grid-row:1}#v-home>.top{grid-row:2}#v-home>.notices{grid-row:3}#v-home>.foot{grid-row:5}
   #v-home>.topbar{margin-bottom:-6px}
   #v-home>.hero{grid-column:1;grid-row:4;margin-top:8px;position:sticky;top:24px;min-height:360px;padding:32px 32px 110px}
   #v-home>.tiles{grid-column:2;grid-row:4;margin-top:8px;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -234,6 +235,8 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 .frm i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;font-size:11px;font-weight:700;color:#fff;background:#8a8f98}
 .frm i.w{background:#2e9b5f}.frm i.p{background:#d6001c}
 .tile.soon .frm i{outline:1px solid rgba(255,255,255,.7)}
+#v-home>#inst{margin-top:16px}
+@media (min-width:1100px){#v-home>#inst{grid-column:1/-1;grid-row:6}}
 </style>
 </head>
 <body>
@@ -300,7 +303,11 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
       <span class="txt"><span class="tt">Ważne telefony</span><span class="ss">alarmowe, awarie, urząd</span></span>
     </a>
   </div>
-  <div id="buycoffee-container"></div>
+  <div class="card" id="inst" hidden>
+    <h3>Aplikacja w telefonie</h3>
+    <p class="sub" id="inst-txt" style="line-height:1.6;margin:0 0 10px"></p>
+    <p style="margin:0 0 12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="inst-btn" type="button" hidden>Zainstaluj aplikację</button><button class="call alt" id="inst-no" type="button" style="font:inherit;font-weight:600;cursor:pointer">Nie teraz</button></p>
+  </div>
   <p class="foot">Pogoda: Open-Meteo · Wywóz śmieci: COM-D · Msze: kruszyn.com</p>
 </section>
 
@@ -398,7 +405,7 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 
 </div>
 <script>
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "pdf", "fetched": "2026-11-15", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -413,27 +420,6 @@ const diff = s => Math.round((utc(s) - utc(today)) / 864e5);
 const rel = n => n === 0 ? 'dziś' : n === 1 ? 'jutro' : `za ${n} dni`;
 const col = id => `style="--c:var(--c-${esc(id)})"`;
 const bag = id => `<svg class="bag" viewBox="0 0 24 24" ${col(id)} aria-hidden="true"><path d="M9 2h6l-1 3c3 1 6 4 6 9a8 8 0 0 1-16 0c0-5 3-8 6-9z"/></svg>`;
-
-// ---------- BUYCOFFEE ----------
-const coffee = {
-  visible: true,                                    // Zmień na false, aby ukryć przycisk
-  link: "https://buycoffee.to/fraktai",         // Wklej tutaj swój link do BuyCoffee
-  text: "Podoba Ci się ta strona? Postaw mi symboliczną kawę! ☕" // Tekst wyświetlany nad przyciskiem
-};
-
-(function () {
-  const container = $('buycoffee-container');
-  if (!container || !coffee.visible) return;
-  
-  container.innerHTML = `
-    <div class="card" style="text-align: center; padding: 20px; margin-top: 16px;">
-      <p style="margin: 0 0 14px; font-size: 16px; font-weight: 500; color: var(--ink);">${esc(coffee.text)}</p>
-      <a class="btn" href="${esc(coffee.link)}" target="_blank" rel="noopener" style="display: inline-flex; justify-content: center;">
-        Postaw kawę ☕
-      </a>
-    </div>
-  `;
-})();
 
 // ---------- nawigacja (#/pogoda, #/smieci) ----------
 const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony', 'apteki', 'prad', 'pszok', 'znicz'];
@@ -876,6 +862,30 @@ function renderPszok(P) {
     $('zn-tab-card').hidden = false;
   }
   $('zn-foot').innerHTML = `Źródło: <a href="${esc(w.source || 'https://regiowyniki.pl')}">regiowyniki.pl</a>${w.updated ? ', stan na ' + esc(new Intl.DateTimeFormat('pl-PL', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(w.updated))) : ''}.`;
+})();
+
+// ---------- INSTALACJA JAKO APLIKACJA (PWA) i praca offline ----------
+(function () {
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  }
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  let dismissed = false; try { dismissed = localStorage.getItem('kr-inst') === '1'; } catch (_) {}
+  if (standalone || dismissed) return;
+  const box = $('inst'), btn = $('inst-btn'); let ev = null;
+  $('inst-no').onclick = () => { box.hidden = true; try { localStorage.setItem('kr-inst', '1'); } catch (_) {} };
+  addEventListener('beforeinstallprompt', e => {            // Android, Chrome/Edge na komputerze
+    e.preventDefault(); ev = e;
+    $('inst-txt').textContent = 'Dodaj Kruszyn do ekranu głównego – otwiera się jak zwykła aplikacja, bez paska przeglądarki, i działa też bez internetu (pokazuje ostatnie dane).';
+    btn.hidden = false; box.hidden = false;
+  });
+  btn.onclick = async () => { if (!ev) return; ev.prompt(); await ev.userChoice.catch(() => {}); ev = null; box.hidden = true; };
+  addEventListener('appinstalled', () => { box.hidden = true; });
+  const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (ios && /^https?:$/.test(location.protocol)) {            // iPhone/iPad: ręcznie przez Safari
+    $('inst-txt').innerHTML = 'Aby dodać aplikację na ekran główny: w Safari kliknij przycisk <b>Udostępnij</b> (kwadrat ze strzałką) i wybierz <b>„Do ekranu początkowego”</b>.';
+    box.hidden = false;
+  }
 })();
 
 // ---------- kalendarz .ics (tylko gdy strona jest opublikowana w internecie) ----------

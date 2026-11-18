@@ -1,1 +1,23 @@
-{"name":"Mój Kruszyn","short_name":"Kruszyn","description":"Pogoda, wywóz śmieci i ważne informacje z Kruszyna.","start_url":"./","display":"standalone","background_color":"#fbf7f0","theme_color":"#2e6fd6","lang":"pl","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}
+{
+ "id": "./",
+ "name": "Mój Kruszyn",
+ "short_name": "Kruszyn",
+ "description": "Pogoda, wywóz śmieci, msze, PSZOK, prąd i ważne informacje z Kruszyna.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#fbf7f0",
+ "theme_color": "#2e6fd6",
+ "lang": "pl",
+ "categories": ["lifestyle", "weather", "utilities"],
+ "icons": [
+  {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+  {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+  {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+ ],
+ "shortcuts": [
+  {"name": "Wywóz śmieci", "url": "./#/smieci", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+  {"name": "Pogoda", "url": "./#/pogoda", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+  {"name": "Msze święte", "url": "./#/msze", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]}
+ ]
+}
