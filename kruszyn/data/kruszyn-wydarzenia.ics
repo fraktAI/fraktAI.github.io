@@ -23,38 +23,41 @@ RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
 END:DAYLIGHT
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:28edb7bae32cc118@kruszyn
+UID:f4e35417b6a15735@kruszyn
 DTSTAMP:20260101T000000Z
 DTSTART;TZID=Europe/Warsaw:20261126T170000
 DTEND;TZID=Europe/Warsaw:20261126T190000
-SUMMARY:Zabawa Andrzejkowa
-LOCATION:sala domu ludowego w Kruszynie
-DESCRIPTION:obowiązują zapisy SMS Organizator: Sołtys i Rada Sołecka Kr
- uszyna. Tel. 665788896. https://www.facebook.com/photo?fbid=12223778279653
- 2801&locale=pl_PL
+SUMMARY:Zabawa Andrzejkowa dla dzieci
+LOCATION:Sala Domu Ludowego w Kruszynie
+DESCRIPTION:Zabawa Andrzejkowa dla wszystkich dzieci (godz. 17:00–18:30).
+  W programie: Czarodziejskie animacje\, Wróżby andrzejkowe\, Zadymione c
+ zary mary\, Słodki poczęstunek. Przebrania mile widziane. Zapisy SMS pod
+  nr telefonu: 665-788-896. Organizator: Sołtys i Rada Sołecka Kruszyna. 
+ Tel. 665-788-896. https://www.facebook.com/photo/?fbid=122237782796532801&
+ locale=pl_PL
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:Wydarzenie: Zabawa Andrzejkowa
+DESCRIPTION:Wydarzenie: Zabawa Andrzejkowa dla dzieci
 TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:d1291733b1d09ced@kruszyn
+UID:8394485a9890d65c@kruszyn
 DTSTAMP:20260101T000000Z
 DTSTART;TZID=Europe/Warsaw:20261206T173000
 DTEND;TZID=Europe/Warsaw:20261206T193000
-SUMMARY:Mikołajki w Kruszynie
-LOCATION:sala GOKiS w Kruszynie
-DESCRIPTION:Sołtys i Rada Sołecka Kruszyna serdecznie zapraszają wszystk
- ie dzieci na wspólne świętowanie Mikołajek!\n\n🎄 Co na Was czeka?\n
- ✨ Warsztaty świąteczne\n🎅 Spotkanie z Mikołajem\n🧝 Zabawa z elf
- ami\n📸 Możliwość skorzystania z odpłatnej sesji fotograficznej\n\nO
- bowiązują zapisy! Organizator: Sołtys i Rada Sołecka Kruszyn. Tel. 796
- 555830. https://www.facebook.com/photo?fbid=122237727392532801&locale=pl_P
- L
+SUMMARY:Mikołajki dla dzieci
+LOCATION:Sala w GOKiS w Kruszynie
+DESCRIPTION:Mikołajki dla wszystkich dzieci. W programie: warsztaty świą
+ teczne\, spotkanie z Mikołajem\, zabawa z elfami\, możliwość skorzysta
+ nia z odpłatnej sesji fotograficznej. Paczki dla dzieci płatne 30 zł (B
+ LIK na nr telefonu 796 555 830 – w tytule: imię i nazwisko dziecka – 
+ Mikołajki\; BLIK = zapis). Zapisy trwają do 30 listopada 2026 r. Organiz
+ ator: Sołtys i Rada Sołecka Kruszyna. Tel. 796-555-830. https://www.face
+ book.com/photo?fbid=122237727392532801&locale=pl_PL
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:Wydarzenie: Mikołajki w Kruszynie
+DESCRIPTION:Wydarzenie: Mikołajki dla dzieci
 TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
@@ -76,6 +79,27 @@ DESCRIPTION:W programie: Zjeżdżalnia pontonowa (zjazdy z górki)\, Parada
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Wydarzenie: Jarmark Bożonarodzeniowy
+TRIGGER:-PT2H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:7be2fd4894d2b36d@kruszyn
+DTSTAMP:20260101T000000Z
+DTSTART;TZID=Europe/Warsaw:20260915T180000
+DTEND;TZID=Europe/Warsaw:20260915T200000
+SUMMARY:Zebranie wiejskie sołectwa Kruszyn w sprawie funduszu sołeckiego
+LOCATION:Biblioteka GOKiS\, ul. Kasztanowa 18\, Kruszyn
+DESCRIPTION:Zebranie wiejskie sołectwa Kruszyn w sprawie funduszu sołecki
+ ego (I termin: 18:00\, II termin: 18:15). Porządek zebrania: 1. Otwarcie 
+ zebrania. 2. Wybór protokolanta. 3. Przyjęcie porządku obrad. 4. Przeds
+ tawienie i omówienie wniosków do Funduszu Sołeckiego. 5. Podjęcie uchw
+ ały. 6. Dyskusje\, wolne wnioski i zapytania. 7. Zamknięcie obrad zebran
+ ia. Organizator: Sołtys Wsi Kruszyn Urszula Słabicka wraz z Radą Sołec
+ ką.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Wydarzenie: Zebranie wiejskie sołectwa Kruszyn w sprawie fundu
+ szu sołeckiego
 TRIGGER:-PT2H
 END:VALARM
 END:VEVENT

@@ -1,28 +1,28 @@
 {
- "updated": "2026-11-18T19:51:58+00:00",
+ "updated": "2026-11-18T19:59:08+00:00",
  "nadchodzace": [
   {
-   "nazwa": "Zabawa Andrzejkowa",
-   "kategoria": "Dla dzieci",
+   "nazwa": "Zabawa Andrzejkowa dla dzieci",
+   "kategoria": "Inne",
    "data": "2026-11-26",
    "godz": "17:00",
    "data_do": null,
-   "miejsce": "sala domu ludowego w Kruszynie",
-   "opis": "obowiązują zapisy SMS",
+   "miejsce": "Sala Domu Ludowego w Kruszynie",
+   "opis": "Zabawa Andrzejkowa dla wszystkich dzieci (godz. 17:00–18:30). W programie: Czarodziejskie animacje, Wróżby andrzejkowe, Zadymione czary mary, Słodki poczęstunek. Przebrania mile widziane. Zapisy SMS pod nr telefonu: 665-788-896.",
    "organizator": "Sołtys i Rada Sołecka Kruszyna",
-   "telefon": "665788896",
-   "link": "https://www.facebook.com/photo?fbid=122237782796532801&locale=pl_PL"
+   "telefon": "665-788-896",
+   "link": "https://www.facebook.com/photo/?fbid=122237782796532801&locale=pl_PL"
   },
   {
-   "nazwa": "Mikołajki w Kruszynie",
-   "kategoria": "Dla dzieci",
+   "nazwa": "Mikołajki dla dzieci",
+   "kategoria": "Inne",
    "data": "2026-12-06",
    "godz": "17:30",
    "data_do": null,
-   "miejsce": "sala GOKiS w Kruszynie",
-   "opis": "Sołtys i Rada Sołecka Kruszyna serdecznie zapraszają wszystkie dzieci na wspólne świętowanie Mikołajek!\n\n🎄 Co na Was czeka?\n✨ Warsztaty świąteczne\n🎅 Spotkanie z Mikołajem\n🧝 Zabawa z elfami\n📸 Możliwość skorzystania z odpłatnej sesji fotograficznej\n\nObowiązują zapisy!",
-   "organizator": "Sołtys i Rada Sołecka Kruszyn",
-   "telefon": "796555830",
+   "miejsce": "Sala w GOKiS w Kruszynie",
+   "opis": "Mikołajki dla wszystkich dzieci. W programie: warsztaty świąteczne, spotkanie z Mikołajem, zabawa z elfami, możliwość skorzystania z odpłatnej sesji fotograficznej. Paczki dla dzieci płatne 30 zł (BLIK na nr telefonu 796 555 830 – w tytule: imię i nazwisko dziecka – Mikołajki; BLIK = zapis). Zapisy trwają do 30 listopada 2026 r.",
+   "organizator": "Sołtys i Rada Sołecka Kruszyna",
+   "telefon": "796-555-830",
    "link": "https://www.facebook.com/photo?fbid=122237727392532801&locale=pl_PL"
   },
   {
@@ -38,5 +38,18 @@
    "link": "https://www.facebook.com/photo/?fbid=1598285415656688&locale=pl_PL"
   }
  ],
- "minione": []
+ "minione": [
+  {
+   "nazwa": "Zebranie wiejskie sołectwa Kruszyn w sprawie funduszu sołeckiego",
+   "kategoria": "Inne",
+   "data": "2026-09-15",
+   "godz": "18:00",
+   "data_do": null,
+   "miejsce": "Biblioteka GOKiS, ul. Kasztanowa 18, Kruszyn",
+   "opis": "Zebranie wiejskie sołectwa Kruszyn w sprawie funduszu sołeckiego (I termin: 18:00, II termin: 18:15). Porządek zebrania: 1. Otwarcie zebrania. 2. Wybór protokolanta. 3. Przyjęcie porządku obrad. 4. Przedstawienie i omówienie wniosków do Funduszu Sołeckiego. 5. Podjęcie uchwały. 6. Dyskusje, wolne wnioski i zapytania. 7. Zamknięcie obrad zebrania.",
+   "organizator": "Sołtys Wsi Kruszyn Urszula Słabicka wraz z Radą Sołecką",
+   "telefon": "",
+   "link": ""
+  }
+ ]
 }
