@@ -265,7 +265,7 @@ const STAWKI = [
   {k:"B2B_podst_malyplus", l:"Podstawa ZUS – Mały ZUS Plus (mies.)", u:"zł / mies.", t:"pln", d:1441.8, n:"Zależy od dochodu z poprzedniego roku – wpisz wartość uśrednioną."},
   {k:"B2B_emer", l:"Składka emerytalna", u:"%", t:"pct", d:0.1952},
   {k:"B2B_rent", l:"Składka rentowa", u:"%", t:"pct", d:0.08},
-  {k:"B2B_chor", l:"Składka chorobowa (dobrowolna)", u:"%", t:"pct", d:0.0245, n:"Naliczana tylko gdy włączona przełącznikiem poniżej."},
+  {k:"B2B_chor", l:"Składka chorobowa (dobrowolna)", u:"%", t:"pct", d:0.0245, n:"2,45% podstawy ZUS. Naliczana tylko gdy w danej współpracy wybrano „Dobrowolna składka chorobowa: Tak”."},
   {k:"B2B_wyp", l:"Składka wypadkowa", u:"%", t:"pct", d:0.0167},
   {k:"B2B_FP", l:"Fundusz Pracy", u:"%", t:"pct", d:0.0245, n:"Naliczany, gdy podstawa ZUS ≥ minimalne wynagrodzenie."},
   {k:"Zdrow_lin", l:"Składka zdrowotna – podatek liniowy", u:"%", t:"pct", d:0.049, n:"Minimum: składka zdrowotna (9%) × minimalne wynagrodzenie."},
@@ -281,7 +281,6 @@ const STAWKI = [
  {sec:"Przełączniki Tak / Nie (założenia do weryfikacji)", items:[
   {k:"KM_dzialalnosc", l:"Kontrakt menadżerski i powołanie rozliczane jako działalność (jak B2B)?", u:"Tak / Nie", t:"sw", d:"NIE", n:"Tak = jak B2B. Nie = jak zlecenie. Uwaga: przychody z art. 13 pkt 7 i 9 PIT opodatkowuje się wyłącznie skalą."},
   {k:"Zlec_chor", l:"Zlecenie: opłacana dobrowolna składka chorobowa?", u:"Tak / Nie", t:"sw", d:"NIE"},
-  {k:"B2B_chor_sw", l:"B2B: opłacana dobrowolna składka chorobowa?", u:"Tak / Nie", t:"sw", d:"NIE"},
  ]},
 ];
 
@@ -300,7 +299,7 @@ function flagi(w,kat){
   const inny = w.inny==="TAK" && kat!=="UOP";
   const k = inny?0:1;
   return {U:k, V:k, X:k, Y:k, Z:k,
-          W: inny?0:(kat==="UOP"?1:(kat==="ZLEC"?(S.stawki.Zlec_chor==="TAK"?1:0):(S.stawki.B2B_chor_sw==="TAK"?1:0))),
+          W: inny?0:(kat==="UOP"?1:(kat==="ZLEC"?(S.stawki.Zlec_chor==="TAK"?1:0):(w.chor==="TAK"?1:0))),
           ppk:(kat==="UOP"||kat==="ZLEC") && w.ppk==="TAK"};
 }
 function pitT(x){ const s=S.stawki; x=Math.max(0,x); return s.PIT_st1*Math.min(x,s.PIT_prog)+s.PIT_st2*Math.max(x-s.PIT_prog,0); }
@@ -323,7 +322,8 @@ function evalPerson(items, osoba, amt){
   const AEdg=Array(n).fill(0);
   if(zi>=0){
     const fl=items[zi].fl, T=zT;
-    AEdg[zi]=r2(T*s.B2B_emer*fl.U)+r2(T*s.B2B_rent*fl.V)+r2(T*s.B2B_chor*fl.W)+r2(T*s.B2B_wyp*fl.X)+r2(T*s.B2B_FP*fl.Y*(T>=s.Placa_min?1:0));
+    const chorOn=items.some(it=>it.kat==="DG"&&it.fl.U===1&&it.fl.W===1)?1:0; /* dobrowolna – wystarczy wybór w którejkolwiek współpracy DG tej osoby */
+    AEdg[zi]=r2(T*s.B2B_emer*fl.U)+r2(T*s.B2B_rent*fl.V)+r2(T*s.B2B_chor*chorOn)+r2(T*s.B2B_wyp*fl.X)+r2(T*s.B2B_FP*fl.Y*(T>=s.Placa_min?1:0));
   }
   const sumGH = zi>=0 ? zT*Math.max(items[zi].fl.U,items[zi].fl.V) : 0;
   /* --- limit 30-krotności, KUP --- */
@@ -430,7 +430,7 @@ const TN=[["NIE","Nie"],["TAK","Tak"]];
 const OPOD=[["SKALA","Skala podatkowa"],["LINIOWY","Podatek liniowy 19%"],["RYCZALT","Ryczałt"]];
 const ZUS=[["DUZY","Duży ZUS"],["PREF","Preferencyjny ZUS"],["MALY","Mały ZUS Plus"],["ULGA","Ulga na start"],["TYLKO_ZDR","Tylko składka zdrowotna"]];
 const RYC=[[0.085,"8,5%"],[0.12,"12%"],[0.15,"15%"],[0.17,"17%"]];
-const nw=()=>({forma:"",kwota:null,rodzaj:"BRUTTO",ppk:"NIE",inny:"NIE",opod:"LINIOWY",ryczalt:0.12,zus:"DUZY",koszty:null,wyr:false});
+const nw=()=>({forma:"",kwota:null,rodzaj:"BRUTTO",ppk:"NIE",inny:"NIE",opod:"LINIOWY",ryczalt:0.12,zus:"DUZY",chor:"NIE",koszty:null,wyr:false});
 let P={imie:"",mlody:"NIE",pit2:"TAK",kupPodw:"NIE",obecne:[nw()],docel:[nw()],stawki:{}};
 function applyStawki(){ Object.assign(S.stawki,DEF,P.stawki||{}); }
 function load(){ try{ const o=JSON.parse(localStorage.getItem(KEY)||"null"); if(o){ P=Object.assign(P,o); if(!P.obecne.length)P.obecne=[nw()]; if(!P.docel.length)P.docel=[nw()]; } }catch(e){} applyStawki(); }
@@ -455,6 +455,7 @@ function workHtml(side,i,w){
    ${F("opod","Opodatkowanie działalności",sel("opod",OPOD))}
    ${F("ryczalt","Stawka ryczałtu",sel("ryczalt",RYC))}
    ${F("zus","Rodzaj ZUS",sel("zus",ZUS))}
+   ${F("chor","Dobrowolna składka chorobowa (2,45%)",sel("chor",TN))}
    ${F("koszty","Koszty działalności (mies.)",num("koszty"))}
   </div>
   ${docel?`<label class="chk"><input type="checkbox" data-s="docel" data-i="${i}" data-f="wyr"${w.wyr?" checked":""}> Wyrównaj do obecnego „na rękę” (wylicz potrzebną kwotę)</label>`:""}
@@ -469,7 +470,7 @@ function updateDisabled(){
   [["obecne",P.obecne],["docel",P.docel]].forEach(([side,rows])=>rows.forEach((w,i)=>{
     const kat=kategoria(w.forma), dg=kat==="DG", um=kat==="UOP"||kat==="ZLEC", brak=w.forma==="BRAK", none=!w.forma;
     const set=(f,d)=>{ const el=document.querySelector(`[data-s="${side}"][data-i="${i}"][data-f="${f}"]`); if(!el)return; el.disabled=d; el.classList.toggle("dis",d); };
-    set("kwota",none||brak||(side==="docel"&&w.wyr)); set("rodzaj",none||brak||(side==="docel"&&w.wyr)); set("ppk",!um); set("inny",!(kat==="ZLEC"||dg)); set("opod",!dg); set("zus",!dg); set("koszty",!dg); set("ryczalt",!(dg&&w.opod==="RYCZALT")); set("wyr",none||brak);
+    set("kwota",none||brak||(side==="docel"&&w.wyr)); set("rodzaj",none||brak||(side==="docel"&&w.wyr)); set("ppk",!um); set("inny",!(kat==="ZLEC"||dg)); set("opod",!dg); set("zus",!dg); set("chor",!dg||w.zus==="ULGA"||w.zus==="TYLKO_ZDR"); set("koszty",!dg); set("ryczalt",!(dg&&w.opod==="RYCZALT")); set("wyr",none||brak);
   }));
 }
 
