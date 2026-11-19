@@ -1,0 +1,315 @@
+{
+ "wazny_od": "2026-09-01",
+ "zaktualizowano": "2026-11-19",
+ "operator": "PKS w Bolesławcu Sp. z o.o.",
+ "tel": "885 161 214",
+ "tel_info": "7:00–17:00, dni robocze",
+ "rodzaj": "Dni robocze",
+ "zrodlo": "https://www.pks-boleslawiec.pl/",
+ "legenda": {
+  "C": "kursuje w soboty, niedziele i święta",
+  "D": "kursuje od poniedziałku do piątku oprócz świąt",
+  "d": "nie kursuje 1 stycznia, w pierwszy i drugi dzień Świąt Wielkanocnych oraz 25 i 26 grudnia",
+  "E": "kursuje od poniedziałku do soboty oprócz świąt",
+  "m": "nie kursuje 24 i 31 grudnia",
+  "n": "nie kursuje w Wielką Sobotę oraz 24 i 31 grudnia",
+  "S": "kursuje w dni nauki szkolnej",
+  "T": "kursuje codziennie"
+ },
+ "przystanki": [
+  {
+   "id": "orzechowa",
+   "nazwa": "Kruszyn, Orzechowa",
+   "pdf": "https://www.pks-boleslawiec.pl/do-pobrania/rozklady/przystanki/przystanek-kruszyn-orzechowa.pdf",
+   "kursy": [
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [],
+     "godziny": [
+      "05:23 End",
+      "05:41 Dm",
+      "07:26 Dm",
+      "10:06 Td",
+      "12:22 End",
+      "13:32 Dm",
+      "13:42 Dm",
+      "14:52 SCdn",
+      "15:50 Dm",
+      "16:32 Dm",
+      "17:41 End",
+      "19:17 Dm",
+      "23:15 Dm"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Kraśnik Wiadukt"
+     ],
+     "godziny": [
+      "07:39 Dm"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Kruszyn 1"
+     ],
+     "godziny": [
+      "06:21 Dm",
+      "07:21 Dm",
+      "07:27 Dm",
+      "07:58 S",
+      "08:21 Td",
+      "14:56 Dm",
+      "17:09 Dm",
+      "19:51 Tnd"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Kruszyn 2",
+      "Kruszyn 1"
+     ],
+     "godziny": [
+      "06:14 Dm",
+      "07:14 Dm",
+      "07:51 S",
+      "08:14 Td",
+      "14:49 Dm",
+      "19:44 Tnd"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Kruszyn 2",
+      "Łaziska, skałki"
+     ],
+     "godziny": [
+      "10:55 Dm",
+      "13:10 Td",
+      "15:30 Tdn",
+      "17:20 Dm"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Kruszyn Szkoła",
+      "Łaziska"
+     ],
+     "godziny": [
+      "14:38 S"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Łaziska, skałki"
+     ],
+     "godziny": [
+      "11:00 Dm",
+      "13:15 Td",
+      "15:35 Tdn",
+      "17:25 Dm"
+     ]
+    },
+    {
+     "kierunek": "Lipiany",
+     "przez": [],
+     "godziny": [
+      "14:54 Dm",
+      "16:14 Dm"
+     ]
+    },
+    {
+     "kierunek": "Lipiany",
+     "przez": [
+      "Kraśnik Wiadukt"
+     ],
+     "godziny": [
+      "09:09 Td",
+      "12:44 Dm",
+      "13:54 SCdn",
+      "18:19 Dm"
+     ]
+    },
+    {
+     "kierunek": "Szczytnica",
+     "przez": [
+      "Tomaszów Bol."
+     ],
+     "godziny": [
+      "08:18 End",
+      "12:38 Dm",
+      "15:43 Dm",
+      "22:30 Dm"
+     ]
+    },
+    {
+     "kierunek": "Wilczy Las",
+     "przez": [
+      "Tomaszów Bol."
+     ],
+     "godziny": [
+      "06:33 Dm"
+     ]
+    },
+    {
+     "kierunek": "Wilczy Las",
+     "przez": [
+      "Tomaszów Bol.",
+      "Szczytnica Osiedle"
+     ],
+     "godziny": [
+      "14:44 End",
+      "16:39 End"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "kruszyn1",
+   "nazwa": "Kruszyn 1",
+   "pdf": "https://www.pks-boleslawiec.pl/do-pobrania/rozklady/przystanki/przystanek-kruszyn-1.pdf",
+   "kursy": [
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [],
+     "godziny": [
+      "06:22 Dm",
+      "07:23 Dm",
+      "07:28 Dm",
+      "08:00 S",
+      "08:23 Td",
+      "14:57 Dm",
+      "17:10 Dm",
+      "19:52 Tnd"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Kruszyn 2",
+      "Łaziska, skałki"
+     ],
+     "godziny": [
+      "10:54 Dm",
+      "13:09 Td",
+      "15:29 Tdn",
+      "17:19 Dm"
+     ]
+    },
+    {
+     "kierunek": "Lipiany",
+     "przez": [
+      "Kruszyn Orzechowa"
+     ],
+     "godziny": [
+      "14:53 Dm",
+      "16:13 Dm"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "kruszyn2",
+   "nazwa": "Kruszyn 2",
+   "pdf": "https://www.pks-boleslawiec.pl/do-pobrania/rozklady/przystanki/przystanek-kruszyn-2.pdf",
+   "kursy": [
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Kruszyn 1"
+     ],
+     "godziny": [
+      "06:18 Dm",
+      "07:18 Dm",
+      "07:55 S",
+      "08:18 Td",
+      "14:53 Dm",
+      "19:48 Tnd"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Kruszyn Orzechowa"
+     ],
+     "godziny": [
+      "05:19 End",
+      "07:22 Dm",
+      "12:18 End",
+      "13:28 Dm",
+      "16:28 Dm",
+      "17:37 End",
+      "23:11 Dm"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Kruszyn Orzechowa"
+     ],
+     "godziny": [
+      "07:23 Dm",
+      "17:05 Dm"
+     ]
+    },
+    {
+     "kierunek": "Bolesławiec",
+     "przez": [
+      "Łaziska, skałki"
+     ],
+     "godziny": [
+      "10:57 Dm",
+      "13:12 Td",
+      "15:32 Tdn",
+      "17:22 Dm"
+     ]
+    },
+    {
+     "kierunek": "Lipiany",
+     "przez": [],
+     "godziny": [
+      "14:58 Dm",
+      "16:18 Dm"
+     ]
+    },
+    {
+     "kierunek": "Szczytnica",
+     "przez": [
+      "Tomaszów Bol."
+     ],
+     "godziny": [
+      "08:22 End",
+      "12:43 Dm",
+      "15:48 Dm",
+      "22:34 Dm"
+     ]
+    },
+    {
+     "kierunek": "Wilczy Las",
+     "przez": [
+      "Tomaszów Bol."
+     ],
+     "godziny": [
+      "06:35 Dm"
+     ]
+    },
+    {
+     "kierunek": "Wilczy Las",
+     "przez": [
+      "Tomaszów Bol."
+     ],
+     "godziny": [
+      "14:49 End",
+      "16:41 End"
+     ]
+    }
+   ]
+  }
+ ]
+}
