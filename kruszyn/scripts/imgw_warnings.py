@@ -35,7 +35,12 @@ def fetch():
         with urllib.request.urlopen(req, timeout=30) as r:
             body = r.read().decode("utf-8")
             print(f"IMGW: HTTP {r.status}, {len(body)} znaków")
-            return json.loads(body)
+            data = json.loads(body)
+            # Brak ostrzeżeń w kraju: IMGW zwraca {"message": "Brak ostrzeżeń meteorologicznych"} (HTTP 200)
+            if isinstance(data, dict) and set(data) == {"message"} and "brak" in str(data["message"]).lower():
+                print("IMGW: " + str(data["message"]))
+                return []
+            return data
     except urllib.error.HTTPError as e:
         if e.code == 404:
             print("IMGW: HTTP 404 = brak aktywnych ostrzeżeń w kraju")
