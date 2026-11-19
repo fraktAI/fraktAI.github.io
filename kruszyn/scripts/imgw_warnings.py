@@ -15,6 +15,7 @@ import argparse
 import datetime as dt
 import json
 import sys
+import urllib.error
 import urllib.request
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -27,9 +28,21 @@ UA = {"User-Agent": "kruszyn-wies-app/1.0 (aplikacja mieszkancow wsi)", "Accept"
 
 
 def fetch():
+    """Pobiera listę ostrzeżeń. IMGW zwraca HTTP 404 (zamiast pustej listy), gdy nie ma żadnych
+    aktywnych ostrzeżeń w kraju – to normalna sytuacja, traktujemy ją jako pustą listę."""
     req = urllib.request.Request(URL, headers=UA)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            body = r.read().decode("utf-8")
+            print(f"IMGW: HTTP {r.status}, {len(body)} znaków")
+            return json.loads(body)
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            print("IMGW: HTTP 404 = brak aktywnych ostrzeżeń w kraju")
+            return []
+        raise SystemExit(f"IMGW: błąd HTTP {e.code} {e.reason}")
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+        raise SystemExit(f"IMGW: nie udało się pobrać lub odczytać odpowiedzi: {e!r}")
 
 
 def local(ts):
@@ -66,7 +79,8 @@ def parse(raw, now=None):
         mine += 1
         name = first(it, "nazwa_zdarzenia", "zdarzenie", "nazwa")
         if not name:
-            raise ValueError("brak nazwy zdarzenia w ostrzeżeniu – zmienił się format?")
+            print("Uwaga: wpis bez nazwy zdarzenia, pola:", sorted(it.keys()))
+            name = "Ostrzeżenie meteorologiczne"
         od, do = local(first(it, "obowiazuje_od", "od")), local(first(it, "obowiazuje_do", "do"))
         if do and do < now_s:
             continue
@@ -102,11 +116,7 @@ def selftest():
     assert [x["zdarzenie"] for x in r] == ["Silny wiatr", "Mróz"], r
     assert r[0]["stopien"] == 2 and r[0]["do"] == "2026-11-17T06:00"
     assert parse([], now) == []
-    try:
-        parse([{"teryt": ["0201"]}], now)
-        raise AssertionError("powinien być błąd")
-    except ValueError:
-        pass
+    assert parse([{"teryt": ["0201"], "stopien": "1"}], now)[0]["zdarzenie"] == "Ostrzeżenie meteorologiczne"
     print("selftest OK")
 
 
@@ -120,6 +130,14 @@ def main():
     raw = fetch()
     if a.discover:
         print(json.dumps(raw[:3] if isinstance(raw, list) else raw, ensure_ascii=False, indent=1)[:4000])
+    if isinstance(raw, list):
+        mine = sum(1 for it in raw if isinstance(it, dict) and covers(it))
+        print(f"IMGW zwróciło {len(raw)} ostrzeżeń dla całego kraju; dla powiatu {POWIAT}: {mine}")
+        if raw and not mine:
+            sample = sorted({str(x)[:4] for it in raw if isinstance(it, dict) for x in (it.get("teryt") or [])})[:8]
+            print("Przykładowe kody TERYT w odpowiedzi:", sample, "| pola pierwszego wpisu:", sorted(raw[0].keys()) if isinstance(raw[0], dict) else type(raw[0]).__name__)
+    else:
+        print("Nieoczekiwany typ odpowiedzi IMGW:", type(raw).__name__, repr(raw)[:300])
     try:
         items = parse(raw)
     except ValueError as e:
