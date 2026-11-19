@@ -998,6 +998,19 @@ if (/^https?:$/.test(location.protocol)) {
   $('cal-card').hidden = false;
   $('cal-web').href = new URL('data/kruszyn-smieci.ics', location.href).href.replace(/^https?:/, 'webcal:');
 }
+
+// ---------- Odświeżanie po powrocie do aplikacji (iOS wznawia ją bez ponownego pobrania danych) ----------
+(function () {
+  const AWAY_MS = 5 * 60 * 1000;                       // po dłuższej nieobecności pobierz dane od nowa
+  let hiddenAt = Date.now();
+  const back = () => {
+    if (hiddenAt && Date.now() - hiddenAt > AWAY_MS && navigator.onLine !== false) { hiddenAt = 0; location.reload(); }
+    else hiddenAt = 0;
+  };
+  document.addEventListener('visibilitychange', () => { if (document.hidden) hiddenAt = Date.now(); else back(); });
+  addEventListener('pagehide', () => { hiddenAt = Date.now(); });
+  addEventListener('pageshow', e => { if (e.persisted) back(); });
+})();
 </script>
 </body>
 </html>
