@@ -1,16 +1,5 @@
 {
- "updated": "2026-11-18T22:38:16+00:00",
+ "updated": "2026-11-19T18:52:40+00:00",
  "source": "https://meteo.imgw.pl/",
- "items": [
-  {
-   "id": "Sk20261118104223044",
-   "zdarzenie": "Silny wiatr",
-   "stopien": 1,
-   "prawdopodobienstwo": "70",
-   "od": "2026-11-18T19:00",
-   "do": "2026-11-19T01:00",
-   "tresc": "Prognozuje się wystąpienie silnego wiatru o średniej prędkości do 45 km/h, w porywach do 75 km/h, z południowego zachodu i zachodu.",
-   "komentarz": "Brak."
-  }
- ]
+ "items": []
 }
