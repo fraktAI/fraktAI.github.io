@@ -11,6 +11,7 @@
 const MAINTENANCE = true;
 const MAINT_TITLE = "Strona chwilowo niedostępna";
 const MAINT_TEXT  = "Zapraszamy wkrótce!"; /*Pracujemy nad nowościami i ulepszeniami. 
+const MAINT_GAME  = true;   /* true = na stronie przerwy jest mini-gra „Łap złotówki”, false = bez gry */
 /* ================================================= */
 if(MAINTENANCE) document.documentElement.classList.add("maint");
 </script>
@@ -124,6 +125,14 @@ html[data-theme=dark].maint body{background:linear-gradient(135deg,#000,#1a0505 
 @keyframes mv{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
 @media(prefers-reduced-motion:reduce){#maint .bar i{animation:none;width:100%}}
 #maint .mt{margin-top:22px;font-size:13px;color:var(--muted)}
+#maint .gbtn{margin-top:24px;background:var(--acc);border-color:var(--acc);color:#fff;padding:10px 20px;font-weight:600;border-radius:11px}
+#maint .gbtn:hover{background:var(--acc);filter:brightness(1.1)}
+#gWrap{margin:22px auto 0;max-width:340px}
+#gWrap .ghud{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:6px}
+#gWrap .ghud b{color:var(--ink)}
+#gLives{color:var(--bad);letter-spacing:2px;font-size:15px}
+#gc{width:100%;height:auto;aspect-ratio:320/360;border:1px solid var(--line);border-radius:14px;background:var(--soft);touch-action:none;cursor:ew-resize;display:block}
+#gWrap .ghint{font-size:12px;color:var(--muted);margin-top:6px}
 @media print{html.maint #maint{min-height:0}}
 </style>
 </head>
@@ -134,6 +143,14 @@ html[data-theme=dark].maint body{background:linear-gradient(135deg,#000,#1a0505 
     <h1 id="maintTitle"></h1>
     <p id="maintText"></p>
     <div class="bar"><i></i></div>
+    <div id="gameBox" hidden>
+      <button id="gPlay" class="gbtn" type="button">🎮 Zagraj, zanim wrócimy</button>
+      <div id="gWrap" hidden>
+        <div class="ghud"><span>Wynik: <b id="gScore">0</b></span><span id="gLives"></span><span>Rekord: <b id="gBest">0</b></span></div>
+        <canvas id="gc" width="320" height="360" aria-label="Mini-gra: łap złotówki"></canvas>
+        <div class="ghint">Przesuwaj myszką lub palcem albo strzałkami ← →. Łap złotówki, unikaj PIT-ów.</div>
+      </div>
+    </div>
     <div class="mt">Kalkulator zmiany formy współpracy</div>
   </div>
 </div>
@@ -588,7 +605,53 @@ function setName(){ const n=(P.imie||"").trim(); const i=$("#inName"); if(i&&i.v
 document.addEventListener("input",e=>{ if(e.target.id==="inName"){ P.imie=e.target.value; setName(); save(); } });
 if(SHOW_COFFEE){ $("#coffee").hidden=false; $("#coffeeLink").href=COFFEE_URL; }
 if(SHOW_COPYRIGHT) $("#copyBlock").innerHTML=esc(COPYRIGHT_TEXT)+(COPYRIGHT_URL?' · <a href="'+esc(COPYRIGHT_URL)+'" target="_blank" rel="noopener">'+esc(COPYRIGHT_URL)+'</a>':"");
-if(MAINTENANCE){ $("#maintTitle").textContent=MAINT_TITLE; $("#maintText").textContent=MAINT_TEXT; document.title=MAINT_TITLE; }
+function initGame(){
+  $("#gameBox").hidden=false;
+  const cv=$("#gc"), ctx=cv.getContext("2d"), W=320, H=360, PW=64, PH=14, PY=H-30, MAXL=3;
+  const dpr=Math.min(window.devicePixelRatio||1,2); cv.width=W*dpr; cv.height=H*dpr; ctx.scale(dpr,dpr);
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  let best=0; try{ best=+localStorage.getItem("kalk1_best")||0; }catch(e){}
+  $("#gBest").textContent=best;
+  let st=null, raf=0; const keys={l:false,r:false};
+  const rr=(x,y,w,h,r)=>{ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); };
+  function hud(){ $("#gScore").textContent=st?st.score:0; $("#gLives").textContent=st?"♥".repeat(st.lives)+"♡".repeat(MAXL-st.lives):"♥♥♥"; }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle=css("--line"); ctx.fillRect(0,PY+PH+6,W,2);
+    if(!st) return;
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    st.items.forEach(it=>{
+      if(it.bad){ rr(it.x-15,it.y-10,30,20,5); ctx.fillStyle=css("--bad"); ctx.fill(); ctx.fillStyle="#fff"; ctx.font="bold 11px sans-serif"; ctx.fillText("PIT",it.x,it.y+1); }
+      else { ctx.beginPath(); ctx.arc(it.x,it.y,12,0,6.2832); ctx.fillStyle="#f5b301"; ctx.fill(); ctx.lineWidth=2; ctx.strokeStyle="#b7791f"; ctx.stroke(); ctx.fillStyle="#7a4b00"; ctx.font="bold 11px sans-serif"; ctx.fillText("zł",it.x,it.y+1); }
+    });
+    rr(st.x-PW/2,PY,PW,PH,6); ctx.fillStyle=css("--acc"); ctx.fill();
+    if(st.over){ ctx.fillStyle="rgba(0,0,0,.55)"; ctx.fillRect(0,0,W,H); ctx.fillStyle="#fff"; ctx.font="bold 24px sans-serif"; ctx.fillText("Koniec gry",W/2,H/2-16); ctx.font="15px sans-serif"; ctx.fillText("Wynik: "+st.score+(st.score>=best&&st.score>0?" – nowy rekord!":""),W/2,H/2+14); }
+  }
+  function loop(now){
+    const dt=Math.min(0.05,(now-st.last)/1000); st.last=now;
+    const mv=260*dt*((keys.r?1:0)-(keys.l?1:0)); if(mv) st.x=Math.max(PW/2,Math.min(W-PW/2,st.x+mv));
+    st.spawn-=dt;
+    if(st.spawn<=0){ st.spawn=Math.max(0.35,0.9-st.score*0.012); const bad=Math.random()<Math.min(0.4,0.22+st.score*0.004);
+      st.items.push({x:16+Math.random()*(W-32),y:-14,bad,v:Math.min(340,110+st.score*3)*(0.8+Math.random()*0.4)}); }
+    for(let i=st.items.length-1;i>=0;i--){ const it=st.items[i]; it.y+=it.v*dt;
+      const hit=it.y+12>=PY && it.y-12<=PY+PH && Math.abs(it.x-st.x)<PW/2+8;
+      if(hit){ st.items.splice(i,1); if(it.bad) st.lives--; else st.score++; hud(); }
+      else if(it.y>H+20) st.items.splice(i,1); }
+    if(st.lives<=0){ st.over=true; if(st.score>best){ best=st.score; $("#gBest").textContent=best; try{ localStorage.setItem("kalk1_best",best); }catch(e){} }
+      draw(); $("#gPlay").textContent="Zagraj ponownie"; $("#gPlay").hidden=false; return; }
+    draw(); raf=requestAnimationFrame(loop);
+  }
+  function start(){ cancelAnimationFrame(raf); st={x:W/2,items:[],score:0,lives:MAXL,spawn:0.4,over:false,last:performance.now()}; hud(); $("#gPlay").hidden=true; $("#gWrap").hidden=false; raf=requestAnimationFrame(loop); }
+  $("#gPlay").addEventListener("click",start);
+  const setX=e=>{ if(!st||st.over) return; const r=cv.getBoundingClientRect(); st.x=Math.max(PW/2,Math.min(W-PW/2,(e.clientX-r.left)*W/r.width)); };
+  cv.addEventListener("pointermove",setX); cv.addEventListener("pointerdown",setX);
+  document.addEventListener("keydown",e=>{ if(!st||st.over) return; const k=e.key;
+    if(k==="ArrowLeft"||k==="a"||k==="A"){ keys.l=true; e.preventDefault(); } else if(k==="ArrowRight"||k==="d"||k==="D"){ keys.r=true; e.preventDefault(); } });
+  document.addEventListener("keyup",e=>{ const k=e.key; if(k==="ArrowLeft"||k==="a"||k==="A") keys.l=false; else if(k==="ArrowRight"||k==="d"||k==="D") keys.r=false; });
+  document.addEventListener("visibilitychange",()=>{ if(!st||st.over) return; if(document.hidden) cancelAnimationFrame(raf); else { st.last=performance.now(); raf=requestAnimationFrame(loop); } });
+  hud(); draw();
+}
+if(MAINTENANCE){ $("#maintTitle").textContent=MAINT_TITLE; $("#maintText").textContent=MAINT_TEXT; document.title=MAINT_TITLE; if(MAINT_GAME) initGame(); }
 load(); renderLists(); renderStawki(); setName(); refresh();
 </script>
 </body>
