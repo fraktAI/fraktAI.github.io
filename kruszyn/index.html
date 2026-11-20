@@ -18,7 +18,7 @@
 <style>
 /* ===== MÓJ KRUSZYN – styl: zielony nagłówek, karty z ciepłą ramką, dolna nawigacja ===== */
 :root{
-  --bg:#f8f6f1;--card:#fff;--ink:#1d2520;--mute:#66675f;--line:#ebe5d8;--tile:#f3efe6;--inner:#faf8f4;--segbg:#e9e3d7;
+  --bg:#f8f6f1;--card:#fff;--ink:#1d2520;--mute:#66675f;--navmute:#52534c;--line:#ebe5d8;--tile:#f3efe6;--inner:#faf8f4;--segbg:#e9e3d7;
   --pri:#3a4d43;--onpri:#fff;--accent:#2d6a4d;--label:#3d5a4a;
   --head:#3a4d43;--head2:#243a30;--navon:#2b3f35;--navbg:#e3ebe5;
   --soon1:#3a4d43;--soon2:#5b7566;--warn1:#b3261e;--warn2:#d4284a;
@@ -31,7 +31,7 @@
   --r:28px;--ease:cubic-bezier(.2,.7,.2,1);
 }
 :root[data-theme="dark"]{
-  --bg:#111613;--card:#1a221e;--ink:#eef2ee;--mute:#a4aea7;--line:#2b3731;--tile:#25302a;--inner:#202a25;--segbg:#222c27;
+  --bg:#111613;--card:#1a221e;--ink:#eef2ee;--mute:#a4aea7;--navmute:#a4aea7;--line:#2b3731;--tile:#25302a;--inner:#202a25;--segbg:#222c27;
   --pri:#62d6a2;--onpri:#0c2a1d;--accent:#7fd9ae;--label:#8fcfae;
   --head:#202c26;--head2:#141c18;--navon:#a9ecc9;--navbg:#2b3d33;
   --soon1:#1f4a38;--soon2:#2d6a50;--warn1:#7a1f2c;--warn2:#a32a3d;
@@ -61,11 +61,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .ah-title h1{margin:0;white-space:nowrap;font-size:clamp(24px,7.3vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.1}
 .where{margin:5px 0 0;font-size:13px;line-height:1.3;color:rgba(255,255,255,.74);display:flex;align-items:center;gap:6px}
 .where svg{width:16px;height:16px;flex:none;color:var(--hl)}
-.ah-wx{flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 11px;border-radius:20px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;line-height:1.15;min-width:74px}
+.ah-wx{flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 11px;border-radius:20px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;line-height:1.15;min-width:74px;height:52px;box-sizing:border-box;justify-content:center}
 .ah-wx .wx-top{display:flex;align-items:center;gap:5px;font-size:19px}
 .ah-wx .wx-top b{font-weight:700}
 .ah-wx .wx-s{font-size:11.5px;color:rgba(255,255,255,.78);max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#st-btn{flex:none;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+#st-btn{flex:none;width:52px;height:52px;box-sizing:border-box;border-radius:20px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.09);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
 #st-btn svg{width:22px;height:22px}
 #st-btn[aria-expanded="true"]{background:rgba(255,255,255,.22)}
 .ah-status[hidden]{display:none}
@@ -91,11 +91,14 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 /* ---------- dolna nawigacja ---------- */
 .bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:2px;padding:10px 6px calc(10px + env(safe-area-inset-bottom,0px));
   background:color-mix(in srgb,var(--card) 93%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line)}
-.bnav a{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:var(--mute);font-size:12.5px;font-weight:500;white-space:nowrap}
+.bnav a{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:var(--navmute);font-size:12.5px;font-weight:500;white-space:nowrap}
 .bn-ic{display:grid;place-items:center;width:62px;height:38px;border-radius:19px;transition:background-color .2s}
 .bn-ic svg{width:25px;height:25px}
 .bnav a.on{color:var(--navon);font-weight:700}
 .bnav a.on .bn-ic{background:var(--navbg)}
+/* „Start” (środek): subtelna kapsuła z ramką; aktywna zakładka nadal wygrywa pełnym tłem */
+.bnav a.bn-home .bn-ic{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--navon) 28%,transparent);background:color-mix(in srgb,var(--navbg) 40%,transparent)}
+.bnav a.bn-home.on .bn-ic{background:var(--navbg);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--navon) 45%,transparent)}
 @media (min-width:700px){
   .bnav{left:50%;right:auto;transform:translateX(-50%);bottom:16px;width:min(640px,calc(100% - 32px));border:1px solid var(--line);border-radius:30px;padding:10px 8px;box-shadow:0 10px 34px rgba(20,35,28,.16)}
 }
@@ -107,7 +110,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .zoom button:disabled{opacity:.35}
 
 /* ---------- karta pogody (ekran główny) ---------- */
-.hero{display:block;position:relative;overflow:hidden;margin-top:6px;border-radius:var(--r);padding:16px 18px 54px;color:#fff;text-decoration:none;box-shadow:var(--shadow);
+.hero{display:block;position:relative;overflow:hidden;margin-top:6px;border-radius:var(--r);padding:16px 18px 46px;color:#fff;text-decoration:none;box-shadow:var(--shadow);
   background:linear-gradient(150deg,var(--hn1),var(--hn2));--sil:var(--sn)}
 .hero.day{background:linear-gradient(150deg,var(--hd1),var(--hd2));--sil:var(--sd)}
 .hero.cloud{background:linear-gradient(150deg,var(--hc1),var(--hc2));--sil:var(--sc)}
@@ -123,7 +126,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .hero .big .i{font-size:34px;line-height:1}
 .hero .big .t{font-size:38px;font-weight:700;line-height:1}
 .hero .line{margin-top:6px;font-size:15px;line-height:1.45;color:rgba(255,255,255,.9)}
-.hero .cta{display:inline-block;margin-top:10px;background:rgba(255,255,255,.92);color:var(--head2);border-radius:999px;padding:7px 16px;font-size:14px;font-weight:600}
 .hero svg.sil{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:38px;fill:var(--sil);z-index:0;opacity:.85}
 
 /* ---------- ogłoszenia ---------- */
@@ -154,7 +156,9 @@ a.tile::after{content:"›";margin-left:auto;padding-left:6px;font-size:30px;lin
 .t-pszok,.t-waste{--tc:#2f9e6e}.t-msza{--tc:#7a5af8}.t-prad{--tc:#d98a00}.t-apt{--tc:#d4284a}.t-air{--tc:#0f9fb0}.t-tel{--tc:#3b82f6}.t-znicz{--tc:#2f9e6e}.t-wyd{--tc:#e07a1f}.t-bus{--tc:#0d9488}
 .bag{width:17px;height:17px;fill:var(--c);vertical-align:-3px}
 .aq{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--c);margin-right:6px}
-.frm{display:flex;gap:4px;margin-top:6px}
+.frm{display:flex;align-items:center;gap:4px;margin-top:6px}
+.frm em{font-style:normal;margin-left:6px;font-size:12px;font-weight:500;color:var(--mute)}
+.tile.soon .frm em{color:rgba(255,255,255,.85)}
 .frm i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;font-size:11px;font-weight:700;color:#fff;background:#8a8f98}
 .frm i.w{background:#2f9e6e}.frm i.p{background:#d4284a}
 .tile.soon .frm i{outline:1px solid rgba(255,255,255,.7)}
@@ -172,12 +176,14 @@ a.tile::after{content:"›";margin-left:auto;padding-left:6px;font-size:30px;lin
 .foot .srcs{margin:16px 0 0;font-size:12px;opacity:.85}
 
 /* ---------- widoki szczegółowe ---------- */
-.bar{display:flex;align-items:center;gap:12px;margin:6px 0 12px}
+.bar{display:flex;align-items:center;gap:12px;margin:6px 0 14px;min-height:46px}   /* ta sama wysokość z „Wróć” i bez – tytuł nie skacze */
 .bar a.back{display:inline-flex;align-items:center;min-height:46px;padding:0 18px 0 14px;border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;font-weight:600;box-shadow:var(--shadow);border:1px solid var(--line)}
 .bar h2{margin:0;font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
 .view.tab .bar .back{display:none}
 .seg{display:flex;gap:4px;padding:6px;margin:0 0 14px;background:var(--segbg);border-radius:26px}
-.seg a{flex:1;text-align:center;padding:11px 6px;border-radius:20px;color:var(--mute);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.seg a{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;min-height:44px;text-align:center;padding:8px 6px;border-radius:20px;color:var(--mute);text-decoration:none;font-weight:600;font-size:15px;line-height:1.2;overflow-wrap:break-word}
+.seg a[data-znicz]{flex:1.5 1 0}   /* dłuższy napis dostaje więcej miejsca i może zawinąć się do 2 linii */
+@media (max-width:400px){.seg{gap:3px;padding:5px}.seg a{font-size:14px;padding:8px 4px}}
 .seg a.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(40,50,40,.12)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px 10px;margin-top:14px;box-shadow:var(--shadow)}
 .card h3{margin:0 0 12px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--label)}
@@ -195,6 +201,12 @@ a.tile::after{content:"›";margin-left:auto;padding-left:6px;font-size:30px;lin
 .when span.s:empty{display:none}
 .call{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:999px;background:var(--pri);color:var(--onpri);font-weight:700;text-decoration:none;white-space:nowrap}
 .call.alt{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+/* PSZOK: przyciski w elastycznym wierszu z zawijaniem – nigdy nie nachodzą na siebie ani nie wychodzą poza kartę */
+.row.ps-actions{flex-wrap:wrap;gap:10px}
+.ps-actions .call{flex:1 1 170px;min-width:0;max-width:100%;box-sizing:border-box;text-align:center;white-space:normal;padding:8px 18px}
+.ps-actions .call.alt{flex-basis:110px}
+.ps-actions .grow{flex:1 1 140px}
+.ps-actions .grow+.call{flex:0 1 auto}
 .row.sos .call{background:var(--sos);color:var(--onsos)}
 .btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--pri);color:var(--onpri);font:inherit;font-weight:700;border:0;text-decoration:none;cursor:pointer}
 .nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
@@ -256,13 +268,16 @@ details[open] summary::after{content:"－"}
 .dbadge b{display:block;font-size:21px}.dbadge span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
 .evt{background:var(--inner);border:1px solid var(--line);border-radius:22px;padding:2px 16px;margin:0 0 10px}
 .evt summary{display:flex;align-items:center;gap:12px;padding:12px 0;font-weight:400;font-size:inherit}
-.evt summary::after{margin-left:auto;float:none}
-.evt-t{display:flex;flex-direction:column;min-width:0}.evt-t b{font-size:17px;line-height:1.3}
+.evt summary::after{content:"+";float:none;flex:none;align-self:flex-start;margin:0 0 0 auto;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;
+  border:1.5px solid color-mix(in srgb,var(--accent) 35%,var(--line));background:color-mix(in srgb,var(--accent) 10%,var(--card));color:var(--accent);font-size:22px;font-weight:500;line-height:1;transition:background-color .18s,transform .18s var(--ease)}
+.evt[open] summary::after{content:"−";background:var(--accent);border-color:var(--accent);color:var(--card)}
+.evt summary:active::after{transform:scale(.92)}
+.evt-t{display:flex;flex-direction:column;min-width:0;flex:1}.evt-t b{font-size:17px;line-height:1.3}
 .evt-b{padding:0 0 12px 66px;font-size:15.5px;line-height:1.5}.evt-b p{margin:6px 0}
 .evt.past{opacity:.6}
 
 /* Autobusy */
-.bus-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.bus-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
 .bus-tabs button{font:inherit;font-size:15px;font-weight:600;padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--inner);color:var(--ink);cursor:pointer;min-height:44px}
 .bus-tabs button[aria-pressed="true"]{background:var(--pri);border-color:var(--pri);color:var(--onpri)}
 .bus-times{display:flex;flex-wrap:wrap;gap:6px 8px;padding:2px 0 12px}
@@ -273,6 +288,8 @@ details[open] summary::after{content:"－"}
 .bus-dir{padding:12px 0 2px;border-top:1px solid var(--line)}
 .bus-dir:first-child{border-top:0}
 .bus-dir .name{font-size:17px}
+.bdg{display:inline-block;margin-left:8px;padding:2px 10px;border-radius:999px;background:var(--mint-bg);color:var(--mint-ink);font-size:12.5px;font-weight:700;line-height:1.4;white-space:nowrap;vertical-align:1px}
+.bdg:first-child{margin-left:0}
 .bus-note{font-size:14px;color:var(--mute);line-height:1.55;margin:0 0 6px}
 .bus-leg{margin:0;padding:0;list-style:none;font-size:15px;line-height:1.6}
 .bus-leg b{display:inline-block;min-width:1.4em;font-weight:800}
@@ -291,7 +308,7 @@ details[open] summary::after{content:"－"}
 @media (min-width:700px){
   .wrap{max-width:860px;padding-top:24px}
   .tiles{grid-template-columns:repeat(2,1fr);gap:14px}
-  .hero{padding:20px 24px 64px}
+  .hero{padding:20px 24px 56px}
   .hero .date{font-size:26px}.hero .big .i{font-size:40px}.hero .big .t{font-size:46px}
   .hero svg.sil{height:46px}
   .ah-title h1{font-size:36px}
@@ -310,7 +327,7 @@ details[open] summary::after{content:"－"}
   #v-home{display:grid;grid-template-columns:minmax(400px,1fr) 1.45fr;column-gap:28px;align-items:start}
   #v-home>.topbar,#v-home>.notices,#v-home>#inst{grid-column:1/-1}
   #v-home>.topbar{grid-row:1}#v-home>.notices{grid-row:2}#v-home>#inst{grid-row:4}
-  #v-home>.hero{grid-column:1;grid-row:3;margin-top:0;position:sticky;top:24px;padding:24px 28px 70px}
+  #v-home>.hero{grid-column:1;grid-row:3;margin-top:0;position:sticky;top:24px;padding:24px 28px 60px}
   #v-home>.tiles{grid-column:2;grid-row:3;margin-top:0;gap:16px}
   .hero .date{font-size:28px}.hero .line{font-size:16px}
   .view:not(#v-home){column-gap:24px}
@@ -378,7 +395,6 @@ details[open] summary::after{content:"－"}
     <div class="lab">Dziś w Kruszynie</div>
     <div class="r1"><div class="date" id="h-date"></div><div class="big"><span class="i" id="h-ico"></span><span class="t" id="h-temp"></span></div></div>
     <div class="line" id="h-line">Ładuję pogodę…</div>
-    <span class="cta">Prognoza na 5 dni ›</span>
     <svg class="sil" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60V44H20V36L30 28L40 36V44H70V38L82 30L94 38V46H130V40H150V46H172V30H178L184 12L190 30H196V46H230V38L244 28L258 38V44H290V36L300 28L310 36V46H345V40L357 32L369 40V44H400V60Z"/></svg>
   </a>
 
@@ -484,7 +500,7 @@ details[open] summary::after{content:"－"}
 <!-- MSZE -->
 <section class="view tab" id="v-msze" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Msze święte</h2></div>
-  <div class="seg" role="tablist"><a href="#/wydarzenia">Wydarzenia</a><a href="#/msze" class="on">Msze</a><a href="#/znicz" data-znicz hidden>Znicz Kruszyn</a></div>
+  <div class="seg" role="tablist"><a href="#/wydarzenia">Wydarzenia</a><a href="#/msze" class="on">Msze</a><a href="#/znicz" data-znicz hidden>Mecze Znicz Kruszyn</a></div>
   <div class="card"><h3>Kruszyn · św. Jana Chrzciciela</h3><div id="m-kr"></div></div>
   <div class="card" id="int-card" hidden><h3>Intencje mszalne · Kruszyn</h3><div id="int-list"></div></div>
   <div class="card"><h3>Łaziska</h3><div id="m-lz"></div></div>
@@ -495,8 +511,8 @@ details[open] summary::after{content:"－"}
 <!-- AUTOBUSY -->
 <section class="view tab" id="v-autobusy" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Autobusy</h2></div>
+  <div class="bus-tabs" id="bus-tabs" role="group" aria-label="Przystanek"></div>
   <div class="card">
-    <div class="bus-tabs" id="bus-tabs" role="group" aria-label="Przystanek"></div>
     <h3>Najbliższe odjazdy</h3>
     <div id="bus-next"><p class="sub" style="padding-bottom:10px">Ładuję rozkład…</p></div>
   </div>
@@ -521,8 +537,8 @@ details[open] summary::after{content:"－"}
 
 <!-- ZNICZ -->
 <section class="view tab" id="v-znicz" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Znicz Kruszyn</h2></div>
-  <div class="seg" role="tablist"><a href="#/wydarzenia">Wydarzenia</a><a href="#/msze">Msze</a><a href="#/znicz" class="on" data-znicz hidden>Znicz Kruszyn</a></div>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Mecze Znicz Kruszyn</h2></div>
+  <div class="seg" role="tablist"><a href="#/wydarzenia">Wydarzenia</a><a href="#/msze">Msze</a><a href="#/znicz" class="on" data-znicz hidden>Mecze Znicz Kruszyn</a></div>
   <div class="banner" id="zn-banner" hidden></div>
   <div class="card" id="zn-next-card" hidden><h3>Najbliższe mecze</h3><div id="zn-next"></div></div>
   <div class="card" id="zn-last-card" hidden><h3>Ostatnie mecze</h3><div id="zn-last"></div></div>
@@ -533,7 +549,7 @@ details[open] summary::after{content:"－"}
 <!-- WYDARZENIA -->
 <section class="view tab" id="v-wydarzenia" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wydarzenia</h2></div>
-  <div class="seg" role="tablist"><a href="#/wydarzenia" class="on">Wydarzenia</a><a href="#/msze">Msze</a><a href="#/znicz" data-znicz hidden>Znicz Kruszyn</a></div>
+  <div class="seg" role="tablist"><a href="#/wydarzenia" class="on">Wydarzenia</a><a href="#/msze">Msze</a><a href="#/znicz" data-znicz hidden>Mecze Znicz Kruszyn</a></div>
   <div class="card"><h3>Organizujesz coś we wsi?</h3><p class="sub" style="margin:0 0 12px;line-height:1.6">Wypełnij krótki formularz. Wydarzenie pojawi się tutaj po zatwierdzeniu, zwykle w ciągu kilku godzin.</p><p style="margin:0 0 12px"><a class="btn" id="wy-form" href="#" target="_blank" rel="noopener">Dodaj wydarzenie</a></p></div>
   <div class="card"><h3>Nadchodzące</h3><div id="wy-up"></div></div>
   <div class="card" id="wy-past-card" hidden><h3>Minione (ostatnie 5)</h3><div id="wy-past"></div></div>
@@ -575,18 +591,18 @@ details[open] summary::after{content:"－"}
 </footer>
 </div>
 <nav class="bnav" id="bnav" aria-label="Główne menu">
-  <a href="#/" data-nav="home"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 10v10.5h13V10M10 20.5V15h4v5.5"/></svg></span><span>Start</span></a>
-  <a href="#/smieci" data-nav="smieci"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg></span><span>Odpady</span></a>
-  <a href="#/autobusy" data-nav="autobusy"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v10H3V6a2 2 0 0 1 2-2zM3 11h18M7 16v3M17 16v3M7.5 14h.01M16.5 14h.01"/></svg></span><span>Autobusy</span></a>
   <a href="#/wydarzenia" data-nav="wies"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M9 15h6"/></svg></span><span>Wydarzenia</span></a>
   <a href="#/prad" data-nav="awarie"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2zM12 10v5M12 18h.01"/></svg></span><span>Awarie</span></a>
+  <a href="#/" data-nav="home" class="bn-home"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 10v10.5h13V10M10 20.5V15h4v5.5"/></svg></span><span>Start</span></a>
+  <a href="#/autobusy" data-nav="autobusy"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v10H3V6a2 2 0 0 1 2-2zM3 11h18M7 16v3M17 16v3M7.5 14h.01M16.5 14h.01"/></svg></span><span>Autobusy</span></a>
+  <a href="#/smieci" data-nav="smieci"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg></span><span>Odpady</span></a>
 </nav>
 <script>
 // ---------- Wsparcie autora (buycoffee.to) ----------
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
 if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-20", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -595,6 +611,11 @@ const iso = (y, m, d) => `${y}-${pad(m)}-${pad(d)}`;
 const utc = s => { const [y, m, d] = s.split('-').map(Number); return Date.UTC(y, m - 1, d); };
 const fmt = (s, o) => new Intl.DateTimeFormat('pl-PL', {timeZone: 'UTC', ...o}).format(new Date(utc(s)));
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+// Format dat: ciasne miejsca (kafelki, statusy, prawe kolumny list) = „pon. 24.11”; dłuższe opisy = „24 listopada”.
+const dTight = s => fmt(s, {weekday: 'short'}) + ' ' + fmt(s, {day: 'numeric', month: 'numeric'});
+// Frakcje odpadów: nazwa z małej litery w zdaniu (skróty typu RTV zostają) i ujednolicony zapis częstotliwości.
+const lc = l => String(l).charAt(0).toLowerCase() + String(l).slice(1);
+const niceFreq = f => { let t = String(f || '').trim().replace(/^.*?(\d+)\s*x\s+w roku/i, '$1 razy w roku').replace(/\bdwa tygodnie/i, '2 tygodnie'); return cap(t); };
 const now = new Date();
 const today = iso(now.getFullYear(), now.getMonth() + 1, now.getDate());
 const diff = s => Math.round((utc(s) - utc(today)) / 864e5);
@@ -705,8 +726,8 @@ function renderPszok(P) {
   if (open) $('t-pszok').classList.add('soon');
   $('ps-banner').textContent = open ? 'Teraz otwarty – do ' + td[1] : 'Teraz zamknięty';
   $('ps-info').innerHTML = `<div class="row"><div class="grow"><div class="name">${esc(P.adres)}</div><div class="sub">prowadzi: ${esc(P.operator || '')}</div></div></div>
-    <div class="row"><div class="grow"><a class="call" href="${esc(tel(P.tel))}">Zadzwoń ${esc(P.tel)}</a></div><a class="call alt" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(P.mapa || P.adres)}">Mapa</a></div>` +
-    (P.tel2 ? `<div class="row"><div class="grow"><div class="sub">Telefon komórkowy</div></div><a class="call alt" href="${esc(tel(P.tel2))}">${esc(P.tel2)}</a></div>` : '');
+    <div class="row ps-actions"><a class="call" href="${esc(tel(P.tel))}">Zadzwoń ${esc(P.tel)}</a><a class="call alt" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(P.mapa || P.adres)}">Mapa</a></div>` +
+    (P.tel2 ? `<div class="row ps-actions"><div class="grow"><div class="sub">Telefon komórkowy</div></div><a class="call alt" href="${esc(tel(P.tel2))}">${esc(P.tel2)}</a></div>` : '');
   $('ps-hours').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(d => `<div class="row"><div class="grow name" style="text-transform:capitalize${d === dow ? ';color:var(--accent)' : ''}">${dn[d]}</div><div class="when"><b>${H[d] ? esc(H[d][0] + ' – ' + H[d][1]) : '<span class="sub" style="font-weight:400">nieczynne</span>'}</b></div></div>`).join('');
   const ul = a => (a || []).map(x => `<li>${esc(x)}</li>`).join('');
   $('ps-rules').innerHTML = ul(P.zasady); $('ps-yes').innerHTML = ul(P.przyjmuje); $('ps-no').innerHTML = ul(P.nie_przyjmuje);
@@ -764,7 +785,7 @@ function renderPszok(P) {
       $('st-t').textContent = act.length > 1 ? `Zgłoszone awarie prądu: ${act.length}` : 'Zgłoszona awaria prądu';
       $('st-s').textContent = act[0].gdzie + ' • Szczegóły'; st.hidden = false;
     } else if (pl.length) {
-      const k = diff(pl[0].dzien), when = k <= 0 ? 'dziś' : k === 1 ? 'jutro' : fmt(pl[0].dzien, {weekday: 'short', day: 'numeric', month: 'long'});
+      const k = diff(pl[0].dzien), when = k <= 0 ? 'dziś' : k === 1 ? 'jutro' : dTight(pl[0].dzien);
       st.className = 'ah-status warn';
       $('st-t').textContent = 'Planowane wyłączenie prądu: ' + when;
       $('st-s').textContent = pl[0].gdzie + (pl[0].godz ? ' • ' + pl[0].godz : '') + (pl.length > 1 ? ` • +${pl.length - 1}` : ''); st.hidden = false;
@@ -823,9 +844,9 @@ function renderPszok(P) {
   if (upcoming.length) {
     const first = upcoming[0], k = diff(first.n);
     const group = upcoming.filter(x => x.n === first.n).map(x => x.f);
-    const dateTxt = fmt(first.n, {day: 'numeric', month: 'long'});
+    const dateTxt = fmt(first.n, {day: 'numeric', month: 'numeric'});
     $('tr-t').textContent = k === 0 ? 'Dziś wywóz śmieci' : k === 1 ? 'Jutro wywóz śmieci' : `Wywóz śmieci: ${dateTxt}`;
-    $('tr-s').innerHTML = group.map(f => bag(f.id) + ' ' + esc(f.label.toLowerCase())).join(', ') +
+    $('tr-s').innerHTML = group.map(f => bag(f.id) + ' ' + esc(lc(f.label))).join(', ') +
       ` · ${k <= 1 ? esc(dateTxt) : rel(k)}`;
     if (k <= 1) $('t-waste').classList.add('soon');
   } else {
@@ -834,7 +855,7 @@ function renderPszok(P) {
   }
 
   // widok szczegółowy: alert, lista, kalendarz
-  const names = n => fr.filter(f => f.dates.some(d => diff(d) === n)).map(f => f.label.toLowerCase());
+  const names = n => fr.filter(f => f.dates.some(d => diff(d) === n)).map(f => lc(f.label));
   const parts = [];
   if (names(0).length) parts.push('Dziś odbiór: ' + names(0).join(', '));
   if (names(1).length) parts.push('Jutro odbiór: ' + names(1).join(', '));
@@ -845,13 +866,13 @@ function renderPszok(P) {
     let right;
     if (n) {
       const k = diff(n);
-      right = `<div class="when"><b class="${k <= 1 ? 's' : ''}">${esc(fmt(n, {weekday: 'short', day: 'numeric', month: 'short'}))}</b><span class="sub">${rel(k)}</span></div>`;
+      right = `<div class="when"><b class="${k <= 1 ? 's' : ''}">${esc(dTight(n))}</b><span class="sub">${rel(k)}</span></div>`;
     } else if (f.dates.length) {
       right = `<div class="when sub">brak kolejnego terminu<br><a href="tel:${esc(data.phone.replace(/\s/g, ''))}">${esc(data.phone)}</a></div>`;
     } else {
       right = `<div class="when sub">brak terminu<br><a href="tel:${esc(f.contact.replace(/\s/g, ''))}">${esc(f.contact)}</a></div>`;
     }
-    return `<div class="row"><span class="dot" ${col(f.id)}></span><div class="grow"><div class="name">${esc(f.label)}</div><div class="sub">${esc(f.frequency)}</div></div>${right}</div>`;
+    return `<div class="row"><span class="dot" ${col(f.id)}></span><div class="grow"><div class="name">${esc(f.label)}</div><div class="sub">${esc(niceFreq(f.frequency))}</div></div>${right}</div>`;
   }).join('');
 
   const byDate = {};
@@ -865,7 +886,7 @@ function renderPszok(P) {
   const showDetail = d => {
     const l = byDate[d] || [];
     $('detail').textContent = fmt(d, {weekday: 'long', day: 'numeric', month: 'long'}) + ': ' +
-      (l.length ? l.map(f => f.label.toLowerCase()).join(', ') : 'brak odbiorów');
+      (l.length ? l.map(f => lc(f.label)).join(', ') : 'brak odbiorów');
   };
   function draw() {
     const y = Math.floor(cur / 12), m = cur % 12 + 1;
@@ -978,7 +999,7 @@ function renderPszok(P) {
   const nowS = new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
   const act = (w.items || []).filter(o => !o.do || o.do >= nowS).sort((a, b) => b.stopien - a.stopien);
   if (!act.length) return;
-  const fm = s => s ? new Intl.DateTimeFormat('pl-PL', {weekday: 'short', day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit'}).format(new Date(s)) : '';
+  const fm = s => { if (!s) return ''; const d = new Date(s), f = o => new Intl.DateTimeFormat('pl-PL', o).format(d); return f({weekday: 'short'}) + ' ' + f({day: 'numeric', month: 'numeric'}) + ', ' + f({hour: '2-digit', minute: '2-digit'}); };
   const top = act[0];
   $('ti-t').textContent = `Ostrzeżenie IMGW: ${top.zdarzenie.toLowerCase()}` + (top.stopien ? `, stopień ${top.stopien}` : '');
   $('ti-s').textContent = (act.length > 1 ? `+${act.length - 1} ` + (act.length === 2 ? 'inne · ' : 'innych · ') : '') + (top.do ? 'do ' + fm(top.do) : 'szczegóły w Pogodzie');
@@ -1057,7 +1078,7 @@ function renderPszok(P) {
     sub = esc(`${last.wynik} z ${opp(last)}` + (pos ? ` · ${pos.poz}. miejsce` : ''));
   } else if (pos) sub = esc(`${pos.poz}. miejsce · ${pos.pkt} pkt`);
   const form = (w.ostatnie || []).slice(0, 5).reverse();       // od najstarszego do najnowszego
-  if (form.length) sub += `<span class="frm" aria-label="Forma: ${esc(form.map(m => m.rezultat).join(' '))}">${form.map(m => `<i class="${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : ''}">${esc(m.rezultat)}</i>`).join('')}</span>`;
+  if (form.length) sub += `<span class="frm" aria-label="Forma: ${esc(form.map(m => m.rezultat).join(' '))}">${form.map(m => `<i class="${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : ''}">${esc(m.rezultat)}</i>`).join('')}<em>${form.length === 5 ? 'Ostatnie 5 meczów' : 'Ostatnie mecze'}</em></span>`;
   $('zn-t').textContent = title; $('zn-s').innerHTML = sub; $('t-znicz').hidden = false;
   document.querySelectorAll('[data-znicz]').forEach(e => { e.hidden = false; });
 
@@ -1241,7 +1262,7 @@ if (/^https?:$/.test(location.protocol)) {
     tabs.innerHTML = B.przystanki.map((p, i) => `<button type="button" data-i="${i}" aria-pressed="${i === cur}">${esc(p.nazwa)}</button>`).join('');
     const up = upcoming(stop, d0, 8);
     $('bus-next').innerHTML = up.length ? up.map(u => { const lab = dayLabel(d0, u.d), un = lab === 'dziś' ? until(d0, u.d, u.t) : '';
-      return `<div class="row"><div class="grow"><div class="name">${esc(u.k.kierunek)}</div><div class="sub">${esc(via(u.k))}${u.szkola ? (via(u.k) ? ' · ' : '') + 'w dni nauki szkolnej' : ''}</div></div>
+      return `<div class="row"><div class="grow"><div class="name">${esc(u.k.kierunek)}</div><div class="sub">${esc(via(u.k))}${u.szkola ? '<span class="bdg">w dni nauki szkolnej</span>' : ''}</div></div>
         <div class="when"><b>${esc(u.t)}</b><span class="s">${esc(un || (lab === 'dziś' ? '' : lab))}</span></div></div>`; }).join('')
       : '<p class="sub" style="padding-bottom:10px">Brak kursów w najbliższych dniach (sprawdź PDF z rozkładem).</p>';
     $('bus-stop-name').textContent = stop.nazwa;
