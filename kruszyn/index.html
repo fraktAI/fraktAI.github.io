@@ -569,6 +569,7 @@ details[open] summary::after{content:"－"}
     </div>
   </div>
   <p class="srcs">Pogoda: Open-Meteo · Wywóz śmieci: COM-D · Msze: kruszyn.com</p>
+  <p style="margin:14px 0 0"><a id="inst-again" href="#" hidden>📲 Zainstaluj aplikację na telefonie</a></p>
 </footer>
 </div>
 <nav class="bnav" id="bnav" aria-label="Główne menu">
@@ -583,7 +584,7 @@ details[open] summary::after{content:"－"}
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
 if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-20", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -1093,22 +1094,29 @@ function renderPszok(P) {
     addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
   }
   const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-  let dismissed = false; try { dismissed = localStorage.getItem('kr-inst') === '1'; } catch (_) {}
-  if (standalone || dismissed) return;
-  const box = $('inst'), btn = $('inst-btn'); let ev = null;
-  $('inst-no').onclick = () => { box.hidden = true; try { localStorage.setItem('kr-inst', '1'); } catch (_) {} };
+  if (standalone) return;
+  const box = $('inst'), btn = $('inst-btn'), again = $('inst-again'); let ev = null, dismissed = false;
+  try { dismissed = localStorage.getItem('kr-inst') === '1'; } catch (_) {}
+  const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const fill = () => {
+    if (ev) { $('inst-txt').textContent = 'Dodaj Kruszyn do ekranu głównego – otwiera się jak zwykła aplikacja, bez paska przeglądarki, i działa też bez internetu (pokazuje ostatnie dane).'; btn.hidden = false; }
+    else if (ios) { $('inst-txt').innerHTML = 'Aby dodać aplikację na ekran główny: w Safari kliknij przycisk <b>Udostępnij</b> (kwadrat ze strzałką) i wybierz <b>„Do ekranu początkowego”</b>.'; btn.hidden = true; }
+    else { $('inst-txt').textContent = 'Otwórz menu przeglądarki (trzy kropki lub przycisk Udostępnij) i wybierz „Zainstaluj aplikację” albo „Dodaj do ekranu głównego”.'; btn.hidden = true; }
+  };
+  const show = () => { fill(); box.hidden = false; again.hidden = true; };
+  const hide = () => { box.hidden = true; again.hidden = false; };
+  $('inst-no').onclick = () => { hide(); try { localStorage.setItem('kr-inst', '1'); } catch (_) {} };
+  again.onclick = e => {                                    // przywrócenie komunikatu po jego zamknięciu
+    e.preventDefault(); try { localStorage.removeItem('kr-inst'); } catch (_) {}
+    show(); box.scrollIntoView({behavior: 'smooth', block: 'center'});
+  };
   addEventListener('beforeinstallprompt', e => {            // Android, Chrome/Edge na komputerze
     e.preventDefault(); ev = e;
-    $('inst-txt').textContent = 'Dodaj Kruszyn do ekranu głównego – otwiera się jak zwykła aplikacja, bez paska przeglądarki, i działa też bez internetu (pokazuje ostatnie dane).';
-    btn.hidden = false; box.hidden = false;
+    if (!box.hidden) fill(); else if (!dismissed) show();
   });
-  btn.onclick = async () => { if (!ev) return; ev.prompt(); await ev.userChoice.catch(() => {}); ev = null; box.hidden = true; };
-  addEventListener('appinstalled', () => { box.hidden = true; });
-  const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  if (ios && /^https?:$/.test(location.protocol)) {            // iPhone/iPad: ręcznie przez Safari
-    $('inst-txt').innerHTML = 'Aby dodać aplikację na ekran główny: w Safari kliknij przycisk <b>Udostępnij</b> (kwadrat ze strzałką) i wybierz <b>„Do ekranu początkowego”</b>.';
-    box.hidden = false;
-  }
+  btn.onclick = async () => { if (!ev) return; ev.prompt(); await ev.userChoice.catch(() => {}); ev = null; hide(); };
+  addEventListener('appinstalled', () => { box.hidden = true; again.hidden = true; });
+  if (dismissed || !(ios && /^https?:$/.test(location.protocol))) hide(); else show();
 })();
 
 // ---------- WYDARZENIA (data/wydarzenia.json <- arkusz Google <- formularz) ----------
