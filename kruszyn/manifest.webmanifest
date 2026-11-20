@@ -6,8 +6,8 @@
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
- "background_color": "#fbf7f0",
- "theme_color": "#2e6fd6",
+ "background_color": "#f8f6f1",
+ "theme_color": "#3a4d43",
  "lang": "pl",
  "categories": ["lifestyle", "weather", "utilities"],
  "icons": [
@@ -17,6 +17,7 @@
  ],
  "shortcuts": [
   {"name": "Wywóz śmieci", "url": "./#/smieci", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+  {"name": "Autobusy", "url": "./#/autobusy", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
   {"name": "Pogoda", "url": "./#/pogoda", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
   {"name": "Msze święte", "url": "./#/msze", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]}
  ]
