@@ -1,134 +1,283 @@
-# Mój ♥ Kruszyn – aplikacja wsi
+# Mój ♥ Kruszyn
 
-Strona-aplikacja dla mieszkańców: pogoda, wywóz śmieci (z przypomnieniami w kalendarzu telefonu), msze, prąd, apteki, ważne telefony.
-Działa za darmo na GitHubie, bez własnego serwera. Terminy śmieci odświeżają się same 4 razy na dobę.
+Aplikacja dla mieszkańców Kruszyna (gmina Bolesławiec, woj. dolnośląskie): pogoda, wywóz śmieci, msze, prąd, autobusy, wydarzenia i drużyna Znicz Kruszyn. Wszystko w jednym miejscu, na telefonie i komputerze.
 
-## Co jest w repozytorium
+Działa za darmo na GitHub Pages, bez własnego serwera i bez bazy danych. Dane odświeżają się same dzięki robotom w GitHub Actions.
 
-| Plik / folder | Do czego służy |
+**Adres aplikacji:** https://fraktai.github.io/kruszyn/
+
+---
+
+## Co potrafi
+
+| Kafelek / widok | Co pokazuje |
 |---|---|
-| `index.html` | cała aplikacja (wygląd + logika) |
-| `wies.json` | **Twoje dane do ręcznej edycji**: ogłoszenia, telefony, apteki, wpisy o prądzie |
-| `data/waste.json` | terminy wywozu (tworzy robot, nie edytuj ręcznie) |
-| `data/kruszyn-smieci.ics` | kalendarz do telefonu (tworzy robot) |
-| `scripts/` | roboty: śmieci (COM-D), kalendarz `.ics`, wyłączenia prądu (Tauron) |
-| `wylaczenia.json` | wyłączenia prądu dla Kruszyna (tworzy robot co godzinę) |
-| `ostrzezenia.json` | ostrzeżenia pogodowe IMGW dla powiatu (tworzy robot co godzinę) |
-| `data/tauron_config.json` | zapamiętane numery Kruszyna w bazie Tauron (tworzy robot) |
-| `.github/workflows/publish.yml` | harmonogram robota i publikacja strony |
-| `favicon.svg`, `icon-192.png`, `icon-512.png`, `manifest.webmanifest` | ikona i „instalacja” na ekranie telefonu |
+| **Pogoda** | bieżąca pogoda i prognoza na 5 dni (Open-Meteo), jakość powietrza, ostrzeżenia IMGW dla powiatu bolesławieckiego |
+| **Wydarzenia** | nadchodzące i ostatnie 5 minionych wydarzeń we wsi; każdy może dodać swoje przez formularz Google; kalendarz do subskrypcji w telefonie |
+| **Wywóz śmieci** | najbliższe odbiory, pełny harmonogram, kalendarz `.ics` z przypomnieniami |
+| **Znicz Kruszyn** | najbliższe mecze, ostatnie wyniki i tabela (klasa B, grupa Jelenia Góra) |
+| **Prąd** | planowane wyłączenia i awarie dla Kruszyna (Tauron Dystrybucja) |
+| **Msze święte** | stały porządek nabożeństw w Kruszynie i Łazisku oraz bieżące intencje mszalne |
+| **Autobusy** | rozkład PKS Bolesławiec z trzech przystanków, najbliższe odjazdy z odliczaniem |
+| **Apteka całodobowa** | dyżurna apteka (dane z `wies.json`) |
+| **PSZOK** | godziny otwarcia, zasady, co przyjmuje punkt |
+| **Ważne telefony** | numery alarmowe, awarie, urząd (dane z `wies.json`) |
+| **Napisz do twórcy** | link do formularza kontaktowego; przycisk „Postaw kawę" (do wyłączenia) |
 
-## Uruchomienie – krok po kroku (ok. 15 minut)
+Dodatkowo:
 
-**1. Konto.** Wejdź na https://github.com → *Sign up*. Załóż darmowe konto (zapamiętaj login).
+- **Instalacja jak zwykła aplikacja** (PWA): na Androidzie „Zainstaluj", na iPhonie „Do ekranu początkowego".
+- **Działa bez internetu**: pokazuje ostatnio pobrane dane (service worker).
+- **Ustawienia wyglądu:** jasny / ciemny motyw, trzy zestawy kolorów (zielony, niebieski, czerwony), powiększenie tekstu.
+- **Odświeżanie po powrocie:** jeśli aplikacja była w tle ponad 5 minut, sama pobiera dane od nowa (ważne na iPhonie, który wznawia aplikacje z pamięci).
+- Układ dopasowany do telefonu i komputera.
 
-**2. Nowe repozytorium.** Kliknij **+** (prawy górny róg) → *New repository*.
-- Repository name: `kruszyn` (od tego zależy adres strony)
-- Ustaw **Public** (konieczne dla darmowej strony)
-- Zaznacz *Add a README file*? **Nie** – zostaw puste. → *Create repository*.
+---
 
-**3. Wgranie plików.** Na stronie nowego repozytorium kliknij *uploading an existing file* i przeciągnij **wszystkie pliki i foldery** z tej paczki (`index.html`, `wies.json`, `favicon.svg`, `icon-*.png`, `manifest.webmanifest`, `README.md`, foldery `data` i `scripts`). Na dole *Commit changes*.
+## Jak to działa
 
-**4. Plik robota (ważny, bo przeglądarka często pomija foldery z kropką).**
-Kliknij *Add file → Create new file*. W polu nazwy wpisz dokładnie:
-`.github/workflows/publish.yml`
-(po wpisaniu `/` GitHub sam tworzy foldery). Wklej całą zawartość pliku `workflow-do-wklejenia.txt` → *Commit changes*.
-Jeśli `.github/workflows/publish.yml` już jest w repozytorium – pomiń ten krok.
-
-**5. Uprawnienia robota.** *Settings → Actions → General* → na dole *Workflow permissions* → **Read and write permissions** → *Save*.
-
-**6. Włączenie strony.** *Settings → Pages* → w *Source* wybierz **GitHub Actions**.
-
-**7. Pierwsze uruchomienie.** Zakładka **Actions** → po lewej *Publikacja strony* → *Run workflow* → zielony przycisk. Poczekaj 1–2 minuty, aż pojawi się zielony ptaszek.
-
-**8. Gotowe.** Adres aplikacji: `https://TWÓJ-LOGIN.github.io/kruszyn/`
-Ten link wyślij sąsiadom (np. SMS, Facebook, plakat z kodem QR).
-
-## Dodanie do telefonu
-
-- **Ikona na ekranie głównym.** iPhone (Safari): przycisk *Udostępnij → Do ekranu początkowego*. Android (Chrome): menu ⋮ → *Zainstaluj aplikację* / *Dodaj do ekranu głównego*.
-- **Przypomnienia o śmieciach.** Na stronie wejdź w *Wywóz śmieci* → *Przypomnienia w telefonie* → *Dodaj do kalendarza*. Kalendarz sam się aktualizuje, a przypomnienie przychodzi o 18:00 dzień przed wywozem. Jeśli przycisk nie działa, pobierz plik `.ics` i otwórz go w telefonie.
-
-Aplikacja nie wysyła powiadomień push (wymagałoby to serwera) – tę rolę pełni kalendarz.
-
-## Jak coś zmienić
-
-**Ogłoszenia, telefony, apteki, prąd** → edytuj `wies.json`: klik w plik → ikona ołówka → zmień → *Commit changes*. Strona odświeży się sama w ok. minutę. Uważaj na przecinki i cudzysłowy, bo błąd w pliku sprawi, że aplikacja użyje danych wbudowanych. Przykład ogłoszenia:
-```json
-"ogloszenia": [
-  {"tytul": "Zebranie wiejskie", "tresc": "Sobota 18:00, świetlica", "od": "2026-11-20", "do": "2026-11-28", "pilne": false}
-]
 ```
-Przykład wpisu o prądzie: `"prad": [{"typ": "planowane", "dzien": "2026-12-03", "godz": "8:00 – 14:00", "gdzie": "Kruszyn, ul. ..."}]`
+ Źródła danych                 GitHub Actions (roboty)              GitHub Pages
+ ─────────────                 ───────────────────────              ────────────
+ com-d.pl (śmieci)      ─┐
+ Tauron (prąd)           │
+ IMGW (ostrzeżenia)      ├──►  skrypty Pythona w scripts/  ──►  pliki JSON w repo  ──►  strona
+ kruszyn.com (intencje)  │      (czas: ok. 1–2 minuty)            + commit przez bota     (index.html
+ regiowyniki.pl (Znicz)  │                                                                  czyta JSON)
+ Arkusz Google (wydarz.) ─┘
+```
 
-**Msze** – godziny są wpisane w `index.html` (sekcja `MSZE ŚWIĘTE`) jako reguły; źródło: kruszyn.com. Gdy parafia zmieni porządek, trzeba poprawić te reguły – napisz do mnie, zrobię to.
+1. **Roboty** (`scripts/*.py`) pobierają dane ze stron źródłowych i zapisują je jako pliki JSON.
+2. **Workflow** (`.github/workflows/publish.yml`) uruchamia roboty według harmonogramu, zapisuje zmiany w repozytorium i publikuje stronę.
+3. **Aplikacja** (`index.html`) przy otwarciu pobiera te pliki JSON i pokazuje je. Pogoda i jakość powietrza idą prosto z Open-Meteo, bez robota.
 
-**Śmieci – dzień zbiórek dodatkowych.** Daty odzieży i gabarytów (2 razy w roku) wpisane są w `scripts/kruszyn_scraper.py` w słowniku `PDF_2026`. Podział „odzież 02.03 i 16.11 / gabaryty 07.03 i 01.08” to moje założenie z PDF-a – **sprawdź z harmonogramem**.
+### Zasady bezpieczeństwa danych
 
-## Co dzieje się automatycznie
+- Robot **nigdy nie nadpisuje** dobrych danych złymi: gdy źródło odpowie czymś nieoczekiwanym, plik zostaje taki, jaki był.
+- Każdy krok robota ma `continue-on-error`, więc awaria jednego źródła nie wstrzymuje publikacji reszty.
+- Gdy krok się nie uda, w podsumowaniu uruchomienia pojawia się żółte ostrzeżenie (`::warning::`).
+- Aplikacja ma wbudowane dane awaryjne dla śmieci i telefonów, więc pokazuje coś nawet bez internetu i bez plików z robotów.
 
-Robot 4 razy na dobę (ok. 4:17, 10:17, 16:17, 22:17) pobiera terminy ze strony COM-D, odbudowuje cały rok, zapisuje `data/waste.json` i kalendarz `.ics`, po czym publikuje stronę. Jeśli strona COM-D się zmieni lub nie odpowie, robot **niczego nie nadpisuje** – aplikacja pokazuje ostatnie dobre dane, a w zakładce Actions pojawi się czerwony krzyżyk z komunikatem. Wtedy napisz do mnie.
+### Harmonogram
 
-## Prąd – jak to działa i co sprawdzić po pierwszym uruchomieniu
+| Kiedy (czas UTC) | Co robi |
+|---|---|
+| `17 3,9,15,21 * * *` (4 razy na dobę) | pełny przebieg: śmieci, prąd, IMGW, intencje, Znicz, wydarzenia |
+| `7 * * * *` (co godzinę) | lekki przebieg: prąd, IMGW, wydarzenia (bez śmieci, intencji i Znicza) |
+| ręcznie (Actions → Run workflow) | pełny przebieg w dowolnej chwili |
 
-Co godzinę robot pyta publiczne API Tauron Dystrybucja o wyłączenia (planowane i awarie) na 30 dni do przodu i zostawia te, w których tekście jest „Kruszyn”. Wynik trafia do `wylaczenia.json` i na kafel **Prąd**. Gdy jest awaria lub wyłączenie dziś/jutro, kafel robi się czerwony.
+---
 
-Tauron nie daje oficjalnego, gwarantowanego API, więc po pierwszym uruchomieniu **sprawdź**:
-1. *Actions → Publikacja strony →* otwórz przebieg → krok *Pobierz wyłączenia prądu z Tauron*. Ma być zielony ptaszek i napis „Zapisano wylaczenia.json”.
-2. W repozytorium pojawił się plik `data/tauron_config.json` z nazwą „Kruszyn” (to wieś w gminie Bolesławiec, a nie inny Kruszyn).
-3. Jeśli krok jest czerwony: skopiuj jego komunikat do mnie. Najpewniej Tauron zablokował serwery GitHuba albo zmienił format – to da się poprawić.
+## Struktura repozytorium
 
-Pamiętaj: dla wsi Tauron zwraca wyłączenia z całej okolicy, a robot wybiera te z nazwą „Kruszyn”. Gdy komunikat wymienia tylko sąsiednią wieś lub ulicę, na liście go nie będzie. Dlatego wiążące informacje zawsze sprawdzaj na tauron-dystrybucja.pl.
+Aplikacja leży w podfolderze `kruszyn/`, bo w tym samym repozytorium (`fraktAI.github.io`) może działać inna strona. Dzięki temu adres to `…github.io/kruszyn/`.
 
-## Ostrzeżenia pogodowe IMGW
+```
+fraktAI.github.io/
+├── .github/workflows/publish.yml     ← workflow (musi być w głównym folderze repo)
+└── kruszyn/
+    ├── index.html                    ← cała aplikacja (wygląd + logika)
+    ├── wies.json                     ← dane edytowane ręcznie (telefony, apteki, PSZOK, ogłoszenia)
+    ├── manifest.webmanifest          ← ustawienia instalacji (PWA)
+    ├── sw.js                         ← działanie offline
+    ├── favicon.svg, icon-*.png       ← ikony aplikacji
+    ├── wydarzenia_url.txt            ← adres CSV z arkusza Google z wydarzeniami
+    ├── scripts/                      ← roboty (Python, bez dodatkowych bibliotek)
+    │   ├── kruszyn_scraper.py        ← śmieci z com-d.pl
+    │   ├── make_ics.py               ← kalendarz śmieci .ics
+    │   ├── tauron_outages.py         ← wyłączenia prądu
+    │   ├── imgw_warnings.py          ← ostrzeżenia pogodowe
+    │   ├── kruszyn_intencje.py       ← intencje mszalne
+    │   ├── znicz_mecze.py            ← mecze i tabela Znicza
+    │   └── wydarzenia.py             ← wydarzenia z arkusza Google
+    ├── data/                         ← dane tworzone przez roboty i edytowane ręcznie
+    │   ├── waste.json                ← terminy śmieci (robot)
+    │   ├── kruszyn-smieci.ics        ← kalendarz śmieci (robot)
+    │   ├── wydarzenia.json           ← wydarzenia (robot)
+    │   ├── kruszyn-wydarzenia.ics    ← kalendarz wydarzeń (robot)
+    │   ├── tauron_config.json        ← zapamiętane identyfikatory Kruszyna w Tauron (robot)
+    │   └── autobusy.json             ← rozkład PKS (RĘCZNIE, patrz niżej)
+    ├── wylaczenia.json               ← prąd (robot)
+    ├── ostrzezenia.json              ← IMGW (robot)
+    ├── intencje.json                 ← intencje mszalne (robot)
+    └── znicz.json                    ← Znicz (robot)
+```
 
-Co godzinę robot pobiera z IMGW ostrzeżenia meteorologiczne (wiatr, burze, mróz, gołoledź, upał, opady) dla **powiatu bolesławieckiego** (kod TERYT 0201) i zapisuje je w `ostrzezenia.json`. Gdy jakieś obowiązuje, na ekranie głównym pojawia się czerwony kafel z najgroźniejszym zjawiskiem i stopniem (1–3), a szczegóły są w *Pogoda*. Gdy nic nie obowiązuje, kafla nie ma.
+> Pliki `*.json` w głównym folderze aplikacji tworzone przez roboty (`wylaczenia`, `ostrzezenia`, `intencje`, `znicz`) są **generowane automatycznie**: nie edytuj ich ręcznie, bo robot je nadpisze.
+>
+> Pliki w stylu `index-1.html`, `index-2.html`, `workflow-do-wklejenia.txt` to kopie robocze. Aplikacji nie są potrzebne i można je usunąć.
 
-Po pierwszym uruchomieniu sprawdź w *Actions* krok *Pobierz ostrzeżenia IMGW* (ma być zielony). Pusty plik (`"items": []`) jest normalny, gdy nie ma ostrzeżeń. Nie obejmuje to ostrzeżeń hydrologicznych (stan rzek, np. Bóbr).
+---
 
-## PSZOK
+## Skąd pochodzą dane
 
-Kafel **PSZOK** na ekranie głównym pokazuje, czy punkt jest teraz otwarty (wt, czw, sob 10:00–18:00), a w środku są adres, telefony, mapa, lista co przyjmuje i czego nie przyjmuje oraz zasady. Dane pochodzą ze strony gminy i są w `wies.json` w sekcji `"pszok"` – gdy zmienią się godziny, popraw tylko tam (numery dni: 0 = niedziela, 1 = poniedziałek … 6 = sobota). Strona gminy nie podaje godzin w święta ani limitów ilości, więc aplikacja zaleca telefon.
+| Dane | Źródło | Plik | Aktualizacja |
+|---|---|---|---|
+| Pogoda, jakość powietrza | [Open-Meteo](https://open-meteo.com/) (bezpośrednio z aplikacji) | – | przy każdym otwarciu |
+| Terminy śmieci | [com-d.pl](http://www.com-d.pl/) (harmonogram gminy) | `data/waste.json` | 4× na dobę |
+| Ostrzeżenia pogodowe | [IMGW](https://danepubliczne.imgw.pl/) (powiat bolesławiecki, TERYT `0201`) | `ostrzezenia.json` | co godzinę |
+| Wyłączenia prądu | Tauron Dystrybucja (publiczne API formularza „wyłączenia") | `wylaczenia.json` | co godzinę |
+| Intencje mszalne | [kruszyn.com](https://kruszyn.com/ogloszenia-parafialne/) | `intencje.json` | 4× na dobę |
+| Mecze Znicza | [regiowyniki.pl](https://regiowyniki.pl/) | `znicz.json` | 4× na dobę |
+| Wydarzenia | formularz Google → arkusz → zakładka „Publiczne" | `data/wydarzenia.json` | co godzinę |
+| Autobusy | rozkłady przystankowe [PKS Bolesławiec](https://www.pks-boleslawiec.pl/) | `data/autobusy.json` | **ręcznie** |
+| Telefony, apteki, PSZOK | wpisane ręcznie | `wies.json` | ręcznie |
+| Msze (stały porządek) | [kruszyn.com](https://kruszyn.com/porzadek-nabozenstw/) | w `index.html` | ręcznie |
 
-## Intencje mszalne
+Dane z Tauron, com-d.pl, regiowyniki.pl i kruszyn.com nie pochodzą z oficjalnych, gwarantowanych API. Gdy zmieni się wygląd lub format tych stron, odpowiedni robot przestanie działać (nie zepsuje przy tym starych danych) i trzeba go poprawić.
 
-Robot (4 razy na dobę) czyta stronę kruszyn.com/ogloszenia-parafialne/ i zapisuje intencje w `intencje.json`. W sekcji *Msze święte* pojawia się lista najbliższych intencji, a kafel na ekranie głównym pokazuje intencję najbliższej mszy. Robot pomija wpisy, w których dzień tygodnia nie zgadza się z datą. Gdy parafia zmieni układ strony, robot nie nadpisze starych danych, a w *Actions* pojawi się ostrzeżenie.
+---
 
-## Znicz Kruszyn
+## Co edytujesz ręcznie
 
-Robot (4 razy na dobę) czyta ze strony regiowyniki.pl terminarz i tabelę drużyny (klasa B, Jelenia Góra IV) i zapisuje je w `znicz.json`. Kafel na ekranie głównym pokazuje najbliższy mecz (gdy jest w ciągu tygodnia) albo ostatni wynik i miejsce w tabeli. W środku są najbliższe i ostatnie mecze (z oznaczeniem W/R/P) oraz pełna tabela. Mecze bez ustalonego terminu (np. runda wiosenna przed publikacją terminarza) są liczone, ale nie pokazywane z datą.
-Robot opiera się na tekście strony, nie na jej wyglądzie, ale gdy regiowyniki.pl zmieni układ, w *Actions* pojawi się ostrzeżenie, a aplikacja zostanie przy ostatnich danych. Diagnostyka: `python3 scripts/znicz_mecze.py --discover`.
+### `wies.json` – telefony, apteki, PSZOK
 
-## Instalacja jako aplikacja (PWA) i praca bez internetu
+Zwykły plik tekstowy z danymi. Edytujesz go bezpośrednio na GitHubie (ikona ołówka), a po zapisaniu zmiany pojawiają się w aplikacji. Przykładowe wpisy:
 
-Strona jest instalowalna. Na Androidzie (Chrome) i na komputerze (Chrome/Edge) na dole ekranu głównego pojawia się karta „Aplikacja w telefonie” z przyciskiem **Zainstaluj aplikację**. Na iPhonie karta pokazuje, jak dodać stronę przez Safari (*Udostępnij → Do ekranu początkowego*); instalacja przez inną przeglądarkę na iPhonie nie działa. Zainstalowana aplikacja otwiera się bez paska przeglądarki, ma własną ikonę, a przytrzymanie ikony na Androidzie daje skróty do Śmieci, Pogody i Mszy. Bez internetu pokazuje ostatnio pobrane dane (plik `sw.js`). Karta znika po instalacji lub po kliknięciu „Nie teraz”.
-Instalacja działa tylko pod adresem `https://…github.io/kruszyn/` (nie z pliku otwartego z dysku).
+```json
+{ "grupa": "Alarmowe", "nazwa": "Numer alarmowy", "opis": "każda służba", "tel": "112", "sos": true }
+{ "nazwa": "Apteka „U Nelli”", "adres": "ul. Dolne Młyny 21c, Bolesławiec", "tel": "75 640 92 13", "cala_doba": true }
+```
 
-## Wydarzenia (formularz Google → arkusz → aplikacja)
+Sekcje: `ogloszenia`, `telefony`, `apteki`, `prad` (wpisy ręczne dodatkowe do danych z Tauron) i `pszok`. Uważaj na przecinki i cudzysłowy: pomyłka w JSON powoduje, że aplikacja użyje wbudowanych danych awaryjnych. Po edycji warto sprawdzić plik w [jsonlint.com](https://jsonlint.com/).
 
-Mieszkańcy dodają wydarzenia formularzem Google (przycisk w aplikacji). Odpowiedzi trafiają do Twojego arkusza, Ty zatwierdzasz wpis wpisując `TAK` w kolumnie „Zatwierdzone”, a robot co godzinę pobiera zatwierdzone wpisy i pokazuje je w aplikacji (nadchodzące + 5 ostatnich minionych, przycisk „Dodaj do kalendarza” i kalendarz do zasubskrybowania).
+### `data/autobusy.json` – rozkład jazdy
 
-Jednorazowa konfiguracja arkusza:
-1. W arkuszu: *Plik → Ustawienia* → Ustawienia regionalne: **Polska**, strefa czasowa: Warszawa.
-2. Kolumna „Zatwierdzone” (N): zaznacz N2:N1000 → *Dane → Weryfikacja danych* → lista: `TAK`. Wpisuj zawsze wielkimi literami.
-3. Dodaj nową zakładkę o nazwie **Publiczne**. W komórce A1 wklej (jedna linia, nazwę zakładki z odpowiedziami sprawdź na dole arkusza):
+Autobusów nie da się pobierać automatycznie, bo PKS udostępnia tylko pliki PDF. Rozkład jest więc przepisany ręcznie z rozkładów przystankowych (Kruszyn Orzechowa, Kruszyn 1, Kruszyn 2).
+
+Gdy PKS wyda nowy rozkład:
+
+1. Pobierz aktualne PDF-y (linki są w stopce widoku „Autobusy").
+2. Popraw godziny w `data/autobusy.json` (format wpisu: `"05:23 End"` – godzina i litery kursu).
+3. Zmień pola `wazny_od` i `zaktualizowano`. Są one pokazywane w aplikacji jako „Rozkład ważny od…" i „ostatnia aktualizacja".
+
+Litery przy godzinach aplikacja rozumie sama: wielkie litery to dni kursowania (`D` pon–pt, `E` pon–sob, `C` weekendy i święta, `T` codziennie, `S` dni nauki szkolnej), małe litery to wyjątki (`d`, `m`, `n` – wybrane święta i 24/31 grudnia). Pełna legenda jest w pliku w polu `legenda`. Rozkład obejmuje tylko dni robocze, bo w PDF-ach nie ma osobnych tabel na weekend.
+
+### Stałe w `index.html`
+
+Kilka ustawień jest w kodzie, w sekcjach opatrzonych komentarzem:
+
+| Stała | Co robi |
+|---|---|
+| `SHOW_COFFEE` (`true` / `false`) | pokazuje lub ukrywa przycisk „Postaw kawę" |
+| `COFFEE_URL` | adres strony buycoffee.to |
+| `FORM` (w sekcji wydarzeń) | adres formularza Google do dodawania wydarzeń |
+| `AWAY_MS` | po ilu milisekundach w tle aplikacja się odświeża (domyślnie 5 minut) |
+| link w stopce „Napisz do twórcy" | adres formularza kontaktowego Google |
+
+> **Nie edytuj ani nie usuwaj** komentarzy `/*WASTE_DATA_START*/` i `/*WASTE_DATA_END*/` w `index.html`. Robot od śmieci wstawia między nimi świeże dane awaryjne.
+
+---
+
+## Wydarzenia: formularz Google → arkusz → aplikacja
+
+1. Mieszkaniec klika w aplikacji „Dodaj wydarzenie" i wypełnia formularz Google.
+2. Odpowiedzi trafiają do arkusza Google (zakładka „Odpowiedzi z formularza 1").
+3. **Moderacja:** wydarzenie pojawi się w aplikacji dopiero po wpisaniu `TAK` w kolumnie **Zatwierdzone** (N). Wpisanie `TAK` w kolumnie **Anulowane** (O) ukrywa wydarzenie.
+4. Zakładka **Publiczne** (formuła `QUERY`) wybiera tylko zatwierdzone wiersze i jest opublikowana jako CSV.
+5. Adres tego CSV jest w pliku `wydarzenia_url.txt`. Robot `wydarzenia.py` czyta go co godzinę i zapisuje `data/wydarzenia.json` oraz kalendarz `data/kruszyn-wydarzenia.ics`.
+
+Kolumny arkusza: A Sygnatura czasowa · B Nazwa wydarzenia · C Data · D Kategoria · E Godzina · F Data zakończenia · G Miejsce · H Opis · I Organizator · J Telefon · K Link · L Kto dodaje · M Zgoda na publikację · N Zatwierdzone · O Anulowane.
+
+Formuła w komórce A1 zakładki „Publiczne":
+
 ```
 =IFERROR(QUERY('Odpowiedzi z formularza 1'!A:O; "select B, C, D, E, F, G, H, I, J, K where N = 'TAK' and (O is null or O <> 'TAK') and M is not null"; 1); "")
 ```
-   Jeśli arkusz zgłosi błąd formuły, zamień średniki `;` na przecinki `,`.
-4. *Plik → Udostępnij → Opublikuj w internecie*: w pierwszym polu wybierz **zakładkę Publiczne** (NIE „Cały dokument”, bo ujawniłbyś dane osób dodających), w drugim **Wartości rozdzielane przecinkami (.csv)** → *Opublikuj* → skopiuj link.
-5. W repozytorium otwórz `kruszyn/wydarzenia_url.txt`, zastąp całą zawartość skopiowanym linkiem (jedna linia) i zapisz.
-6. Uruchom *Run workflow*. W kroku *Pobierz wydarzenia z arkusza Google* ma być „Zapisano data/wydarzenia.json: nadchodzące N …”.
 
-Codziennie: gdy dojdzie wpis (e-mail z formularza), sprawdź go i wpisz `TAK`; w ciągu godziny pojawi się w aplikacji. Wycofanie: `TAK` w kolumnie „Anulowane”. Nie usuwaj wierszy (minione wydarzenia są brane z tej samej tabeli) i nie zmieniaj ani nie dodawaj pytań w formularzu bez zmiany robota. Adres formularza w aplikacji jest w `index.html` (stała `FORM`).
+Publikacja CSV: Plik → Udostępnij → Opublikuj w internecie → wybierz zakładkę „Publiczne" i format CSV → skopiuj link do `wydarzenia_url.txt`.
 
-## Nowy rok (2027)
+Robot rozumie zarówno daty zapisane jako tekst (`2026-11-26`, `26.11.2026`), jak i liczby seryjne z arkusza (`46352`), oraz godziny w postaci ułamka doby (`0,7083` = 17:00). Wiersze bez nazwy lub daty są pomijane, a jeśli arkusz nagle będzie pusty, robot nie kasuje zapisanych wydarzeń.
 
-Robot sam próbuje wczytać harmonogram na następny rok (adres `.../boleslawiec-2027r-gmina/kruszyn`). Dopóki COM-D go nie opublikuje, aplikacja pokazuje stare terminy, a po 31 grudnia – informację o braku terminów. Gdy harmonogram się pojawi, ręcznie uruchom workflow (krok 7). Daty zbiórek odzieży i gabarytów na 2027 trzeba dopisać ręcznie.
+---
 
-## Ważne zastrzeżenia
+## Uruchomienie od zera
 
-- **Repozytorium jest publiczne** – nie wpisuj w nim żadnych prywatnych danych (numerów prywatnych, adresów mieszkańców).
-- GitHub wyłącza harmonogramy w repozytoriach nieaktywnych przez 60 dni. Robot od prądu zapisuje plik co godzinę, więc to zwykle nie grozi, ale gdyby harmonogram stanął, wejdź w *Actions* i kliknij *Enable workflow* (albo po prostu zrób dowolną edycję `wies.json`).
-- Pogoda i jakość powietrza pochodzą z Open-Meteo (bez klucza), a prąd i apteki mają linki do źródeł oficjalnych – dane „wiążące” zawsze sprawdzaj u źródła.
-- W razie wątpliwości co do śmieci: COM-D, tel. 76 870 21 68.
+1. Utwórz repozytorium `<twój-login>.github.io` (albo użyj istniejącego) i wgraj pliki aplikacji do folderu `kruszyn/`. Workflow wgraj do `.github/workflows/publish.yml` w głównym folderze.
+2. **Settings → Pages → Source: GitHub Actions.**
+3. **Settings → Actions → General → Workflow permissions → Read and write permissions** (bot musi móc zapisywać dane w repozytorium).
+4. **Actions → „Publikacja strony" → Run workflow.** Pierwsze uruchomienie tworzy pliki z danymi i publikuje stronę.
+5. Gdy zmieniasz nazwę repozytorium lub folderu, popraw adresy w `manifest.webmanifest` oraz `kruszyn/` w workflow.
+
+Workflow nie używa żadnych sekretów ani kluczy: wszystkie źródła są publiczne.
+
+### Zapisywanie zmian przez bota
+
+Bot (`kruszyn-bot`) zapisuje wygenerowane pliki do gałęzi `main`. Gdy w tym samym czasie ktoś edytuje repozytorium, push może zostać odrzucony. Workflow robi wtedy `git pull --rebase` i ponawia próbę do trzech razy.
+
+---
+
+## Uruchamianie i testowanie lokalnie
+
+Roboty używają tylko biblioteki standardowej Pythona (3.10+), więc nic nie trzeba instalować. Z folderu `kruszyn/`:
+
+```bash
+python3 scripts/imgw_warnings.py --selftest     # test samego parsera, bez internetu
+python3 scripts/wydarzenia.py --selftest
+python3 scripts/tauron_outages.py --discover    # pokaż surową odpowiedź Tauron (diagnostyka)
+python3 scripts/kruszyn_intencje.py --discover  # pokaż, co robot widzi na stronie parafii
+python3 scripts/znicz_mecze.py --discover       # pokaż, co robot widzi na regiowyniki.pl
+```
+
+Podgląd strony (wymagany serwer, bo `file://` blokuje pobieranie plików JSON):
+
+```bash
+python3 -m http.server 8000
+# otwórz http://localhost:8000/
+```
+
+---
+
+## Gdy coś nie działa
+
+Pierwsze miejsce: **Actions → ostatnie uruchomienie → krok, który się nie udał**. Przy błędach źródeł w podsumowaniu jest żółte ostrzeżenie.
+
+| Objaw | Zwykła przyczyna |
+|---|---|
+| Brak ostrzeżeń IMGW w aplikacji | normalne, gdy nie ma ostrzeżeń: IMGW odpowiada „Brak ostrzeżeń meteorologicznych" i robot zapisuje pustą listę |
+| Brak kafelka Znicza | robot nie rozpoznał strony regiowyniki.pl lub nie ma meczów; uruchom `--discover` |
+| Brak prądu mimo awarii | Tauron zwraca dane dla całej okolicy; robot zostawia tylko wpisy z nazwą „Kruszyn". 0 wpisów oznacza zwykle brak wyłączeń |
+| Wydarzenia nie pokazują się | brak `TAK` w kolumnie Zatwierdzone, pusty `wydarzenia_url.txt` albo zakładka „Publiczne" nie jest opublikowana jako CSV |
+| Aplikacja pokazuje starą wersję po aktualizacji | service worker trzyma kopię; zamknij aplikację całkowicie i otwórz ponownie, na telefonie ewentualnie wyczyść dane strony |
+| `python: can't open file 'scripts/…'` | workflow szuka skryptów w złym folderze; sprawdź `working-directory: kruszyn` |
+| `fatal: pathspec '…json' did not match any files` | stara wersja kroku zapisu; użyj aktualnego workflow, który dodaje tylko istniejące pliki |
+| `UnicodeEncodeError` w User-Agent | w nagłówkach HTTP nie wolno używać polskich liter; User-Agent robotów jest ASCII |
+| Push odrzucony („fetch first") | ktoś zapisał zmiany w trakcie pracy bota; workflow sam ponawia próbę |
+| 404 przy śmieciach na rok 2027 | COM-D nie opublikował jeszcze harmonogramu na nowy rok; normalne, dane z 2026 zostają |
+
+---
+
+## Dla rozwijającego aplikację
+
+Struktura `index.html`:
+
+- **Widoki** to elementy `<section class="view" id="v-…">`. Ich lista jest w tablicy `VIEWS` w skrypcie; nawigacja po adresie `#/nazwa`.
+- **Kafelki** strony głównej są w `<div class="tiles">`. Kolejność w kodzie to kolejność na ekranie. Ostrzeżenia (`t-warn`, `t-imgw`) są zawsze na górze.
+- **Dane** każdej funkcji pobiera osobny blok (`(async function () { … })()`), który robi `fetch` swojego pliku JSON i w razie błędu po prostu nic nie pokazuje.
+- **Stopka** (kontakt, kawa, źródła) jest pokazywana tylko na stronie głównej.
+- Preferencje użytkownika (motyw, kolory, powiększenie, wybrany przystanek) są w `localStorage` pod kluczami `kr-theme`, `kr-pal`, `kr-zoom`, `busStop`. Zapis jest opakowany w `try/catch`, bo przeglądarki w trybie prywatnym go blokują.
+
+**Dodanie nowej funkcji** to zwykle cztery kroki:
+
+1. Robot w `scripts/` zapisujący plik JSON (zasada: przy nietypowej odpowiedzi nie nadpisuj starego pliku, w User-Agent tylko znaki ASCII).
+2. Krok w `publish.yml` z `continue-on-error: true` oraz dopisanie pliku do kroku „Przygotuj pliki strony".
+3. Kafelek i widok w `index.html`, nazwa widoku w tablicy `VIEWS`.
+4. Wpis w tym README.
+
+---
+
+## Plany
+
+- Powiadomienia (ostrzeżenia IMGW, wydarzenia, mecze Znicza): propozycja kanałów to Telegram lub push w aplikacji.
+- Wiadomości z Kruszyna z bolec.info.
+- Kod QR do aplikacji na plakaty.
+- Zgłaszanie problemów (drogi, oświetlenie).
+- Intencje mszalne z Łazisk.
+
+---
+
+## Uwagi
+
+- Aplikacja jest nieoficjalna i tworzona społecznie. Dane pochodzą ze stron zewnętrznych i mogą być nieaktualne. W sprawach ważnych (autobus, prąd, godziny mszy) sprawdź źródło lub zadzwoń.
+- Pokazywane są tylko krótkie dane i linki do źródeł, bez kopiowania treści cudzych serwisów.
+- Pomysły, uwagi i zgłoszenia błędów: formularz „Napisz do twórcy" na dole strony głównej.
