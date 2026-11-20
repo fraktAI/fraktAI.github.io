@@ -2,145 +2,229 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#fbf7f0">
+<meta name="theme-color" content="#3a4d43">
 <title>Mój Kruszyn</title>
 <meta name="description" content="Pogoda, wywóz śmieci i ważne informacje z Kruszyna.">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta property="og:image" content="icon-512.png"><meta property="og:title" content="Mój Kruszyn"><meta property="og:description" content="Pogoda, wywóz śmieci i ważne informacje z Kruszyna.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-180.png">
-<meta name="apple-mobile-web-app-title" content="Kruszyn"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kruszyn"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
-<script>try{var t=localStorage.getItem('kr-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<script>try{var t=localStorage.getItem('kr-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);var q=localStorage.getItem('kr-pal');if(q==='blue'||q==='red')document.documentElement.setAttribute('data-pal',q)}catch(e){}</script>
 <style>
+/* ===== MÓJ KRUSZYN – styl: zielony nagłówek, karty z ciepłą ramką, dolna nawigacja ===== */
 :root{
-  --bg:#fbf7f0;--card:#fff;--ink:#1d1b18;--mute:#5d574e;--line:#ebe3d6;--accent:#d6001c;--tile:#f3ede2;--onaccent:#fff;
-  --shadow:0 1px 2px rgba(60,40,10,.06),0 10px 28px rgba(60,40,10,.08);
-  --c-zmieszane:#55605a;--c-bio:#8a5a2b;--c-plastik:#d9a400;--c-szklo:#2e8b57;--c-makulatura:#2f6fb5;--c-odziez:#9b4f9b;--c-gabaryty:#d1621f;
+  --bg:#f8f6f1;--card:#fff;--ink:#1d2520;--mute:#66675f;--line:#ebe5d8;--tile:#f3efe6;--inner:#faf8f4;--segbg:#e9e3d7;
+  --pri:#3a4d43;--onpri:#fff;--accent:#2d6a4d;--label:#3d5a4a;
+  --head:#3a4d43;--head2:#243a30;--navon:#2b3f35;--navbg:#e3ebe5;
+  --soon1:#3a4d43;--soon2:#5b7566;--warn1:#b3261e;--warn2:#d4284a;
+  --sos:#d4284a;--onsos:#fff;--sos-bg:#fdf1f3;--sos-line:#f5c9d2;
+  --amber-bg:#fdf9ec;--amber-line:#f2e4a8;--amber-ink:#7a4a14;
+  --mint-bg:#dff5ea;--mint-ink:#1f6b4a;
+  --shadow:0 1px 2px rgba(40,50,40,.04),0 8px 22px rgba(40,50,40,.05);
+  --c-zmieszane:#2b2825;--c-bio:#8a4b1f;--c-plastik:#f0c51f;--c-szklo:#2f9e6e;--c-makulatura:#3a5ae8;--c-odziez:#9b4f9b;--c-gabaryty:#d1621f;
+  --hl:#6fd9a4;--hn1:#1d2c26;--hn2:#3a5246;--hd1:#3b5e4e;--hd2:#7ea08e;--hc1:#46534e;--hc2:#8c9a94;--sn:#16211c;--sd:#2c4739;--sc:#323d38;
+  --r:28px;--ease:cubic-bezier(.2,.7,.2,1);
 }
-@media (prefers-color-scheme:dark){:root{
-  --bg:#14110e;--card:#1f1c18;--ink:#f6f1e9;--mute:#bbb2a4;--line:#312c26;--accent:#ff5263;--tile:#2a2621;--onaccent:#25060a;--shadow:none;
-  --c-zmieszane:#aeb4b0;--c-bio:#c99562;--c-plastik:#f0c43a;--c-szklo:#5fc08a;--c-makulatura:#6aa5e6;--c-odziez:#c98bc9;--c-gabaryty:#f08c4d;
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111613;--card:#1a221e;--ink:#eef2ee;--mute:#a4aea7;--line:#2b3731;--tile:#25302a;--inner:#202a25;--segbg:#222c27;
+  --pri:#62d6a2;--onpri:#0c2a1d;--accent:#7fd9ae;--label:#8fcfae;
+  --head:#202c26;--head2:#141c18;--navon:#a9ecc9;--navbg:#2b3d33;
+  --soon1:#1f4a38;--soon2:#2d6a50;--warn1:#7a1f2c;--warn2:#a32a3d;
+  --sos:#ff6b81;--onsos:#2a0910;--sos-bg:#2c1a1e;--sos-line:#5a2a35;
+  --amber-bg:#2b2616;--amber-line:#574a1f;--amber-ink:#f0d48a;
+  --mint-bg:#1f3a2d;--mint-ink:#8fe6b9;--shadow:none;
+  --c-zmieszane:#aeb4b0;--c-bio:#c99562;--c-plastik:#f0c43a;--c-szklo:#5fc08a;--c-makulatura:#7a95ff;--c-odziez:#c98bc9;--c-gabaryty:#f08c4d;
 }}
+:root[data-theme="dark"]{
+  --bg:#111613;--card:#1a221e;--ink:#eef2ee;--mute:#a4aea7;--line:#2b3731;--tile:#25302a;--inner:#202a25;--segbg:#222c27;
+  --pri:#62d6a2;--onpri:#0c2a1d;--accent:#7fd9ae;--label:#8fcfae;
+  --head:#202c26;--head2:#141c18;--navon:#a9ecc9;--navbg:#2b3d33;
+  --soon1:#1f4a38;--soon2:#2d6a50;--warn1:#7a1f2c;--warn2:#a32a3d;
+  --sos:#ff6b81;--onsos:#2a0910;--sos-bg:#2c1a1e;--sos-line:#5a2a35;
+  --amber-bg:#2b2616;--amber-line:#574a1f;--amber-ink:#f0d48a;
+  --mint-bg:#1f3a2d;--mint-ink:#8fe6b9;--shadow:none;
+  --c-zmieszane:#aeb4b0;--c-bio:#c99562;--c-plastik:#f0c43a;--c-szklo:#5fc08a;--c-makulatura:#7a95ff;--c-odziez:#c98bc9;--c-gabaryty:#f08c4d;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{color-scheme:light}
+
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.5 Poppins,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:560px;margin:0 auto;padding:16px 16px 48px;zoom:var(--z,1)}
-.view[hidden]{display:none}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:17px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:560px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-right)) calc(120px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left));zoom:var(--z,1)}
+.view[hidden],.notices[hidden],#v-home[hidden],.tile[hidden],footer.contact[hidden],.coffee .cbtn[hidden],.seg a[hidden]{display:none}
 a{color:var(--accent)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.sub{font-size:15px;color:var(--mute)}
+.sub{font-size:14.5px;color:var(--mute);line-height:1.45}
 
-/* nagłówek */
-.topbar{display:flex;justify-content:flex-end;gap:8px}
-.zoom button{min-width:48px;height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font:600 16px Poppins,system-ui,sans-serif;cursor:pointer}
+/* ---------- nagłówek aplikacji ---------- */
+.app-head{position:sticky;top:0;z-index:30;background:var(--head);color:#fff;border-radius:0 0 36px 36px;box-shadow:0 10px 28px rgba(20,35,28,.2);
+  padding:calc(env(safe-area-inset-top,0px) + 14px) max(16px,env(safe-area-inset-right)) 16px max(16px,env(safe-area-inset-left))}
+.ah-in{max-width:1180px;margin:0 auto}
+.ah-row{display:flex;align-items:center;gap:10px}
+.ah-title{flex:1;min-width:0;color:inherit;text-decoration:none}
+.ah-title h1{margin:0;white-space:nowrap;font-size:clamp(24px,7.3vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.1}
+.where{margin:5px 0 0;font-size:13px;line-height:1.3;color:rgba(255,255,255,.74);display:flex;align-items:center;gap:6px}
+.where svg{width:16px;height:16px;flex:none;color:var(--hl)}
+.ah-wx{flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 11px;border-radius:20px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;line-height:1.15;min-width:74px}
+.ah-wx .wx-top{display:flex;align-items:center;gap:5px;font-size:19px}
+.ah-wx .wx-top b{font-weight:700}
+.ah-wx .wx-s{font-size:11.5px;color:rgba(255,255,255,.78);max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#th{flex:none;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+#th svg{width:22px;height:22px}
+.ah-status{display:flex;align-items:center;gap:13px;margin-top:14px;padding:12px 16px;border-radius:22px;background:var(--head2);border:1px solid rgba(255,255,255,.14);color:#fff;text-decoration:none}
+.st-dot{flex:none;width:16px;height:16px;border-radius:50%;background:#9aa8a0;box-shadow:0 0 0 5px rgba(255,255,255,.08)}
+.st-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.st-tx b{font-size:15.5px;font-weight:700;line-height:1.3}
+.st-tx span{font-size:13px;line-height:1.35;color:rgba(255,255,255,.72)}
+.ah-status svg{flex:none;width:20px;height:20px;color:#6fd9a4}
+.ah-status.ok{border-color:rgba(111,217,164,.3)}
+.ah-status.ok .st-dot{background:#5fd8a0;box-shadow:0 0 0 5px rgba(95,216,160,.16)}
+.ah-status.ok .st-tx span{color:#8fe3bc}
+.ah-status.warn{border-color:rgba(245,184,61,.4)}
+.ah-status.warn .st-dot{background:#f5b83d;box-shadow:0 0 0 5px rgba(245,184,61,.16)}
+.ah-status.warn .st-tx span{color:#f6d78b}
+.ah-status.warn svg{color:#f5b83d}
+.ah-status.bad{background:#5b1b27;border-color:rgba(255,120,140,.45)}
+.ah-status.bad .st-dot{background:#ff6b81;box-shadow:0 0 0 5px rgba(255,107,129,.2)}
+.ah-status.bad .st-tx span{color:#ffc2cc}
+.ah-status.bad svg{color:#ff8fa0}
+@media (max-height:520px){.app-head{position:static}}
+
+/* ---------- dolna nawigacja ---------- */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;gap:2px;padding:10px 6px calc(10px + env(safe-area-inset-bottom,0px));
+  background:color-mix(in srgb,var(--card) 93%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+.bnav a{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:var(--mute);font-size:12.5px;font-weight:500;white-space:nowrap}
+.bn-ic{display:grid;place-items:center;width:62px;height:38px;border-radius:19px;transition:background-color .2s}
+.bn-ic svg{width:25px;height:25px}
+.bnav a.on{color:var(--navon);font-weight:700}
+.bnav a.on .bn-ic{background:var(--navbg)}
+@media (min-width:700px){
+  .bnav{left:50%;right:auto;transform:translateX(-50%);bottom:16px;width:min(640px,calc(100% - 32px));border:1px solid var(--line);border-radius:30px;padding:10px 8px;box-shadow:0 10px 34px rgba(20,35,28,.16)}
+}
+
+/* ---------- górny pasek na stronie głównej ---------- */
+.topbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:0 0 12px}
+.topbar .zl{margin-right:auto;font-size:13px;font-weight:500;color:var(--mute)}
+.zoom button{min-width:46px;height:38px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;font:600 15px Inter,system-ui,sans-serif;cursor:pointer}
 .zoom button:disabled{opacity:.35}
-.top{text-align:center;padding:4px 0 2px}
-.top .greet{margin:0;font-size:16px;font-weight:500;color:var(--mute)}
-.top h1{margin:2px 0 0;font:800 clamp(36px,11.5vw,50px)/1.05 Poppins,system-ui,sans-serif;letter-spacing:-.02em}
-.top h1 span{color:var(--accent)}
-.top .where{margin:8px 0 0;font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 
-/* karta pogody */
-.hero{display:block;position:relative;overflow:hidden;margin-top:18px;border-radius:28px;padding:20px 20px 84px;color:#fff;text-decoration:none;box-shadow:var(--shadow);
-  background:linear-gradient(180deg,#1d2347,#3b3a74);--sil:#12152e}
-.hero.day{background:linear-gradient(180deg,#2e6fd6,#62a8f2);--sil:#1b4a99}
-.hero.cloud{background:linear-gradient(180deg,#56667c,#8393a8);--sil:#2c3747}
-.hero.night::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.8;
+/* ---------- karta pogody (ekran główny) ---------- */
+.hero{display:block;position:relative;overflow:hidden;margin-top:6px;border-radius:var(--r);padding:20px 20px 84px;color:#fff;text-decoration:none;box-shadow:var(--shadow);
+  background:linear-gradient(150deg,var(--hn1),var(--hn2));--sil:var(--sn)}
+.hero.day{background:linear-gradient(150deg,var(--hd1),var(--hd2));--sil:var(--sd)}
+.hero.cloud{background:linear-gradient(150deg,var(--hc1),var(--hc2));--sil:var(--sc)}
+.hero.night::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.75;
   background-image:radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 30% 40%,#fff,transparent),
   radial-gradient(1.5px 1.5px at 55% 14%,#fff,transparent),radial-gradient(1px 1px at 70% 48%,#fff,transparent),radial-gradient(1px 1px at 88% 30%,#fff,transparent),
   radial-gradient(1.5px 1.5px at 42% 62%,#fff,transparent)}
 .hero>*{position:relative;z-index:1}
-.hero .lab{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.92}
-.hero .r1{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+.hero .lab{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--hl)}
+.hero .r1{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px}
 .hero .date{font-size:clamp(22px,6.4vw,27px);font-weight:700;line-height:1.15}
 .hero .big{display:flex;align-items:center;gap:8px;flex:none}
-.hero .big .i{font-size:42px;line-height:1}
-.hero .big .t{font-size:46px;font-weight:700;line-height:1}
-.hero .line{margin-top:12px;font-size:17px;line-height:1.4}
-.hero .cta{display:inline-block;margin-top:14px;background:#fff;color:#1d2347;border-radius:999px;padding:11px 20px;font-size:16px;font-weight:600}
-.hero svg.sil{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:58px;fill:var(--sil);z-index:0}
+.hero .big .i{font-size:40px;line-height:1}
+.hero .big .t{font-size:44px;font-weight:700;line-height:1}
+.hero .line{margin-top:12px;font-size:16px;line-height:1.45;color:rgba(255,255,255,.9)}
+.hero .cta{display:inline-block;margin-top:14px;background:rgba(255,255,255,.92);color:var(--head2);border-radius:999px;padding:10px 20px;font-size:15.5px;font-weight:600}
+.hero svg.sil{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:58px;fill:var(--sil);z-index:0;opacity:.85}
 
-/* ogłoszenia */
-.notices{margin-top:16px;display:grid;gap:10px}
-.notice{border-left:6px solid var(--accent);background:var(--card);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow)}
-.notice.urgent{background:var(--accent);color:var(--onaccent)}
-.notice b{display:block;font-size:17px}
-.notice p{margin:2px 0 0;font-size:16px}
+/* ---------- ogłoszenia ---------- */
+.notices{margin-top:14px;display:grid;gap:10px}
+.notice{background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber-ink);border-radius:var(--r);padding:14px 18px}
+.notice.urgent{background:var(--sos);border-color:var(--sos);color:var(--onsos)}
+.notice b{display:block;font-size:16.5px}
+.notice p{margin:2px 0 0;font-size:15.5px}
 .notice small{display:block;margin-top:4px;opacity:.8;font-size:13px}
 
-/* kafle */
-.tiles{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tile{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:158px;padding:16px;border-radius:26px;background:var(--card);color:var(--ink);text-decoration:none;box-shadow:var(--shadow);border:1px solid var(--line);--tc:var(--accent);position:relative}
-.tile[hidden]{display:none}
-.tile.wide{grid-column:1/-1;min-height:0;flex-direction:row;align-items:center}
-.tile .ico{flex:none;width:54px;height:54px;border-radius:18px;background:color-mix(in srgb,var(--tc) 16%,var(--card));color:var(--tc);display:grid;place-items:center}
-.tile .ico svg{width:28px;height:28px}
-.tile .txt{display:flex;flex-direction:column;gap:3px;min-width:0}
-.tile .tt{font-size:18px;font-weight:700;line-height:1.25}
+/* ---------- kafle ekranu głównego (karty-wiersze) ---------- */
+.tiles{margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px}
+.tile{display:flex;flex-direction:row;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--r);background:var(--card);color:var(--ink);text-decoration:none;box-shadow:var(--shadow);border:1px solid var(--line);--tc:var(--pri);position:relative}
+.tile.wide{grid-column:1/-1}
+.tile .ico{flex:none;width:52px;height:52px;border-radius:18px;background:color-mix(in srgb,var(--tc) 15%,var(--card));color:var(--tc);display:grid;place-items:center}
+.tile .ico svg{width:26px;height:26px}
+.tile .txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tile .tt{font-size:17px;font-weight:700;line-height:1.3}
 .tile .ss{font-size:14px;color:var(--mute);line-height:1.4}
-.tile .chev{display:none}
-.tile:active{transform:scale(.98)}
-.tile.soon{background:var(--accent);color:var(--onaccent);border-color:var(--accent)}
-.tile.soon .ss{color:var(--onaccent);opacity:.92}
-.tile.soon .bag{fill:var(--onaccent)}
-.tile.soon .ico{background:var(--onaccent);color:var(--accent)}
-.t-pszok{--tc:#2e9b5f}.t-waste{--tc:#2e9b5f}.t-msza{--tc:#7a5af8}.t-prad{--tc:#d98a00}.t-apt{--tc:#e0293a}.t-air{--tc:#0f9fb0}.t-tel{--tc:#3b82f6}
+a.tile::after{content:"›";margin-left:auto;padding-left:6px;font-size:30px;line-height:1;color:var(--mute);opacity:.55}
+.tile:active{transform:scale(.985)}
+.tile.soon{background:linear-gradient(135deg,var(--soon1),var(--soon2));border-color:transparent;color:#fff}
+.tile.soon .ss{color:rgba(255,255,255,.88)}
+.tile.soon .bag{fill:#fff}
+.tile.soon .ico{background:rgba(255,255,255,.18);color:#fff}
+.tile.soon::after{color:#fff}
+#t-warn,#t-imgw{background:linear-gradient(135deg,var(--warn1),var(--warn2))}
+.t-pszok,.t-waste{--tc:#2f9e6e}.t-msza{--tc:#7a5af8}.t-prad{--tc:#d98a00}.t-apt{--tc:#d4284a}.t-air{--tc:#0f9fb0}.t-tel{--tc:#3b82f6}.t-znicz{--tc:#2f9e6e}.t-wyd{--tc:#e07a1f}.t-bus{--tc:#0d9488}
 .bag{width:17px;height:17px;fill:var(--c);vertical-align:-3px}
 .aq{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--c);margin-right:6px}
-.foot{margin-top:22px;text-align:center;font-size:14px;color:var(--mute)}
-.foot.contact{margin-top:28px;padding-top:6px}
-footer.contact[hidden]{display:none}
-.coffee{margin:0 auto;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--shadow);font-size:14px;line-height:1.5;color:var(--ink)}
+.frm{display:flex;gap:4px;margin-top:6px}
+.frm i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;font-size:11px;font-weight:700;color:#fff;background:#8a8f98}
+.frm i.w{background:#2f9e6e}.frm i.p{background:#d4284a}
+.tile.soon .frm i{outline:1px solid rgba(255,255,255,.7)}
+
+/* ---------- stopka ---------- */
+.foot{margin-top:22px;text-align:center;font-size:14px;color:var(--mute);line-height:1.55}
+.foot.contact{margin-top:26px;padding-top:6px}
+.coffee{margin:0 auto;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow);font-size:14px;line-height:1.5;color:var(--ink)}
 .coffee .cmsg{display:block}.coffee .cmsg b{display:block;font-size:16px;margin-bottom:2px}
 .coffee .cbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
-.coffee .cx,.coffee .cbtn{flex:1 1 170px;max-width:240px;box-sizing:border-box;text-align:center;text-decoration:none;font-weight:600;font-size:15px;border-radius:999px;padding:11px 16px;white-space:nowrap}
-.coffee .cx{border:1.5px solid var(--ink);color:var(--ink);background:transparent}
+.coffee .cx,.coffee .cbtn{flex:1 1 170px;max-width:240px;text-align:center;text-decoration:none;font-weight:600;font-size:15px;border-radius:999px;padding:11px 16px;white-space:nowrap}
+.coffee .cx{border:1.5px solid var(--line);color:var(--ink);background:var(--inner)}
 .coffee .cx:hover{border-color:var(--accent);color:var(--accent)}
-.coffee .cbtn{color:var(--onaccent);background:var(--accent);border:1.5px solid var(--accent)}
-.coffee .cbtn:hover{filter:brightness(1.08)}
-.coffee .cbtn[hidden]{display:none}
+.coffee .cbtn{color:var(--onpri);background:var(--pri);border:1.5px solid var(--pri)}
 .foot .srcs{margin:16px 0 0;font-size:12px;opacity:.85}
 
-/* widoki szczegółowe */
-.bar{display:flex;align-items:center;gap:12px;margin:8px 0 14px}
-.bar a.back{display:inline-flex;align-items:center;min-height:48px;padding:0 18px 0 14px;border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;font-weight:600;box-shadow:var(--shadow);border:1px solid var(--line)}
-.bar h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.01em}
-.card{background:var(--card);border-radius:24px;padding:16px 18px 8px;margin-top:14px;box-shadow:var(--shadow);border:1px solid var(--line)}
-.card h3{margin:0 0 6px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--mute)}
-.banner{background:var(--accent);color:var(--onaccent);border-radius:20px;padding:14px 18px;font-weight:700;font-size:18px}
-.row{display:flex;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}
-.row:first-of-type{border-top:0}
+/* ---------- widoki szczegółowe ---------- */
+.bar{display:flex;align-items:center;gap:12px;margin:6px 0 12px}
+.bar a.back{display:inline-flex;align-items:center;min-height:46px;padding:0 18px 0 14px;border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;font-weight:600;box-shadow:var(--shadow);border:1px solid var(--line)}
+.bar h2{margin:0;font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.view.tab .bar .back{display:none}
+.seg{display:flex;gap:4px;padding:6px;margin:0 0 14px;background:var(--segbg);border-radius:26px}
+.seg a{flex:1;text-align:center;padding:11px 6px;border-radius:20px;color:var(--mute);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.seg a.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(40,50,40,.12)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px 10px;margin-top:14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 12px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--label)}
+.banner{background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber-ink);border-radius:var(--r);padding:15px 20px;font-weight:700;font-size:16.5px;margin-bottom:2px}
+.row{display:flex;gap:12px;align-items:center;padding:14px 16px;margin:0 0 10px;background:var(--inner);border:1px solid var(--line);border-radius:22px}
 .row .dot{flex:none;width:16px;height:16px;border-radius:50%;background:var(--c)}
-.row.sos .dot{--c:var(--accent)}
+.row.sos{background:var(--sos-bg);border-color:var(--sos-line)}
+.row.sos .dot{--c:var(--sos)}
 .grow{flex:1;min-width:0}
 .name{font-weight:600}
 .when{text-align:right;white-space:nowrap}
 .when b{display:block}
-.when .s{color:var(--accent)}
-.call{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:999px;background:var(--accent);color:var(--onaccent);font-weight:700;text-decoration:none;white-space:nowrap}
-.call.alt{background:transparent;color:var(--ink);border:2px solid var(--line)}
-.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.nav button{border:1px solid var(--line);background:var(--tile);color:var(--ink);border-radius:14px;width:52px;height:46px;font-size:22px}
+.when b.s{color:var(--accent)}
+.when span.s{display:inline-block;margin-top:3px;padding:3px 12px;border-radius:999px;background:var(--mint-bg);color:var(--mint-ink);font-weight:700;font-size:13.5px}
+.when span.s:empty{display:none}
+.call{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:999px;background:var(--pri);color:var(--onpri);font-weight:700;text-decoration:none;white-space:nowrap}
+.call.alt{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+.row.sos .call{background:var(--sos);color:var(--onsos)}
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--pri);color:var(--onpri);font:inherit;font-weight:700;border:0;text-decoration:none;cursor:pointer}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.nav button{border:1px solid var(--line);background:var(--inner);color:var(--ink);border-radius:16px;width:52px;height:46px;font-size:22px}
 .nav button:disabled{opacity:.35}
-.nav strong{text-transform:capitalize;font-size:19px}
+.nav strong{text-transform:capitalize;font-size:18px}
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px}
 .dow{font-size:13px;color:var(--mute);text-align:center;padding:2px 0}
-.day{border:2px solid transparent;background:var(--tile);color:var(--ink);border-radius:12px;min-height:52px;padding:4px 2px;font:inherit;font-size:15px;display:flex;flex-direction:column;align-items:center;gap:3px}
-.day.empty{background:none;border:0;visibility:hidden}
-.day.past{opacity:.45}
-.day.today{border-color:var(--accent)}
-.day.sel{outline:2px solid var(--accent);background:var(--card)}
+.grid .day{border:2px solid transparent;background:var(--inner);color:var(--ink);border-radius:14px;min-height:52px;padding:4px 2px;font:inherit;font-size:15px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.grid .day.empty{background:none;border:0;visibility:hidden}
+.grid .day.past{opacity:.45}
+.grid .day.today{border-color:var(--pri)}
+.grid .day.sel{outline:2px solid var(--pri);background:var(--card)}
 .dots{display:flex;flex-wrap:wrap;gap:2px;justify-content:center}
 .dots i{width:8px;height:8px;border-radius:50%;background:var(--c)}
-#detail{font-size:16px;margin:0 0 10px;color:var(--mute);min-height:24px}
+#detail{font-size:15.5px;margin:0 0 10px;color:var(--mute);min-height:24px}
+
+/* pogoda */
 .wnow{display:flex;align-items:center;gap:14px;padding:4px 0 12px}
 .wnow .ico{font-size:52px;line-height:1}
 .wnow .t{font-size:42px;font-weight:700;letter-spacing:-.02em;line-height:1}
-.hours{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:12px 0;border-top:1px solid var(--line);text-align:center;font-size:14px}
+.hours{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:14px 0;border-top:1px solid var(--line);text-align:center;font-size:14px}
 .hours span{display:block;color:var(--mute);font-size:13px}
 .hours b{display:block;font-size:17px}
 .drow{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
@@ -149,121 +233,46 @@ footer.contact[hidden]{display:none}
 .drow .mm{flex:1;color:var(--mute);font-size:15px}
 .drow .tt2{white-space:nowrap}
 .drow .tt2 span{color:var(--mute)}
-.wwarn{background:var(--tile);border-radius:14px;padding:12px 14px;font-size:16px;margin:0 0 10px}
-.apt24{background:var(--card);border:2px solid var(--accent);border-radius:24px;padding:18px;margin-top:14px;box-shadow:var(--shadow)}
-.apt24 .badge{display:inline-block;background:var(--accent);color:var(--onaccent);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:4px 12px}
-.apt24 h3{margin:10px 0 2px;font-size:22px}
+.wwarn{background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber-ink);border-radius:18px;padding:12px 14px;font-size:15.5px;margin:0 0 10px}
+
+/* apteka całodobowa */
+.apt24{background:var(--card);border:1.5px solid color-mix(in srgb,var(--pri) 45%,var(--line));border-radius:var(--r);padding:18px;margin-top:14px;box-shadow:var(--shadow)}
+.apt24 .badge{display:inline-block;background:var(--pri);color:var(--onpri);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:4px 12px}
+.apt24 h3{margin:10px 0 2px;font-size:22px;text-transform:none;letter-spacing:0;color:var(--ink)}
 .apt24 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--accent);color:var(--onaccent);font-weight:700;text-decoration:none}
-details summary{cursor:pointer;font-weight:700;font-size:18px;padding:6px 0 10px;list-style:none}
+
+details summary{cursor:pointer;font-weight:700;font-size:17px;padding:6px 0 10px;list-style:none}
 details summary::-webkit-details-marker{display:none}
 details summary::after{content:"＋";float:right;color:var(--accent)}
 details[open] summary::after{content:"－"}
 .plist{margin:0;padding:0 0 10px 20px;line-height:1.55;font-size:16px}
 .plist li{margin:4px 0}
 
-/* ===== NOWOCZESNY UKŁAD: telefon (1 kolumna) → tablet → komputer ===== */
-:root{--bg2:#f1e9dc;--r:28px;--ease:cubic-bezier(.2,.7,.2,1)}
-@media (prefers-color-scheme:dark){:root{--bg2:#0d0b09}}
-html{background:var(--bg2)}
-.notices[hidden],#v-home[hidden]{display:none}
-body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 60%),radial-gradient(900px 480px at -10% 8%,color-mix(in srgb,#2e6fd6 10%,transparent),transparent 60%),linear-gradient(180deg,var(--bg),var(--bg2)) fixed}
-.wrap{padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(48px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
-.card,.tile,.hero,.notice,.apt24{border-radius:var(--r)}
-.card{padding:18px 20px 10px;break-inside:avoid}
-.tile,.hero,.bar a.back,.call,.btn,.zoom button{transition:transform .18s var(--ease),box-shadow .18s var(--ease),background-color .18s}
-@media (hover:hover){
-  .tile:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(60,40,10,.06),0 18px 36px rgba(60,40,10,.14)}
-  .hero:hover{transform:translateY(-2px)}
-  .call:hover,.btn:hover{filter:brightness(1.08)}
-  .bar a.back:hover{transform:translateX(-2px)}
-}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
-.tile .ico{width:56px;height:56px;border-radius:20px}
-.hero{background-size:140% 140%}
-
-/* tablet */
-@media (min-width:700px){
-  body{font-size:18px}
-  .wrap{max-width:860px;padding-top:28px}
-  .tiles{grid-template-columns:repeat(3,1fr);gap:14px}
-  .tile.wide{grid-column:span 3}
-  .hero{padding:28px 28px 100px;margin-top:22px}
-  .hero .date{font-size:30px}.hero .big .i{font-size:54px}.hero .big .t{font-size:60px}
-  .hero svg.sil{height:72px}
-  .top h1{font-size:60px}
-  .grid{gap:6px}.day{min-height:60px;font-size:16px}
-  /* widoki szczegółowe w dwóch kolumnach */
-  .view:not(#v-home){column-count:2;column-gap:18px}
-  .view:not(#v-home)>.bar,.view:not(#v-home)>.banner,.view:not(#v-home)>.foot,.view:not(#v-home)>#phones{column-span:all}
-  #phones{column-count:2;column-gap:18px}
-  .view:not(#v-home)>.card,.view:not(#v-home)>.apt24,#apt24{break-inside:avoid;margin-top:0;margin-bottom:18px}
-  .bar{margin:4px 0 20px}
-  .bar h2{font-size:34px}
-}
-
-/* komputer */
-@media (min-width:1100px){
-  .wrap{max-width:1180px;padding:36px 32px 64px}
-  #v-home{display:grid;grid-template-columns:minmax(400px,1fr) 1.45fr;column-gap:28px;align-items:start}
-  #v-home>.topbar,#v-home>.top,#v-home>.notices,#v-home>.foot{grid-column:1/-1}
-  #v-home>.topbar{grid-row:1}#v-home>.top{grid-row:2}#v-home>.notices{grid-row:3}#v-home>.foot{grid-row:5}
-  #v-home>.topbar{margin-bottom:-6px}
-  #v-home>.hero{grid-column:1;grid-row:4;margin-top:8px;position:sticky;top:24px;min-height:360px;padding:32px 32px 110px}
-  #v-home>.tiles{grid-column:2;grid-row:4;margin-top:8px;grid-template-columns:repeat(2,1fr);gap:16px}
-  .tile.wide{grid-column:span 2}
-  .tile{min-height:170px;padding:20px}
-  .tile .tt{font-size:20px}.tile .ss{font-size:15px}
-  .hero .date{font-size:34px}.hero .line{font-size:19px}.hero .cta{font-size:17px}
-  .top h1{font-size:72px}
-  .top .where{font-size:14px}
-  .view:not(#v-home){column-count:2;column-gap:24px}
-  .view:not(#v-home)>.bar h2,.bar h2{font-size:38px}
-}
-@media (min-width:1500px){
-  .wrap{max-width:1320px}
-  #v-home>.tiles{grid-template-columns:repeat(3,1fr)}
-  .tile.wide{grid-column:span 3}
-}
-.tile.t-pszok.soon{background:#2e9b5f;border-color:#2e9b5f;color:#fff}.tile.t-pszok.soon .ss{color:#fff}.tile.t-pszok.soon .ico{background:#fff;color:#2e9b5f}
-
-/* ===== PRZEŁĄCZNIK MOTYWU (jasny/ciemny) ===== */
-:root[data-theme="dark"]{--bg:#14110e;--card:#1f1c18;--ink:#f6f1e9;--mute:#bbb2a4;--line:#312c26;--accent:#ff5263;--tile:#2a2621;--onaccent:#25060a;--shadow:none;
-  --c-zmieszane:#aeb4b0;--c-bio:#c99562;--c-plastik:#f0c43a;--c-szklo:#5fc08a;--c-makulatura:#6aa5e6;--c-odziez:#c98bc9;--c-gabaryty:#f08c4d;;--bg2:#0d0b09;color-scheme:dark}
-:root[data-theme="light"]{  --bg:#fbf7f0;--card:#fff;--ink:#1d1b18;--mute:#5d574e;--line:#ebe3d6;--accent:#d6001c;--tile:#f3ede2;--onaccent:#fff;--shadow:0 1px 2px rgba(60,40,10,.06),0 10px 28px rgba(60,40,10,.08);--c-zmieszane:#55605a;--c-bio:#8a5a2b;--c-plastik:#d9a400;--c-szklo:#2e8b57;--c-makulatura:#2f6fb5;--c-odziez:#9b4f9b;--c-gabaryty:#d1621f;--bg2:#f1e9dc;color-scheme:light}
-#th{min-width:48px;height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font:600 18px Poppins,system-ui,sans-serif;cursor:pointer;line-height:1}
-.topbar{align-items:center}
-.t-znicz{--tc:#2e6fd6}
+/* Znicz */
 .res{flex:none;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;font-weight:700;font-size:14px;color:#fff;background:#8a8f98}
-.res.w{background:#2e9b5f}.res.p{background:#d6001c}
+.res.w{background:#2f9e6e}.res.p{background:#d4284a}
 .tbl{width:100%;border-collapse:collapse;font-size:15px}
 .tbl th{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);text-align:right;padding:4px 6px}
 .tbl th:nth-child(2),.tbl td:nth-child(2){text-align:left}
 .tbl td{padding:9px 6px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
 .tbl td:nth-child(2){white-space:normal}
-.tbl tr.me td{background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:700}
+.tbl tr.me td{background:color-mix(in srgb,var(--pri) 14%,var(--card));font-weight:700}
 .tbl tr.me td:first-child{border-radius:10px 0 0 10px}.tbl tr.me td:last-child{border-radius:0 10px 10px 0}
-.frm{display:flex;gap:4px;margin-top:6px}
-.frm i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;font-size:11px;font-weight:700;color:#fff;background:#8a8f98}
-.frm i.w{background:#2e9b5f}.frm i.p{background:#d6001c}
-.tile.soon .frm i{outline:1px solid rgba(255,255,255,.7)}
-#v-home>#inst{margin-top:16px}
-@media (min-width:1100px){#v-home>#inst{grid-column:1/-1;grid-row:6}}
-.t-wyd{--tc:#e07a1f}
-.dbadge{flex:none;width:54px;border-radius:14px;background:color-mix(in srgb,var(--accent) 12%,var(--card));text-align:center;padding:7px 0;line-height:1.1}
+
+/* Wydarzenia */
+.dbadge{flex:none;width:54px;border-radius:16px;background:color-mix(in srgb,var(--pri) 12%,var(--card));text-align:center;padding:7px 0;line-height:1.1}
 .dbadge b{display:block;font-size:21px}.dbadge span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
-.evt{border-top:1px solid var(--line)}.evt:first-child{border-top:0}
+.evt{background:var(--inner);border:1px solid var(--line);border-radius:22px;padding:2px 16px;margin:0 0 10px}
 .evt summary{display:flex;align-items:center;gap:12px;padding:12px 0;font-weight:400;font-size:inherit}
 .evt summary::after{margin-left:auto;float:none}
-.evt-t{display:flex;flex-direction:column;min-width:0}.evt-t b{font-size:18px;line-height:1.3}
-.evt-b{padding:0 0 12px 66px;font-size:16px;line-height:1.5}.evt-b p{margin:6px 0}
+.evt-t{display:flex;flex-direction:column;min-width:0}.evt-t b{font-size:17px;line-height:1.3}
+.evt-b{padding:0 0 12px 66px;font-size:15.5px;line-height:1.5}.evt-b p{margin:6px 0}
 .evt.past{opacity:.6}
 
-/* ---- Autobusy ---- */
-.t-bus{--tc:#0d9488}
-.bus-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
-.bus-tabs button{font:inherit;font-size:15px;font-weight:600;padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;min-height:44px}
-.bus-tabs button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--onaccent)}
+/* Autobusy */
+.bus-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.bus-tabs button{font:inherit;font-size:15px;font-weight:600;padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--inner);color:var(--ink);cursor:pointer;min-height:44px}
+.bus-tabs button[aria-pressed="true"]{background:var(--pri);border-color:var(--pri);color:var(--onpri)}
 .bus-times{display:flex;flex-wrap:wrap;gap:6px 8px;padding:2px 0 12px}
 .bt{display:inline-flex;align-items:baseline;gap:4px;padding:5px 10px;border-radius:10px;background:var(--tile);font-weight:700;font-variant-numeric:tabular-nums}
 .bt small{font-weight:500;font-size:11px;color:var(--mute)}
@@ -275,19 +284,93 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 .bus-note{font-size:14px;color:var(--mute);line-height:1.55;margin:0 0 6px}
 .bus-leg{margin:0;padding:0;list-style:none;font-size:15px;line-height:1.6}
 .bus-leg b{display:inline-block;min-width:1.4em;font-weight:800}
+
+/* animacje */
+.tile,.hero,.bar a.back,.call,.btn,.zoom button{transition:transform .18s var(--ease),box-shadow .18s var(--ease),background-color .18s}
+@media (hover:hover){
+  .tile:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(40,50,40,.06),0 14px 30px rgba(40,50,40,.1)}
+  .hero:hover{transform:translateY(-2px)}
+  .call:hover,.btn:hover{filter:brightness(1.08)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+#v-home>#inst{margin-top:14px}
+
+/* ===== tablet ===== */
+@media (min-width:700px){
+  .wrap{max-width:860px;padding-top:24px}
+  .tiles{grid-template-columns:repeat(2,1fr);gap:14px}
+  .hero{padding:28px 28px 100px}
+  .hero .date{font-size:30px}.hero .big .i{font-size:52px}.hero .big .t{font-size:58px}
+  .hero svg.sil{height:72px}
+  .ah-title h1{font-size:36px}
+  .view:not(#v-home){column-count:2;column-gap:18px}
+  .view:not(#v-home)>.bar,.view:not(#v-home)>.seg,.view:not(#v-home)>.banner,.view:not(#v-home)>.foot,.view:not(#v-home)>#phones{column-span:all}
+  #phones{column-count:2;column-gap:18px}
+  .view:not(#v-home)>.card,.view:not(#v-home)>.apt24,#apt24{break-inside:avoid;margin-top:0;margin-bottom:18px}
+  .card{break-inside:avoid}
+  .grid{gap:6px}.grid .day{min-height:60px;font-size:16px}
+}
+
+/* ===== komputer ===== */
+@media (min-width:1100px){
+  .app-head{position:static}
+  .wrap{max-width:1180px;padding:28px 32px 130px}
+  #v-home{display:grid;grid-template-columns:minmax(400px,1fr) 1.45fr;column-gap:28px;align-items:start}
+  #v-home>.topbar,#v-home>.notices,#v-home>#inst{grid-column:1/-1}
+  #v-home>.topbar{grid-row:1}#v-home>.notices{grid-row:2}#v-home>#inst{grid-row:4}
+  #v-home>.hero{grid-column:1;grid-row:3;margin-top:0;position:sticky;top:24px;min-height:360px;padding:32px 32px 110px}
+  #v-home>.tiles{grid-column:2;grid-row:3;margin-top:0;gap:16px}
+  .hero .date{font-size:34px}.hero .line{font-size:18px}
+  .view:not(#v-home){column-gap:24px}
+  .bar h2{font-size:34px}
+}
+
+/* ===== wersje kolorystyczne (data-pal na <html>) ===== */
+:root[data-pal="blue"]{--pri:#2f4a6b;--onpri:#fff;--accent:#2a5b94;--label:#365a85;--head:#2f4a6b;--head2:#1f3652;--navon:#213a5a;--navbg:#e1e9f3;--soon1:#2f4a6b;--soon2:#587aa3;--hl:#8fc1ff;--hn1:#18263a;--hn2:#34506f;--hd1:#3a6190;--hd2:#86a9cf;--hc1:#46515f;--hc2:#8e9bab;--sn:#121c2b;--sd:#2b4a70;--sc:#313b48}
+:root[data-pal="red"]{--pri:#7a3b3f;--onpri:#fff;--accent:#8a3a3f;--label:#8a4a4d;--head:#7a3b3f;--head2:#55272b;--navon:#5e2a2e;--navbg:#f3e4e2;--soon1:#7a3b3f;--soon2:#a8686a;--hl:#ffc2a8;--hn1:#2d1618;--hn2:#5a3033;--hd1:#8a4a44;--hd2:#c99588;--hc1:#5a4a4a;--hc2:#a39390;--sn:#231012;--sd:#6a3a38;--sc:#403131}
+@media (prefers-color-scheme:dark){:root[data-pal="blue"]:not([data-theme="light"]){--pri:#8fbdf5;--onpri:#0b2342;--accent:#9cc6f7;--label:#9dbde6;--head:#1c2837;--head2:#121a25;--navon:#bcd8fb;--navbg:#27384d;--soon1:#1f3a5c;--soon2:#2f5a8a;--hl:#8fc1ff}
+}
+:root[data-pal="blue"][data-theme="dark"]{--pri:#8fbdf5;--onpri:#0b2342;--accent:#9cc6f7;--label:#9dbde6;--head:#1c2837;--head2:#121a25;--navon:#bcd8fb;--navbg:#27384d;--soon1:#1f3a5c;--soon2:#2f5a8a;--hl:#8fc1ff}
+@media (prefers-color-scheme:dark){:root[data-pal="red"]:not([data-theme="light"]){--pri:#f0a3a0;--onpri:#3a0f12;--accent:#f2b0ad;--label:#e0a9a6;--head:#2e1c1e;--head2:#1e1214;--navon:#ffd0cd;--navbg:#43292b;--soon1:#5a2a2e;--soon2:#833f44;--hl:#ffc2a8}
+}
+:root[data-pal="red"][data-theme="dark"]{--pri:#f0a3a0;--onpri:#3a0f12;--accent:#f2b0ad;--label:#e0a9a6;--head:#2e1c1e;--head2:#1e1214;--navon:#ffd0cd;--navbg:#43292b;--soon1:#5a2a2e;--soon2:#833f44;--hl:#ffc2a8}
+
+.pal{display:flex;gap:8px;align-items:center;margin-right:6px}
+.pal button{min-width:0;width:30px;height:30px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0}
+.pal button[aria-pressed="true"]{box-shadow:0 0 0 2.5px var(--ink)}
+.pal [data-p="green"]{background:linear-gradient(135deg,#3a4d43,#5fd8a0)}
+.pal [data-p="blue"]{background:linear-gradient(135deg,#2f4a6b,#8fc1ff)}
+.pal [data-p="red"]{background:linear-gradient(135deg,#7a3b3f,#ffc2a8)}
 </style>
 </head>
 <body>
+<header class="app-head" id="app-head">
+  <div class="ah-in">
+    <div class="ah-row">
+      <a class="ah-title" href="#/" aria-label="Mój Kruszyn – strona główna">
+        <h1>Mój Kruszyn</h1>
+        <p class="where"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>Gm. Bolesławiec • Dolny Śląsk</span></p>
+      </a>
+      <a class="ah-wx" id="ah-wx" href="#/pogoda" aria-label="Pogoda w Kruszynie">
+        <span class="wx-top"><span id="ah-ico">⛅</span><b id="ah-temp">–</b></span>
+        <span class="wx-s" id="ah-txt">Pogoda</span>
+      </a>
+      <button id="th" type="button" aria-label="Przełącz motyw jasny/ciemny" title="Jasny / ciemny"></button>
+    </div>
+    <a class="ah-status" id="ah-status" href="#/prad" aria-label="Prąd w Kruszynie – szczegóły">
+      <span class="st-dot"></span>
+      <span class="st-tx"><b id="st-t">Prąd w Kruszynie</b><span id="st-s">Sprawdzam dane…</span></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</header>
+
 <div class="wrap">
 
 <!-- EKRAN GŁÓWNY -->
 <section class="view" id="v-home">
-  <div class="topbar zoom" role="group" aria-label="Wielkość tekstu"><button id="th" aria-label="Przełącz motyw jasny/ciemny" title="Jasny / ciemny">🌙</button><button id="zm" aria-label="Mniejszy tekst">A−</button><button id="zp" aria-label="Większy tekst">A+</button></div>
-  <header class="top">
-    <p class="greet" id="greet">Dzień dobry</p>
-    <h1>Mój <span>♥</span> Kruszyn</h1>
-    <p class="where">gmina Bolesławiec · woj. dolnośląskie</p>
-  </header>
+  <p class="greet" id="greet" hidden>Dzień dobry</p>
+  <div class="topbar zoom" role="group" aria-label="Wielkość tekstu"><span class="zl">Rozmiar tekstu</span><span class="pal" role="group" aria-label="Wersja kolorystyczna"><button type="button" data-p="green" aria-label="Zielona" title="Zielona"></button><button type="button" data-p="blue" aria-label="Granatowa" title="Granatowa"></button><button type="button" data-p="red" aria-label="Bordowa" title="Bordowa"></button></span><button id="zm" aria-label="Mniejszy tekst">A−</button><button id="zp" aria-label="Większy tekst">A+</button></div>
 
   <a class="hero night" id="hero" href="#/pogoda" aria-label="Pogoda w Kruszynie – szczegóły">
     <div class="lab">Dziś w Kruszynie</div>
@@ -364,14 +447,16 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 </section>
 
 <!-- TELEFONY -->
-<section class="view" id="v-telefony" hidden>
+<section class="view tab" id="v-telefony" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Ważne telefony</h2></div>
+  <div class="seg" role="tablist"><a href="#/prad">Prąd</a><a href="#/telefony" class="on">Telefony</a></div>
   <div id="phones"></div>
 </section>
 
 <!-- PRĄD -->
-<section class="view" id="v-prad" hidden>
+<section class="view tab" id="v-prad" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Prąd</h2></div>
+  <div class="seg" role="tablist"><a href="#/prad" class="on">Prąd</a><a href="#/telefony">Telefony</a></div>
   <div class="card">
     <h3>Zgłoszone w Kruszynie</h3>
     <div id="prad-list"></div>
@@ -395,8 +480,9 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 </section>
 
 <!-- MSZE -->
-<section class="view" id="v-msze" hidden>
+<section class="view tab" id="v-msze" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Msze święte</h2></div>
+  <div class="seg" role="tablist"><a href="#/wydarzenia">Wydarzenia</a><a href="#/msze" class="on">Msze</a><a href="#/znicz" data-znicz hidden>Znicz Kruszyn</a></div>
   <div class="card"><h3>Kruszyn · św. Jana Chrzciciela</h3><div id="m-kr"></div></div>
   <div class="card" id="int-card" hidden><h3>Intencje mszalne · Kruszyn</h3><div id="int-list"></div></div>
   <div class="card"><h3>Łaziska</h3><div id="m-lz"></div></div>
@@ -405,12 +491,12 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 </section>
 
 <!-- AUTOBUSY -->
-<section class="view" id="v-autobusy" hidden>
+<section class="view tab" id="v-autobusy" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Autobusy</h2></div>
   <div class="card">
     <div class="bus-tabs" id="bus-tabs" role="group" aria-label="Przystanek"></div>
     <h3>Najbliższe odjazdy</h3>
-    <div id="bus-next"></div>
+    <div id="bus-next"><p class="sub" style="padding-bottom:10px">Ładuję rozkład…</p></div>
   </div>
   <div class="card"><h3>Cały rozkład · <span id="bus-stop-name"></span></h3><p class="bus-note" id="bus-all-note"></p><div id="bus-all"></div></div>
   <div class="card"><details><summary>Oznaczenia kursów (litery przy godzinach)</summary><ul class="bus-leg" id="bus-leg"></ul></details></div>
@@ -418,8 +504,9 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 </section>
 
 <!-- PSZOK -->
-<section class="view" id="v-pszok" hidden>
+<section class="view tab" id="v-pszok" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>PSZOK</h2></div>
+  <div class="seg" role="tablist"><a href="#/smieci">Harmonogram</a><a href="#/pszok" class="on">PSZOK</a></div>
   <div class="banner" id="ps-banner"></div>
   <div class="card"><h3>Punkt Selektywnej Zbiórki Odpadów</h3><div id="ps-info"></div></div>
   <div class="card"><h3>Godziny otwarcia</h3><div id="ps-hours"></div></div>
@@ -431,8 +518,9 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 </section>
 
 <!-- ZNICZ -->
-<section class="view" id="v-znicz" hidden>
+<section class="view tab" id="v-znicz" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Znicz Kruszyn</h2></div>
+  <div class="seg" role="tablist"><a href="#/wydarzenia">Wydarzenia</a><a href="#/msze">Msze</a><a href="#/znicz" class="on" data-znicz hidden>Znicz Kruszyn</a></div>
   <div class="banner" id="zn-banner" hidden></div>
   <div class="card" id="zn-next-card" hidden><h3>Najbliższe mecze</h3><div id="zn-next"></div></div>
   <div class="card" id="zn-last-card" hidden><h3>Ostatnie mecze</h3><div id="zn-last"></div></div>
@@ -441,8 +529,9 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 </section>
 
 <!-- WYDARZENIA -->
-<section class="view" id="v-wydarzenia" hidden>
+<section class="view tab" id="v-wydarzenia" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wydarzenia</h2></div>
+  <div class="seg" role="tablist"><a href="#/wydarzenia" class="on">Wydarzenia</a><a href="#/msze">Msze</a><a href="#/znicz" data-znicz hidden>Znicz Kruszyn</a></div>
   <div class="card"><h3>Organizujesz coś we wsi?</h3><p class="sub" style="margin:0 0 12px;line-height:1.6">Wypełnij krótki formularz. Wydarzenie pojawi się tutaj po zatwierdzeniu, zwykle w ciągu kilku godzin.</p><p style="margin:0 0 12px"><a class="btn" id="wy-form" href="#" target="_blank" rel="noopener">Dodaj wydarzenie</a></p></div>
   <div class="card"><h3>Nadchodzące</h3><div id="wy-up"></div></div>
   <div class="card" id="wy-past-card" hidden><h3>Minione (ostatnie 5)</h3><div id="wy-past"></div></div>
@@ -451,8 +540,9 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
 </section>
 
 <!-- ŚMIECI -->
-<section class="view" id="v-smieci" hidden>
+<section class="view tab" id="v-smieci" hidden>
   <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wywóz śmieci</h2></div>
+  <div class="seg" role="tablist"><a href="#/smieci" class="on">Harmonogram</a><a href="#/pszok">PSZOK</a></div>
   <div class="banner" id="walert" hidden></div>
   <div class="card"><h3>Najbliższe odbiory</h3><div id="list"></div></div>
   <div class="card">
@@ -481,12 +571,19 @@ body{min-height:100vh;background:radial-gradient(1200px 520px at 85% -8%,color-m
   <p class="srcs">Pogoda: Open-Meteo · Wywóz śmieci: COM-D · Msze: kruszyn.com</p>
 </footer>
 </div>
+<nav class="bnav" id="bnav" aria-label="Główne menu">
+  <a href="#/" data-nav="home"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 10v10.5h13V10M10 20.5V15h4v5.5"/></svg></span><span>Start</span></a>
+  <a href="#/smieci" data-nav="smieci"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg></span><span>Odpady</span></a>
+  <a href="#/autobusy" data-nav="autobusy"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v10H3V6a2 2 0 0 1 2-2zM3 11h18M7 16v3M17 16v3M7.5 14h.01M16.5 14h.01"/></svg></span><span>Autobusy</span></a>
+  <a href="#/wydarzenia" data-nav="wies"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M9 15h6"/></svg></span><span>Wieś i Sport</span></a>
+  <a href="#/prad" data-nav="awarie"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2zM12 10v5M12 18h.01"/></svg></span><span>Awarie</span></a>
+</nav>
 <script>
 // ---------- Wsparcie autora (buycoffee.to) ----------
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
 if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-19", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -508,6 +605,12 @@ function route() {
   const h = (location.hash || '').replace(/^#\/?/, '');
   const v = VIEWS.includes(h) ? h : 'home';
   VIEWS.forEach(x => { $('v-' + x).hidden = x !== v; });
+  const NAVKEY = {home: 'home', pogoda: 'home', apteki: 'home', smieci: 'smieci', pszok: 'smieci', autobusy: 'autobusy',
+    wydarzenia: 'wies', msze: 'wies', znicz: 'wies', prad: 'awarie', telefony: 'awarie'}[v];
+  document.querySelectorAll('#bnav a').forEach(a => {
+    const on = a.dataset.nav === NAVKEY; a.classList.toggle('on', on);
+    if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
   const ft = document.querySelector('footer.contact'); if (ft) ft.hidden = v !== 'home';   // stopka tylko na stronie głównej
   window.scrollTo(0, 0);
 }
@@ -649,6 +752,24 @@ function renderPszok(P) {
     $('pr-t').textContent = p.typ === 'awaria' ? 'Awaria prądu w Kruszynie' : `Wyłączenie prądu: ${k <= 0 ? 'dziś' : 'jutro'}`;
     $('pr-s').textContent = p.gdzie + (p.godz ? ' · ' + p.godz : '') + (soonP.length > 1 ? ` · +${soonP.length - 1}` : '');
     $('t-prad').classList.add('soon');
+  }
+  // pasek stanu prądu w nagłówku
+  {
+    const act = pr.filter(p => p.typ === 'awaria'), pl = pr.filter(p => p.typ !== 'awaria'), old = !upd || stale;
+    let cls = 'ok', t, s;
+    if (act.length) {
+      cls = 'bad'; t = act.length > 1 ? `Zgłoszone awarie prądu: ${act.length}` : 'Zgłoszona awaria prądu';
+      s = act[0].gdzie + ' • Szczegóły';
+    } else if (pl.length && diff(pl[0].dzien) <= 1) {
+      cls = 'warn'; t = `Planowane wyłączenie prądu: ${diff(pl[0].dzien) <= 0 ? 'dziś' : 'jutro'}`;
+      s = pl[0].gdzie + (pl[0].godz ? ' • ' + pl[0].godz : '');
+    } else {
+      t = 'Brak zgłoszonych awarii prądu';
+      if (old) { cls = 'warn'; s = 'Dane mogą być nieaktualne • Sprawdź w Tauron'; }
+      else if (pl.length) s = 'Najbliższe planowane wyłączenie: ' + fmt(pl[0].dzien, {day: 'numeric', month: 'long'});
+      else s = 'Stan na ' + new Intl.DateTimeFormat('pl-PL', {hour: '2-digit', minute: '2-digit'}).format(upd) + ' • Sprawdź planowane';
+    }
+    $('ah-status').className = 'ah-status ' + cls; $('st-t').textContent = t; $('st-s').textContent = s;
   }
   // apteki
   const map = a => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a.nazwa.replace(/[„”]/g, '') + ' ' + a.adres);
@@ -816,6 +937,10 @@ function renderPszok(P) {
   $('hero').className = 'hero ' + (night ? 'night' : code >= 3 ? 'cloud' : 'day');
   $('h-ico').textContent = clearNight ? '🌙' : ico0;
   $('h-temp').textContent = r(c.temperature_2m) + '°';
+  $('ah-ico').textContent = clearNight ? '🌙' : ico0;
+  $('ah-temp').textContent = r(c.temperature_2m) + '°C';
+  $('ah-txt').textContent = code <= 1 ? 'Pogodnie' : code === 2 ? 'Chmury' : code === 3 ? 'Pochmurno' : code <= 48 ? 'Mgła' :
+    code <= 67 ? 'Deszcz' : code <= 77 ? 'Śnieg' : code <= 82 ? 'Deszcz' : code <= 86 ? 'Śnieg' : 'Burza';
   $('h-line').textContent = `${txt} · dziś ${r(d.temperature_2m_min[0])}° / ${r(d.temperature_2m_max[0])}° · jutro ${r(d.temperature_2m_min[1])}° / ${r(d.temperature_2m_max[1])}°` +
     (d.precipitation_sum[1] >= 0.1 ? ', ' + WMO(d.weather_code[1])[0].toLowerCase() : '');
 
@@ -872,9 +997,11 @@ function renderPszok(P) {
   const cur = () => root.getAttribute('data-theme') || (mq.matches ? 'dark' : 'light');
   const apply = () => {
     const t = cur(), meta = document.querySelector('meta[name=theme-color]');
-    $('th').textContent = t === 'dark' ? '☀️' : '🌙';
+    $('th').innerHTML = t === 'dark'
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>';
     $('th').setAttribute('aria-label', t === 'dark' ? 'Włącz jasny motyw' : 'Włącz ciemny motyw');
-    if (meta) meta.content = t === 'dark' ? '#14110e' : '#fbf7f0';
+    if (meta) meta.content = getComputedStyle(root).getPropertyValue('--head').trim() || '#3a4d43';
   };
   $('th').onclick = () => {
     const n = cur() === 'dark' ? 'light' : 'dark';
@@ -883,7 +1010,20 @@ function renderPszok(P) {
     apply();
   };
   mq.addEventListener && mq.addEventListener('change', apply);
+  document.addEventListener('kr-pal', apply);
   apply();
+})();
+
+// ---------- wersja kolorystyczna ----------
+(function () {
+  const root = document.documentElement, bs = document.querySelectorAll('.pal button');
+  const mark = () => bs.forEach(b => b.setAttribute('aria-pressed', b.dataset.p === (root.getAttribute('data-pal') || 'green')));
+  bs.forEach(b => { b.onclick = () => {
+    if (b.dataset.p === 'green') root.removeAttribute('data-pal'); else root.setAttribute('data-pal', b.dataset.p);
+    try { localStorage.setItem('kr-pal', b.dataset.p); } catch (_) {}
+    mark(); document.dispatchEvent(new Event('kr-pal'));
+  }; });
+  mark();
 })();
 
 // ---------- INTENCJE MSZALNE (intencje.json, robot z kruszyn.com) ----------
@@ -926,6 +1066,7 @@ function renderPszok(P) {
   const form = (w.ostatnie || []).slice(0, 5).reverse();       // od najstarszego do najnowszego
   if (form.length) sub += `<span class="frm" aria-label="Forma: ${esc(form.map(m => m.rezultat).join(' '))}">${form.map(m => `<i class="${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : ''}">${esc(m.rezultat)}</i>`).join('')}</span>`;
   $('zn-t').textContent = title; $('zn-s').innerHTML = sub; $('t-znicz').hidden = false;
+  document.querySelectorAll('[data-znicz]').forEach(e => { e.hidden = false; });
 
   // widok szczegółowy
   const banner = $('zn-banner');
@@ -1035,8 +1176,9 @@ if (/^https?:$/.test(location.protocol)) {
 
 // ---------- AUTOBUSY (data/autobusy.json, rozkład PKS Bolesławiec wpisany ręcznie) ----------
 (async function () {
-  let B; try { const r = await fetch('data/autobusy.json', {cache: 'no-cache'}); if (!r.ok) throw 0; B = await r.json(); } catch (_) { return; }
-  if (!B || !Array.isArray(B.przystanki) || !B.przystanki.length) return;
+  const noBus = () => { $('bus-next').innerHTML = '<p class="sub" style="padding-bottom:10px">Rozkład jest teraz niedostępny.</p>'; };
+  let B; try { const r = await fetch('data/autobusy.json', {cache: 'no-cache'}); if (!r.ok) throw 0; B = await r.json(); } catch (_) { return noBus(); }
+  if (!B || !Array.isArray(B.przystanki) || !B.przystanki.length) return noBus();
   const pad = n => String(n).padStart(2, '0');
   const mins = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
   const ymd = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
