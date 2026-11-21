@@ -42,6 +42,27 @@ TRIGGER:-PT2H
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+UID:eff53443dada8390@kruszyn
+DTSTAMP:20260101T000000Z
+DTSTART;TZID=Europe/Warsaw:20261126T190000
+DTEND;TZID=Europe/Warsaw:20261126T210000
+SUMMARY:Warsztaty tworzenia biżuterii z wróżbami andrzejkowymi
+LOCATION:Dom Ludowy w Kruszynie
+DESCRIPTION:Warsztaty tworzenia biżuterii z wróżbami andrzejkowymi pod o
+ kiem twórczyni Angelart Angel. W programie: tworzenie biżuterii z kamien
+ i szlachetnych (bransoletki lub naszyjnik)\, wróżby andrzejkowe\, poczę
+ stunek\, miła atmosfera. Obowiązują zapisy pod nr telefonu 604 120 578 
+ (liczba miejsc ograniczona). Cena: 30 zł dla mieszkańców sołectwa\, 10
+ 0 zł dla pozostałych. Organizator: KGW Kruszynki. Tel. 604-120-578. http
+ s://www.facebook.com/share/p/1F8isSsaWv/?mibextid=wwXIfr
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Wydarzenie: Warsztaty tworzenia biżuterii z wróżbami andrzej
+ kowymi
+TRIGGER:-PT2H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
 UID:8394485a9890d65c@kruszyn
 DTSTAMP:20260101T000000Z
 DTSTART;TZID=Europe/Warsaw:20261206T173000
