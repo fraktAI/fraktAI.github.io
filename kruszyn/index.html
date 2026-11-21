@@ -18,23 +18,23 @@
 <style>
 /* ===== MÓJ KRUSZYN – styl: zielony nagłówek, karty z ciepłą ramką, dolna nawigacja ===== */
 :root{
-  --bg:#f8f6f1;--card:#fff;--ink:#1d2520;--mute:#66675f;--line:#ebe5d8;--tile:#f3efe6;--inner:#faf8f4;--segbg:#e9e3d7;
-  --pri:#3a4d43;--onpri:#fff;--accent:#2d6a4d;--label:#3d5a4a;
-  --head:#3a4d43;--head2:#243a30;--navon:#2b3f35;--navbg:#e3ebe5;--navtx:#4a4b44;
-  --soon1:#3a4d43;--soon2:#5b7566;--warn1:#b3261e;--warn2:#d4284a;
+  --bg:#f3f8f2;--card:#fff;--ink:#16221b;--mute:#5d6b62;--line:#dfeadb;--tile:#ebf4e8;--inner:#f7fbf5;--segbg:#dde9d8;
+  --pri:#1b7a4c;--onpri:#fff;--accent:#14804f;--label:#1b7a4c;
+  --head:#1b7a4c;--head2:#115a38;--navon:#0f6740;--navbg:#d3f1e1;--navtx:#4a554f;
+  --soon1:#1b7a4c;--soon2:#2fb877;--warn1:#b3261e;--warn2:#d4284a;
   --sos:#d4284a;--onsos:#fff;--sos-bg:#fdf1f3;--sos-line:#f5c9d2;
   --amber-bg:#fdf9ec;--amber-line:#f2e4a8;--amber-ink:#7a4a14;
   --mint-bg:#dff5ea;--mint-ink:#1f6b4a;
   --shadow:0 1px 2px rgba(40,50,40,.04),0 8px 22px rgba(40,50,40,.05);
   --c-zmieszane:#2b2825;--c-bio:#8a4b1f;--c-plastik:#f0c51f;--c-szklo:#2f9e6e;--c-makulatura:#3a5ae8;--c-odziez:#9b4f9b;--c-gabaryty:#d1621f;
-  --hl:#6fd9a4;--hn1:#1d2c26;--hn2:#3a5246;--hd1:#3b5e4e;--hd2:#7ea08e;--hc1:#46534e;--hc2:#8c9a94;--sn:#16211c;--sd:#2c4739;--sc:#323d38;
+  --hl:#7bf0b0;--hn1:#0e2a1f;--hn2:#1f6b49;--hd1:#1f8f5d;--hd2:#86dcae;--hc1:#486457;--hc2:#9ab9a9;--sn:#0b1c15;--sd:#14583a;--sc:#2c4439;
   --r:28px;--ease:cubic-bezier(.2,.7,.2,1);
 }
 :root[data-theme="dark"]{
-  --bg:#111613;--card:#1a221e;--ink:#eef2ee;--mute:#a4aea7;--line:#2b3731;--tile:#25302a;--inner:#202a25;--segbg:#222c27;
-  --pri:#62d6a2;--onpri:#0c2a1d;--accent:#7fd9ae;--label:#8fcfae;
-  --head:#202c26;--head2:#141c18;--navon:#a9ecc9;--navbg:#2b3d33;--navtx:#c3cdc6;
-  --soon1:#1f4a38;--soon2:#2d6a50;--warn1:#7a1f2c;--warn2:#a32a3d;
+  --bg:#0c1611;--card:#15231b;--ink:#eef8f1;--mute:#a6b9ad;--line:#25392d;--tile:#1e3025;--inner:#1a2a21;--segbg:#1b2b22;
+  --pri:#3fe296;--onpri:#04271a;--accent:#52e6a2;--label:#6fe7ae;
+  --head:#13402d;--head2:#0a2519;--navon:#8cf3c4;--navbg:#1f4a36;--navtx:#bfd0c6;
+  --soon1:#17704a;--soon2:#24a96f;--warn1:#7a1f2c;--warn2:#a32a3d;
   --sos:#ff6b81;--onsos:#2a0910;--sos-bg:#2c1a1e;--sos-line:#5a2a35;
   --amber-bg:#2b2616;--amber-line:#574a1f;--amber-ink:#f0d48a;
   --mint-bg:#1f3a2d;--mint-ink:#8fe6b9;--shadow:none;
@@ -151,7 +151,7 @@ a.tile::after{content:"›";margin-left:auto;padding-left:6px;font-size:30px;lin
 .tile.soon .ico{background:rgba(255,255,255,.18);color:#fff}
 .tile.soon::after{color:#fff}
 #t-warn,#t-imgw{background:linear-gradient(135deg,var(--warn1),var(--warn2))}
-.t-pszok,.t-waste{--tc:#2f9e6e}.t-msza{--tc:#7a5af8}.t-prad{--tc:#d98a00}.t-apt{--tc:#d4284a}.t-air{--tc:#0f9fb0}.t-tel{--tc:#3b82f6}.t-znicz{--tc:#2f9e6e}.t-wyd{--tc:#e07a1f}.t-bus{--tc:#0d9488}
+.t-pszok,.t-waste{--tc:#12a05f}.t-msza{--tc:#7a4dff}.t-prad{--tc:#f29a00}.t-apt{--tc:#e11d48}.t-air{--tc:#0891b2}.t-tel{--tc:#2563eb}.t-znicz{--tc:#12a05f}.t-wyd{--tc:#f2711c}.t-bus{--tc:#0d9e90}
 .bag{width:17px;height:17px;fill:var(--c);vertical-align:-3px}
 .aq{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--c);margin-right:6px}
 .frm{display:flex;gap:4px;margin-top:6px}
@@ -314,13 +314,19 @@ details[open] summary::after{content:"－"}
   .bar h2{font-size:34px}
 }
 
-/* ===== wersje kolorystyczne (data-pal na <html>) ===== */
-:root[data-pal="blue"]{--pri:#2f4a6b;--onpri:#fff;--accent:#2a5b94;--label:#365a85;--head:#2f4a6b;--head2:#1f3652;--navon:#213a5a;--navbg:#e1e9f3;--soon1:#2f4a6b;--soon2:#587aa3;--hl:#8fc1ff;--hn1:#18263a;--hn2:#34506f;--hd1:#3a6190;--hd2:#86a9cf;--hc1:#46515f;--hc2:#8e9bab;--sn:#121c2b;--sd:#2b4a70;--sc:#313b48}
-:root[data-pal="red"]{--pri:#7a3b3f;--onpri:#fff;--accent:#8a3a3f;--label:#8a4a4d;--head:#7a3b3f;--head2:#55272b;--navon:#5e2a2e;--navbg:#f3e4e2;--soon1:#7a3b3f;--soon2:#a8686a;--hl:#ffc2a8;--hn1:#2d1618;--hn2:#5a3033;--hd1:#8a4a44;--hd2:#c99588;--hc1:#5a4a4a;--hc2:#a39390;--sn:#231012;--sd:#6a3a38;--sc:#403131}
-}
-:root[data-pal="blue"][data-theme="dark"]{--pri:#8fbdf5;--onpri:#0b2342;--accent:#9cc6f7;--label:#9dbde6;--head:#1c2837;--head2:#121a25;--navon:#bcd8fb;--navbg:#27384d;--soon1:#1f3a5c;--soon2:#2f5a8a;--hl:#8fc1ff}
-}
-:root[data-pal="red"][data-theme="dark"]{--pri:#f0a3a0;--onpri:#3a0f12;--accent:#f2b0ad;--label:#e0a9a6;--head:#2e1c1e;--head2:#1e1214;--navon:#ffd0cd;--navbg:#43292b;--soon1:#5a2a2e;--soon2:#833f44;--hl:#ffc2a8}
+/* ===== wersje kolorystyczne (data-pal na <html>); zielona = domyślne wartości :root ===== */
+:root[data-pal="blue"]{--bg:#f1f6fd;--card:#fff;--ink:#132036;--mute:#566a85;--line:#d9e5f5;--tile:#e7f0fb;--inner:#f5f9fe;--segbg:#dbe7f7;
+  --pri:#1c5fcc;--onpri:#fff;--accent:#1a64c8;--label:#1c5fcc;--head:#1c5fcc;--head2:#123f88;--navon:#134aa0;--navbg:#d9e8fd;--navtx:#4b5b72;
+  --soon1:#1c5fcc;--soon2:#4b8ff2;--hl:#9fd2ff;--hn1:#0e2247;--hn2:#2a5fb8;--hd1:#2e7be6;--hd2:#92c8ff;--hc1:#48607f;--hc2:#a0b6d3;--sn:#0a1a3a;--sd:#1a4c9e;--sc:#2d4059}
+:root[data-pal="red"]{--bg:#fdf3f1;--card:#fff;--ink:#2a1417;--mute:#80585c;--line:#f3dcd8;--tile:#fae8e4;--inner:#fef7f5;--segbg:#f3dedb;
+  --pri:#c32a38;--onpri:#fff;--accent:#c22a36;--label:#b8283a;--head:#b8283a;--head2:#85182a;--navon:#9c1f2e;--navbg:#fddfe0;--navtx:#6a4b4e;
+  --soon1:#c32a38;--soon2:#ef6b70;--hl:#ffcaa8;--hn1:#3a0f19;--hn2:#a42b3b;--hd1:#d84851;--hd2:#ffb3a3;--hc1:#6b4a51;--hc2:#c0a1a6;--sn:#2a0a11;--sd:#8c2535;--sc:#4a3337}
+:root[data-pal="blue"][data-theme="dark"]{--bg:#0a111f;--card:#131e34;--ink:#edf3ff;--mute:#a4b4cd;--line:#233351;--tile:#1b2b47;--inner:#172540;--segbg:#192840;
+  --pri:#5ca4ff;--onpri:#04204a;--accent:#72b4ff;--label:#90c4ff;--head:#14336a;--head2:#0b1f45;--navon:#bcd9ff;--navbg:#21427a;--navtx:#b6c4da;
+  --soon1:#1c4d9a;--soon2:#2f7de6;--hl:#8fc6ff}
+:root[data-pal="red"][data-theme="dark"]{--bg:#160c0f;--card:#231419;--ink:#fff0f1;--mute:#c9acb0;--line:#3c2429;--tile:#301c21;--inner:#2a181d;--segbg:#2d1a1f;
+  --pri:#ff7b84;--onpri:#3a0509;--accent:#ff8b92;--label:#ffa1a6;--head:#4f1620;--head2:#310b12;--navon:#ffd2d5;--navbg:#5c2129;--navtx:#d4babd;
+  --soon1:#932434;--soon2:#d8414f;--hl:#ffc7a8}
 
 .pal{display:flex;gap:8px;align-items:center}
 .settings{position:absolute;right:max(16px,env(safe-area-inset-right));top:100%;margin-top:10px;width:min(360px,calc(100% - 32px));background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:24px;padding:6px 18px;box-shadow:0 16px 40px rgba(20,35,28,.28)}
@@ -614,7 +620,7 @@ details[open] summary::after{content:"−"}
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
 if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-20", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
