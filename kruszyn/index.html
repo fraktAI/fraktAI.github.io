@@ -10,13 +10,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes"><meta property="og:image" content="icon-512.png"><meta property="og:title" content="Mój Kruszyn"><meta property="og:description" content="Pogoda, wywóz śmieci i ważne informacje z Kruszyna.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-180.png">
-<meta name="apple-mobile-web-app-title" content="Kruszyn"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kruszyn"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-<script>try{var d=document.documentElement,t=localStorage.getItem('kr-theme'),q=localStorage.getItem('kr-pal');if(t==='dark')d.setAttribute('data-theme','dark');d.setAttribute('data-pal',q==='green'||q==='red'?q:'blue')}catch(e){document.documentElement.setAttribute('data-pal','blue')}</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<script>try{var d=document.documentElement,t=localStorage.getItem('kr-theme'),q=localStorage.getItem('kr-pal');if(t==='dark')d.setAttribute('data-theme','dark');d.setAttribute('data-pal',q==='blue'||q==='red'?q:'green')}catch(e){document.documentElement.setAttribute('data-pal','green')}</script>
 <style>
-/* ===== MÓJ KRUSZYN – styl: zielony nagłówek, karty z ciepłą ramką, dolna nawigacja ===== */
+/* Mój ♥ Kruszyn – style (wzorzec wyglądu, statyczny CSS) */
 :root{
   --bg:#f3f8f2;--card:#fff;--ink:#16221b;--mute:#5d6b62;--line:#dfeadb;--tile:#ebf4e8;--inner:#f7fbf5;--segbg:#dde9d8;
   --pri:#1b7a4c;--onpri:#fff;--accent:#14804f;--label:#1b7a4c;
@@ -42,29 +42,15 @@
   color-scheme:dark;
 }
 :root[data-theme="light"]{color-scheme:light}
-
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;background:var(--bg)}
 body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:17px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 .wrap{max-width:560px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-right)) calc(120px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left));zoom:var(--z,1)}
-.view[hidden],.notices[hidden],#v-home[hidden],.tile[hidden],footer.contact[hidden],.coffee .cbtn[hidden],.seg a[hidden]{display:none}
+.view[hidden], .notices[hidden], #v-home[hidden], footer.contact[hidden], .coffee .cbtn[hidden]{display:none}
 a{color:var(--accent)}
-a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+a:focus-visible, button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .sub{font-size:14.5px;color:var(--mute);line-height:1.45}
-
-/* ---------- nagłówek aplikacji ---------- */
-.app-head{position:sticky;top:0;z-index:30;background:var(--head);color:#fff;border-radius:0 0 36px 36px;box-shadow:0 10px 28px rgba(20,35,28,.2);
-  padding:calc(env(safe-area-inset-top,0px) + 14px) max(16px,env(safe-area-inset-right)) 16px max(16px,env(safe-area-inset-left))}
-.ah-in{max-width:1180px;margin:0 auto}
-.ah-row{display:flex;align-items:center;gap:10px}
-.ah-title{flex:1;min-width:0;color:inherit;text-decoration:none}
-.ah-title h1{margin:0;white-space:nowrap;font-size:clamp(24px,7.3vw,30px);font-weight:800;letter-spacing:-.025em;line-height:1.1}
-.where{margin:5px 0 0;font-size:13px;line-height:1.3;color:rgba(255,255,255,.74);display:flex;align-items:center;gap:6px}
-.where svg{width:16px;height:16px;flex:none;color:var(--hl)}
 .ah-wx{flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 11px;border-radius:20px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;line-height:1.15;min-width:74px}
-.ah-wx .wx-top{display:flex;align-items:center;gap:5px;font-size:19px}
-.ah-wx .wx-top b{font-weight:700}
-.ah-wx .wx-s{font-size:11.5px;color:rgba(255,255,255,.78);max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #st-btn{flex:none;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
 #st-btn svg{width:22px;height:22px}
 #st-btn[aria-expanded="true"]{background:rgba(255,255,255,.22)}
@@ -86,37 +72,18 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .ah-status.bad .st-dot{background:#ff6b81;box-shadow:0 0 0 5px rgba(255,107,129,.2)}
 .ah-status.bad .st-tx span{color:#ffc2cc}
 .ah-status.bad svg{color:#ff8fa0}
-@media (max-height:520px){.app-head{position:static}}
-
-/* ---------- dolna nawigacja: pływający, zaokrąglony pasek oderwany od krawędzi ---------- */
 .bnav{position:fixed;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;gap:4px;padding:7px;
   background:color-mix(in srgb,var(--card) 95%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
   border:1px solid var(--line);border-radius:34px;box-shadow:0 14px 36px rgba(20,35,28,.20),0 2px 6px rgba(20,35,28,.08)}
 :root[data-theme="dark"] .bnav{box-shadow:0 14px 36px rgba(0,0,0,.55),0 2px 6px rgba(0,0,0,.35)}
 .bnav a{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 2px 8px;border-radius:27px;text-decoration:none;color:var(--navtx);font-size:12px;font-weight:600;white-space:nowrap;transition:background-color .2s,color .2s}
-.bn-ic{display:grid;place-items:center;width:34px;height:28px}
-.bn-ic svg{width:25px;height:25px}
 .bnav a.on{color:var(--navon);font-weight:700;background:var(--navbg)}
-/* Start: wyróżniony zawsze – wypełniona ikona w kolorze motywu */
 .bnav a.home{font-weight:700;color:var(--navon)}
-.bnav a.home .bn-ic{width:48px;height:34px;margin:-3px 0;border-radius:17px;background:var(--pri);color:var(--onpri);box-shadow:0 4px 12px color-mix(in srgb,var(--pri) 45%,transparent)}
-.bnav a.home .bn-ic svg{width:24px;height:24px}
 .bnav a.home.on{background:color-mix(in srgb,var(--navbg) 70%,transparent)}
-@media (max-width:380px){.bnav{gap:2px;padding:6px}.bnav a{font-size:11.5px;padding:9px 0 8px}}
-@media (min-width:700px){
-  .bnav{left:50%;right:auto;transform:translateX(-50%);bottom:18px;width:min(640px,calc(100% - 32px))}
-}
-@media (min-width:700px){
-  .bnav{left:50%;right:auto;transform:translateX(-50%);bottom:16px;width:min(640px,calc(100% - 32px));border:1px solid var(--line);border-radius:30px;padding:10px 8px;box-shadow:0 10px 34px rgba(20,35,28,.16)}
-}
-
-/* ---------- górny pasek na stronie głównej ---------- */
-.topbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:0 0 12px}
-.topbar .zl{margin-right:auto;font-size:13px;font-weight:500;color:var(--mute)}
-.zoom button{min-width:46px;height:38px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;font:600 15px Inter,system-ui,sans-serif;cursor:pointer}
-.zoom button:disabled{opacity:.35}
-
-/* ---------- karta pogody (ekran główny) ---------- */
+@media (max-width:380px){.bnav{gap:2px;padding:6px}
+.bnav a{font-size:11.5px;padding:9px 0 8px}}
+@media (min-width:700px){.bnav{left:50%;right:auto;transform:translateX(-50%);bottom:18px;width:min(640px,calc(100% - 32px))}}
+@media (min-width:700px){.bnav{left:50%;right:auto;transform:translateX(-50%);bottom:16px;width:min(640px,calc(100% - 32px));border:1px solid var(--line);border-radius:30px;padding:10px 8px;box-shadow:0 10px 34px rgba(20,35,28,.16)}}
 .hero{display:block;position:relative;overflow:hidden;margin-top:6px;border-radius:var(--r);padding:16px 18px 46px;color:#fff;text-decoration:none;box-shadow:var(--shadow);
   background:linear-gradient(150deg,var(--hn1),var(--hn2));--sil:var(--sn)}
 .hero.day{background:linear-gradient(150deg,var(--hd1),var(--hd2));--sil:var(--sd)}
@@ -127,68 +94,44 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
   radial-gradient(1.5px 1.5px at 42% 62%,#fff,transparent)}
 .hero>*{position:relative;z-index:1}
 .hero .lab{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--hl)}
-.hero .r1{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
-.hero .date{font-size:clamp(20px,5.6vw,24px);font-weight:700;line-height:1.15}
-.hero .big{display:flex;align-items:center;gap:8px;flex:none}
-.hero .big .i{font-size:34px;line-height:1}
-.hero .big .t{font-size:38px;font-weight:700;line-height:1}
 .hero .line{margin-top:6px;font-size:15px;line-height:1.45;color:rgba(255,255,255,.9)}
-.hero .cta{display:inline-block;margin-top:10px;background:rgba(255,255,255,.92);color:var(--head2);border-radius:999px;padding:7px 16px;font-size:14px;font-weight:600}
-.hero svg.sil{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:38px;fill:var(--sil);z-index:0;opacity:.85}
-
-/* ---------- ogłoszenia ---------- */
 .notices{margin-top:14px;display:grid;gap:10px}
 .notice{background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber-ink);border-radius:var(--r);padding:14px 18px}
 .notice.urgent{background:var(--sos);border-color:var(--sos);color:var(--onsos)}
 .notice b{display:block;font-size:16.5px}
 .notice p{margin:2px 0 0;font-size:15.5px}
 .notice small{display:block;margin-top:4px;opacity:.8;font-size:13px}
-
-/* ---------- kafle ekranu głównego (karty-wiersze) ---------- */
-.tiles{margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px}
-.tile{display:flex;flex-direction:row;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--r);background:var(--card);color:var(--ink);text-decoration:none;box-shadow:var(--shadow);border:1px solid var(--line);--tc:var(--pri);position:relative}
-.tile.wide{grid-column:1/-1}
-.tile .ico{flex:none;width:52px;height:52px;border-radius:18px;background:color-mix(in srgb,var(--tc) 15%,var(--card));color:var(--tc);display:grid;place-items:center}
-.tile .ico svg{width:26px;height:26px}
-.tile .txt{display:flex;flex-direction:column;gap:2px;min-width:0}
-.tile .tt{font-size:17px;font-weight:700;line-height:1.3}
-.tile .ss{font-size:14px;color:var(--mute);line-height:1.4}
-a.tile::after{content:"›";margin-left:auto;padding-left:6px;font-size:30px;line-height:1;color:var(--mute);opacity:.55}
-.tile:active{transform:scale(.985)}
-.tile.soon{background:linear-gradient(135deg,var(--soon1),var(--soon2));border-color:transparent;color:#fff}
-.tile.soon .ss{color:rgba(255,255,255,.88)}
-.tile.soon .bag{fill:#fff}
-.tile.soon .ico{background:rgba(255,255,255,.18);color:#fff}
-.tile.soon::after{color:#fff}
-#t-warn,#t-imgw{background:linear-gradient(135deg,var(--warn1),var(--warn2))}
-.t-pszok,.t-waste{--tc:#12a05f}.t-msza{--tc:#7a4dff}.t-prad{--tc:#f29a00}.t-apt{--tc:#e11d48}.t-air{--tc:#0891b2}.t-tel{--tc:#2563eb}.t-znicz{--tc:#12a05f}.t-wyd{--tc:#f2711c}.t-bus{--tc:#0d9e90}
+#t-warn, #t-imgw{background:linear-gradient(135deg,var(--warn1),var(--warn2))}
+.t-pszok, .t-waste{--tc:#12a05f}
+.t-msza{--tc:#7a4dff}
+.t-prad{--tc:#f29a00}
+.t-apt{--tc:#e11d48}
+.t-air{--tc:#0891b2}
+.t-tel{--tc:#2563eb}
+.t-znicz{--tc:#12a05f}
+.t-wyd{--tc:#f2711c}
+.t-bus{--tc:#0d9e90}
 .bag{width:17px;height:17px;fill:var(--c);vertical-align:-3px}
 .aq{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--c);margin-right:6px}
 .frm{display:flex;gap:4px;margin-top:6px}
 .frm i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;font-size:11px;font-weight:700;color:#fff;background:#8a8f98}
-.frm i.w{background:#2f9e6e}.frm i.p{background:#d4284a}
-.tile.soon .frm i{outline:1px solid rgba(255,255,255,.7)}
-
-/* ---------- stopka ---------- */
+.frm i.w{background:#2f9e6e}
+.frm i.p{background:#d4284a}
 .foot{margin-top:22px;text-align:center;font-size:14px;color:var(--mute);line-height:1.55}
 .foot.contact{margin-top:26px;padding-top:6px}
 .coffee{margin:0 auto;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--shadow);font-size:14px;line-height:1.5;color:var(--ink)}
-.coffee .cmsg{display:block}.coffee .cmsg b{display:block;font-size:16px;margin-bottom:2px}
+.coffee .cmsg{display:block}
+.coffee .cmsg b{display:block;font-size:16px;margin-bottom:2px}
 .coffee .cbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
-.coffee .cx,.coffee .cbtn{flex:1 1 170px;max-width:240px;text-align:center;text-decoration:none;font-weight:600;font-size:15px;border-radius:999px;padding:11px 16px;white-space:nowrap}
+.coffee .cx, .coffee .cbtn{flex:1 1 170px;max-width:240px;text-align:center;text-decoration:none;font-weight:600;font-size:15px;border-radius:999px;padding:11px 16px;white-space:nowrap}
 .coffee .cx{border:1.5px solid var(--line);color:var(--ink);background:var(--inner)}
 .coffee .cx:hover{border-color:var(--accent);color:var(--accent)}
 .coffee .cbtn{color:var(--onpri);background:var(--pri);border:1.5px solid var(--pri)}
 .foot .srcs{margin:16px 0 0;font-size:12px;opacity:.85}
-
-/* ---------- widoki szczegółowe ---------- */
 .bar{display:flex;align-items:center;gap:12px;margin:6px 0 12px}
 .bar a.back{display:inline-flex;align-items:center;min-height:46px;padding:0 18px 0 14px;border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;font-weight:600;box-shadow:var(--shadow);border:1px solid var(--line)}
 .bar h2{margin:0;font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
 .view.tab .bar .back{display:none}
-.seg{display:flex;gap:4px;padding:6px;margin:0 0 14px;background:var(--segbg);border-radius:26px}
-.seg a{flex:1;text-align:center;padding:11px 6px;border-radius:20px;color:var(--mute);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
-.seg a.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(40,50,40,.12)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px 10px;margin-top:14px;box-shadow:var(--shadow)}
 .card h3{margin:0 0 12px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--label)}
 .banner{background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber-ink);border-radius:var(--r);padding:15px 20px;font-weight:700;font-size:16.5px;margin-bottom:2px}
@@ -221,8 +164,6 @@ a.tile::after{content:"›";margin-left:auto;padding-left:6px;font-size:30px;lin
 .dots{display:flex;flex-wrap:wrap;gap:2px;justify-content:center}
 .dots i{width:8px;height:8px;border-radius:50%;background:var(--c)}
 #detail{font-size:15.5px;margin:0 0 10px;color:var(--mute);min-height:24px}
-
-/* pogoda */
 .wnow{display:flex;align-items:center;gap:14px;padding:4px 0 12px}
 .wnow .ico{font-size:52px;line-height:1}
 .wnow .t{font-size:42px;font-weight:700;letter-spacing:-.02em;line-height:1}
@@ -236,42 +177,38 @@ a.tile::after{content:"›";margin-left:auto;padding-left:6px;font-size:30px;lin
 .drow .tt2{white-space:nowrap}
 .drow .tt2 span{color:var(--mute)}
 .wwarn{background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber-ink);border-radius:18px;padding:12px 14px;font-size:15.5px;margin:0 0 10px}
-
-/* apteka całodobowa */
 .apt24{background:var(--card);border:1.5px solid color-mix(in srgb,var(--pri) 45%,var(--line));border-radius:var(--r);padding:18px;margin-top:14px;box-shadow:var(--shadow)}
 .apt24 .badge{display:inline-block;background:var(--pri);color:var(--onpri);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:4px 12px}
 .apt24 h3{margin:10px 0 2px;font-size:22px;text-transform:none;letter-spacing:0;color:var(--ink)}
 .apt24 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-
 details summary{cursor:pointer;font-weight:700;font-size:17px;padding:6px 0 10px;list-style:none}
 details summary::-webkit-details-marker{display:none}
 details summary::after{content:"＋";float:right;color:var(--accent)}
 details[open] summary::after{content:"－"}
 .plist{margin:0;padding:0 0 10px 20px;line-height:1.55;font-size:16px}
 .plist li{margin:4px 0}
-
-/* Znicz */
 .res{flex:none;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;font-weight:700;font-size:14px;color:#fff;background:#8a8f98}
-.res.w{background:#2f9e6e}.res.p{background:#d4284a}
+.res.w{background:#2f9e6e}
+.res.p{background:#d4284a}
 .tbl{width:100%;border-collapse:collapse;font-size:15px}
 .tbl th{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);text-align:right;padding:4px 6px}
-.tbl th:nth-child(2),.tbl td:nth-child(2){text-align:left}
+.tbl th:nth-child(2), .tbl td:nth-child(2){text-align:left}
 .tbl td{padding:9px 6px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
 .tbl td:nth-child(2){white-space:normal}
 .tbl tr.me td{background:color-mix(in srgb,var(--pri) 14%,var(--card));font-weight:700}
-.tbl tr.me td:first-child{border-radius:10px 0 0 10px}.tbl tr.me td:last-child{border-radius:0 10px 10px 0}
-
-/* Wydarzenia */
+.tbl tr.me td:first-child{border-radius:10px 0 0 10px}
+.tbl tr.me td:last-child{border-radius:0 10px 10px 0}
 .dbadge{flex:none;width:54px;border-radius:16px;background:color-mix(in srgb,var(--pri) 12%,var(--card));text-align:center;padding:7px 0;line-height:1.1}
-.dbadge b{display:block;font-size:21px}.dbadge span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.dbadge b{display:block;font-size:21px}
+.dbadge span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
 .evt{background:var(--inner);border:1px solid var(--line);border-radius:22px;padding:2px 16px;margin:0 0 10px}
 .evt summary{display:flex;align-items:center;gap:12px;padding:12px 0;font-weight:400;font-size:inherit}
 .evt summary::after{margin-left:auto;float:none}
-.evt-t{display:flex;flex-direction:column;min-width:0}.evt-t b{font-size:17px;line-height:1.3}
-.evt-b{padding:0 0 12px 66px;font-size:15.5px;line-height:1.5}.evt-b p{margin:6px 0}
+.evt-t{display:flex;flex-direction:column;min-width:0}
+.evt-t b{font-size:17px;line-height:1.3}
+.evt-b{padding:0 0 12px 66px;font-size:15.5px;line-height:1.5}
+.evt-b p{margin:6px 0}
 .evt.past{opacity:.6}
-
-/* Autobusy */
 .bus-times{display:flex;flex-wrap:wrap;gap:6px 8px;padding:2px 0 12px}
 .bt{display:inline-flex;align-items:baseline;gap:4px;padding:5px 10px;border-radius:10px;background:var(--tile);font-weight:700;font-variant-numeric:tabular-nums}
 .bt small{font-weight:500;font-size:11px;color:var(--mute)}
@@ -283,48 +220,29 @@ details[open] summary::after{content:"－"}
 .bus-note{font-size:14px;color:var(--mute);line-height:1.55;margin:0 0 6px}
 .bus-leg{margin:0;padding:0;list-style:none;font-size:15px;line-height:1.6}
 .bus-leg b{display:inline-block;min-width:1.4em;font-weight:800}
-
-/* animacje */
-.tile,.hero,.bar a.back,.call,.btn,.zoom button{transition:transform .18s var(--ease),box-shadow .18s var(--ease),background-color .18s}
-@media (hover:hover){
-  .tile:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(40,50,40,.06),0 14px 30px rgba(40,50,40,.1)}
-  .hero:hover{transform:translateY(-2px)}
-  .call:hover,.btn:hover{filter:brightness(1.08)}
-}
+.hero, .bar a.back, .call, .btn{transition:transform .18s var(--ease),box-shadow .18s var(--ease),background-color .18s}
+@media (hover:hover){.hero:hover{transform:translateY(-2px)}
+.call:hover, .btn:hover{filter:brightness(1.08)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 #v-home>#inst{margin-top:14px}
-
-/* ===== tablet ===== */
-@media (min-width:700px){
-  .wrap{max-width:860px;padding-top:24px}
-  .tiles{grid-template-columns:repeat(2,1fr);gap:14px}
-  .hero{padding:20px 24px 56px}
-  .hero .date{font-size:26px}.hero .big .i{font-size:40px}.hero .big .t{font-size:46px}
-  .hero svg.sil{height:46px}
-  .ah-title h1{font-size:36px}
-  .view:not(#v-home){column-count:2;column-gap:18px}
-  .view:not(#v-home)>.bar,.view:not(#v-home)>.seg,.view:not(#v-home)>.banner,.view:not(#v-home)>.foot,.view:not(#v-home)>#phones{column-span:all}
-  #phones{column-count:2;column-gap:18px}
-  .view:not(#v-home)>.card,.view:not(#v-home)>.apt24,#apt24{break-inside:avoid;margin-top:0;margin-bottom:18px}
-  .card{break-inside:avoid}
-  .grid{gap:6px}.grid .day{min-height:60px;font-size:16px}
-}
-
-/* ===== komputer ===== */
-@media (min-width:1100px){
-  .app-head{position:static}
-  .wrap{max-width:1180px;padding:28px 32px 130px}
-  #v-home{display:grid;grid-template-columns:minmax(400px,1fr) 1.45fr;column-gap:28px;align-items:start}
-  #v-home>.topbar,#v-home>.notices,#v-home>#inst{grid-column:1/-1}
-  #v-home>.topbar{grid-row:1}#v-home>.notices{grid-row:2}#v-home>#inst{grid-row:4}
-  #v-home>.hero{grid-column:1;grid-row:3;margin-top:0;position:sticky;top:24px;padding:24px 28px 60px}
-  #v-home>.tiles{grid-column:2;grid-row:3;margin-top:0;gap:16px}
-  .hero .date{font-size:28px}.hero .line{font-size:16px}
-  .view:not(#v-home){column-gap:24px}
-  .bar h2{font-size:34px}
-}
-
-/* ===== wersje kolorystyczne (data-pal na <html>); zielona = domyślne wartości :root ===== */
+@media (min-width:700px){.wrap{max-width:860px;padding-top:24px}
+.hero{padding:20px 24px 56px}
+.view:not(#v-home){column-count:2;column-gap:18px}
+.view:not(#v-home)>.bar, .view:not(#v-home)>.banner, .view:not(#v-home)>.foot, .view:not(#v-home)>#phones{column-span:all}
+#phones{column-count:2;column-gap:18px}
+.view:not(#v-home)>.card, .view:not(#v-home)>.apt24, #apt24{break-inside:avoid;margin-top:0;margin-bottom:18px}
+.card{break-inside:avoid}
+.grid{gap:6px}
+.grid .day{min-height:60px;font-size:16px}}
+@media (min-width:1100px){.wrap{max-width:1180px;padding:28px 32px 130px}
+#v-home{display:grid;grid-template-columns:minmax(400px,1fr) 1.45fr;column-gap:28px;align-items:start}
+#v-home>.notices, #v-home>#inst{grid-column:1/-1}
+#v-home>.notices{grid-row:2}
+#v-home>#inst{grid-row:4}
+#v-home>.hero{grid-column:1;grid-row:3;margin-top:0;position:sticky;top:24px;padding:24px 28px 60px}
+.hero .line{font-size:16px}
+.view:not(#v-home){column-gap:24px}
+.bar h2{font-size:34px}}
 :root[data-pal="blue"]{--bg:#f1f6fd;--card:#fff;--ink:#132036;--mute:#566a85;--line:#d9e5f5;--tile:#e7f0fb;--inner:#f5f9fe;--segbg:#dbe7f7;
   --pri:#1c5fcc;--onpri:#fff;--accent:#1a64c8;--label:#1c5fcc;--head:#1c5fcc;--head2:#123f88;--navon:#134aa0;--navbg:#d9e8fd;--navtx:#4b5b72;
   --soon1:#1c5fcc;--soon2:#4b8ff2;--hl:#9fd2ff;--hn1:#0e2247;--hn2:#2a5fb8;--hd1:#2e7be6;--hd2:#92c8ff;--hc1:#48607f;--hc2:#a0b6d3;--sn:#0a1a3a;--sd:#1a4c9e;--sc:#2d4059}
@@ -337,7 +255,6 @@ details[open] summary::after{content:"－"}
 :root[data-pal="red"][data-theme="dark"]{--bg:#160c0f;--card:#231419;--ink:#fff0f1;--mute:#c9acb0;--line:#3c2429;--tile:#301c21;--inner:#2a181d;--segbg:#2d1a1f;
   --pri:#ff7b84;--onpri:#3a0509;--accent:#ff8b92;--label:#ffa1a6;--head:#4f1620;--head2:#310b12;--navon:#ffd2d5;--navbg:#5c2129;--navtx:#d4babd;
   --soon1:#932434;--soon2:#d8414f;--hl:#ffc7a8}
-
 .pal{display:flex;gap:8px;align-items:center}
 .settings{position:absolute;right:max(16px,env(safe-area-inset-right));top:100%;margin-top:10px;width:min(360px,calc(100% - 32px));background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:24px;padding:6px 18px;box-shadow:0 16px 40px rgba(20,35,28,.28)}
 .settings[hidden]{display:none}
@@ -352,15 +269,9 @@ details[open] summary::after{content:"－"}
 .pal [data-p="green"]{background:linear-gradient(135deg,#3a4d43,#5fd8a0)}
 .pal [data-p="blue"]{background:linear-gradient(135deg,#2f4a6b,#8fc1ff)}
 .pal [data-p="red"]{background:linear-gradient(135deg,#7a3b3f,#ffc2a8)}
-
-/* ===== poprawki UI v2 ===== */
 .ah-wx{height:54px;justify-content:center}
 #st-btn{width:54px;height:54px;border-radius:20px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2)}
 .bar{min-height:46px}
-.seg{overflow-x:auto;scrollbar-width:none}
-.seg[hidden]{display:none}
-.seg a,.seg button{flex:1 1 auto;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;padding:10px 8px;border-radius:20px;color:var(--mute);text-decoration:none;font:600 15px/1.2 Inter,system-ui,sans-serif;border:0;background:none;cursor:pointer}
-.seg a.on,.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(40,50,40,.12)}
 details summary::after{content:"+";float:right;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line);background:var(--inner);color:var(--accent);font-size:21px;font-weight:600;line-height:1}
 details[open] summary::after{content:"−"}
 .evt summary::after{float:none;margin-left:auto;align-self:flex-start;margin-top:6px;flex:none}
@@ -370,112 +281,215 @@ details[open] summary::after{content:"−"}
 .row.btns{flex-wrap:wrap;gap:10px}
 .row.btns .call{flex:1 1 140px}
 .call{max-width:100%}
-
 .evt-t b{font-size:16px}
 .evt summary{gap:10px}
 .dbadge{width:50px}
 .sch-badge{font-size:11.5px;padding:2px 9px;border-radius:12px;line-height:1.35}
-.hero .date{font-size:clamp(18px,5.2vw,24px)}
-@media (min-width:700px){.hero .date{font-size:26px}}
-@media (min-width:1100px){.hero .date{font-size:28px}}
-
 .hero{padding-top:18px;padding-bottom:44px}
-.hero .r1{margin-top:0}
 @media (min-width:700px){.hero{padding-top:22px;padding-bottom:54px}}
 @media (min-width:1100px){.hero{padding-top:26px;padding-bottom:58px}}
+body{font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+:root:not([data-theme="dark"]){--bg:#f6f8f7;--card:#fff;--ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--tile:#f1f5f9;--inner:#f8fafc;--segbg:#e8eef0;--shadow:0 2px 12px -1px rgba(15,23,42,.07);--r:24px}
+:root[data-pal="green"]:not([data-theme="dark"]){--pri:#15803d;--onpri:#fff;--accent:#15803d;--label:#15803d;--head:#15803d}
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--card) 94%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top,0px) + 10px) max(16px,env(safe-area-inset-right)) 8px max(16px,env(safe-area-inset-left))}
+.top>*{max-width:560px;margin-left:auto;margin-right:auto}
+.top-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;min-width:0}
+.lg{width:38px;height:38px;border-radius:14px;background:linear-gradient(135deg,#16a34a,#166534);display:grid;place-items:center;font-size:19px;flex:none}
+.logo b{display:block;font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.logo b i{font-style:normal;color:#e11d48;font-size:16px}
+.logo small{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500;color:var(--mute);margin-top:4px}
+.logo u{width:6px;height:6px;border-radius:50%;background:var(--pri);animation:pulse 2s infinite ease-in-out}
+@keyframes pulse{50%{opacity:.45;transform:scale(1.25)}}
+.top-act{display:flex;align-items:center;gap:8px}
+.ib, .wxpill, #st-btn{border:0;font:inherit;cursor:pointer;border-radius:12px;background:var(--tile);color:var(--ink);height:36px;min-width:36px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:none;position:relative}
+#st-btn svg{width:18px;height:18px}
+.ib.warn{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+.ib.warn[hidden]{display:none}
+.ib.warn s{position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#f59e0b;border:2px solid var(--card)}
+.pills{display:flex;gap:6px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pills a{flex:none;display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:999px;background:var(--tile);color:var(--ink);font-size:12.5px;font-weight:600;text-decoration:none}
+.pills a.on{background:var(--pri);color:var(--onpri)}
+.pills a[hidden], .pb[hidden]{display:none}
+.pb{font-style:normal;font-size:10px;font-weight:800;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:999px}
+.top>.settings{position:absolute;right:max(16px,env(safe-area-inset-right));top:calc(env(safe-area-inset-top,0px) + 54px);margin:0;max-width:none;width:min(300px,calc(100% - 32px));background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 32px rgba(15,23,42,.18);padding:10px 14px;z-index:40}
+.top>.settings[hidden]{display:none}
+.top .ah-status{display:flex;align-items:center;gap:10px;margin-top:8px;padding:9px 12px;border-radius:16px;text-decoration:none;color:#fff;background:linear-gradient(90deg,#f59e0b,#ea580c)}
+.top .ah-status.bad{background:linear-gradient(90deg,#dc2626,#be123c)}
+.top .ah-status[hidden]{display:none}
+.top .ah-status .st-tx{display:flex;flex-direction:column;flex:1;min-width:0;font-size:12px}
+.top .ah-status .st-dot{width:8px;height:8px;border-radius:50%;background:#fff;flex:none}
+.top .ah-status svg{width:18px;height:18px;flex:none}
+.banner2{display:flex;gap:10px;align-items:flex-start;border-radius:20px;padding:13px 14px;color:#fff;text-decoration:none;background:linear-gradient(90deg,#f59e0b,#f97316);box-shadow:var(--shadow);margin:0 0 14px}
+.banner2[hidden]{display:none}
+.banner2.soft{background:linear-gradient(90deg,#64748b,#475569)}
+.banner2 .ico{background:rgba(255,255,255,.2);border-radius:12px;padding:7px;font-size:18px;line-height:1}
+.banner2 .tt{display:block;font-weight:800;font-size:14px;line-height:1.3}
+.banner2 .ss{display:block;font-size:12px;opacity:.92;margin-top:2px}
+.wcard{border-radius:28px;padding:16px;margin:0 0 14px}
+.wc-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.wc-loc{font-size:12px;font-weight:600;color:var(--mute)}
+.wc-big{display:flex;align-items:baseline;gap:10px;margin-top:4px;flex-wrap:wrap}
+#h-temp{font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1}
+#wk-txt{font-size:14px;font-weight:600;color:var(--mute)}
+#h-ico{font-size:46px;line-height:1}
+.wc-sub{font-size:12px;color:var(--mute);margin:6px 0 0;line-height:1.45}
+.wc-sub b{color:var(--ink)}
+.air{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+.air[hidden]{display:none}
+.air-h{font-size:12.5px;font-weight:700}
+.aq{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:6px}
+.air-bar{height:8px;border-radius:8px;background:var(--tile);margin-top:8px;overflow:hidden}
+.air-bar i{display:block;height:100%;width:0;border-radius:8px;background:#22c55e;transition:width .4s}
+.wc-h{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;font-weight:800;color:var(--mute)}
+.wc-h button, .wc-h a{border:0;background:none;color:var(--accent);font:inherit;font-weight:700;cursor:pointer;text-decoration:none}
+.wk{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center;margin-top:8px}
+.wk div{background:var(--inner);border:1px solid var(--line);border-radius:16px;padding:8px 2px}
+.wk p{margin:0}
+.wk .n{font-size:11px;font-weight:700}
+.wk .i{font-size:18px;margin:4px 0}
+.wk .hi{font-size:12.5px;font-weight:800}
+.wk .lo{font-size:11px;color:var(--mute)}
+.wk .pp{display:none;font-size:10px;font-weight:700;color:#0369a1;margin-top:3px}
+.wk.show .pp{display:block}
+.sc{display:block;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:14px;box-shadow:var(--shadow);color:inherit;text-decoration:none;margin:0 0 14px}
+.sc[hidden]{display:none}
+.sc .h{display:flex;align-items:center;gap:10px}
+.sc .tx{flex:1;min-width:0}
+.sc .ic{width:34px;height:34px;border-radius:12px;background:var(--tile);display:grid;place-items:center;font-size:17px;flex:none}
+.sc .tt{display:block;font-size:14px;font-weight:800;line-height:1.25}
+.sc .ss{display:block;font-size:12px;color:var(--mute);margin-top:2px;line-height:1.4}
+.sc.soon{border-color:var(--pri);box-shadow:0 0 0 1px var(--pri) inset,var(--shadow)}
+.sc .go{font-size:12px;font-weight:700;color:var(--accent);flex:none}
+.sc .bag{width:13px;height:13px;vertical-align:-2px;fill:var(--c)}
+.sc .frm{display:flex;gap:4px;align-items:center;margin-top:6px}
+.sc .frm em{font-style:normal;font-size:11px;margin-right:4px}
+.sc .frm i{font-style:normal;width:18px;height:18px;border-radius:6px;background:#94a3b8;color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center}
+.sc .frm i.w{background:#16a34a}
+.sc .frm i.p{background:#dc2626}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 14px}
+.grid2 .sc{margin:0;padding:13px}
+.grid2 .sc .ic{margin-bottom:8px}
+.deps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.deps:empty{display:none}
+.dep{background:var(--inner);border:1px solid var(--line);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:2px}
+.dep b{font-size:20px;font-weight:800}
+.dep span{font-size:12px;font-weight:600}
+.dep em{font-style:normal;font-size:11px;color:var(--accent);font-weight:700}
+.menu a{display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none}
+.menu a:last-child{border:0}
+.menu a[hidden]{display:none}
+.menu .ic{width:38px;height:38px;border-radius:14px;background:var(--tile);display:grid;place-items:center;font-size:19px;flex:none}
+.menu b{display:block;font-size:14px;font-weight:800}
+.menu small{display:block;font-size:12px;color:var(--mute)}
+.bot{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--card) 95%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:6px max(8px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left))}
+.bot a{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0;border-radius:16px;color:var(--mute);text-decoration:none;font-size:11px;font-weight:600;width:100%;max-width:110px;justify-self:center}
+.bot a .i{font-size:20px;line-height:1.2}
+.bot a.on{background:color-mix(in srgb,var(--pri) 12%,transparent);color:var(--accent)}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(15,23,42,.6);display:flex;align-items:flex-end;justify-content:center;padding:12px}
+.modal[hidden]{display:none}
+.mbox{background:var(--card);border-radius:28px;padding:18px;width:100%;max-width:520px;max-height:85vh;overflow:auto}
+.mbox h3{margin:0 0 8px;font-size:16px;font-weight:800}
+.mbtn{width:100%;margin-top:12px;border:0;border-radius:16px;padding:12px;font:inherit;font-weight:700;background:var(--ink);color:var(--card);cursor:pointer}
+.pks-h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.pks-h h3{margin:0}
+.stops{display:grid;gap:6px;margin:12px 0 8px}
+.stops[hidden], .chips[hidden]{display:none}
+.stops button{display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.stops button[aria-pressed=true]{border:2px solid var(--pri);background:color-mix(in srgb,var(--pri) 8%,var(--card))}
+.stops .n{width:24px;height:24px;border-radius:8px;background:var(--tile);display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+.stops [aria-pressed=true] .n{background:var(--pri);color:var(--onpri)}
+.stops .nm{flex:1;font-size:13px;font-weight:800}
+.stops .st{font-size:12px;font-weight:700;color:var(--mute)}
+.stops [aria-pressed=true] .st{color:var(--accent)}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;border:0;border-radius:12px;padding:8px 12px;font:inherit;font-size:12px;font-weight:700;background:var(--tile);color:var(--mute);cursor:pointer}
+.chips button[aria-pressed=true], .chips button.on{background:var(--ink);color:var(--card)}
+.clock{font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:700;background:var(--tile);padding:4px 10px;border-radius:12px}
+.live{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--accent)}
+.live i{width:6px;height:6px;border-radius:50%;background:var(--pri);animation:pulse 2s infinite}
+#bus-next .row, #list .row{background:var(--inner);border:1px solid var(--line);border-radius:18px;padding:10px 12px;margin-bottom:8px}
+#list .dot{width:14px;height:14px;border-radius:50%;background:var(--c);flex:none}
+.badge2{font-size:11px;font-weight:700;color:var(--accent);background:color-mix(in srgb,var(--pri) 10%,transparent);padding:4px 10px;border-radius:999px}
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--tile);padding:4px;border-radius:16px;margin-top:12px}
+.seg2 button{border:0;border-radius:12px;padding:9px;font:inherit;font-size:12.5px;font-weight:700;background:transparent;color:var(--mute);cursor:pointer}
+.seg2 button[aria-pressed=true]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.evt{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);margin-bottom:12px;padding:12px}
+.sech{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800;margin:22px 2px 10px}
+.sech .ic{width:34px;height:34px;border-radius:12px;background:var(--tile);display:grid;place-items:center;font-size:17px;flex:none}
+.sec{scroll-margin-top:130px}
+.sec[hidden]{display:none}
+#more-chips{margin-top:2px}
+.chips a{flex:none;border-radius:12px;padding:8px 12px;font-size:12px;font-weight:700;background:var(--tile);color:var(--ink);text-decoration:none}
+.chips a[hidden]{display:none}
 </style>
 </head>
 <body>
-<header class="app-head" id="app-head">
-  <div class="ah-in">
-    <div class="ah-row">
-      <a class="ah-title" href="#/" aria-label="Mój Kruszyn – strona główna">
-        <h1>Mój Kruszyn</h1>
-        <p class="where"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>Gm. Bolesławiec • Dolny Śląsk</span></p>
-      </a>
-      <a class="ah-wx" id="ah-wx" href="#/pogoda" aria-label="Pogoda w Kruszynie">
-        <span class="wx-top"><span id="ah-ico">⛅</span><b id="ah-temp">–</b></span>
-        <span class="wx-s" id="ah-txt">Pogoda</span>
-      </a>
+<header class="top" id="top">
+  <div class="top-row">
+    <a class="logo" href="#/" aria-label="Mój Kruszyn – strona główna"><span class="lg">🏡</span><span><b>Mój <i>♥</i> Kruszyn</b><small><u></u><span id="h-date-top"></span></small></span></a>
+    <div class="top-act">
+      <button id="imgw-btn" class="ib warn" type="button" hidden aria-label="Ostrzeżenia IMGW">⚠️<s></s></button>
+      <a id="ah-wx" class="wxpill" href="#/" aria-label="Pogoda w Kruszynie"><span id="ah-ico">⛅</span><b id="ah-temp">–</b><span id="ah-txt" hidden>Pogoda</span></a>
       <button id="st-btn" type="button" aria-label="Ustawienia wyglądu" aria-expanded="false" aria-controls="settings" title="Wygląd i rozmiar tekstu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></button>
     </div>
-    <a class="ah-status" id="ah-status" href="#/prad" hidden aria-label="Prąd w Kruszynie – szczegóły">
+  </div>
+  <div class="pills" id="pills">
+    <a data-r="home" href="#/">Wszystko</a>
+    <a data-r="smieci" href="#/smieci">🗑️ Śmieci <em class="pb" id="pill-waste" hidden></em></a>
+    <a data-r="autobusy" href="#/autobusy">🚌 PKS <em class="pb" id="pill-pks" hidden></em></a>
+    <a data-r="wydarzenia" href="#/wydarzenia">📅 Wydarzenia</a>
+    <a data-r="msze" href="#/msze">⛪ Msze św.</a>
+    <a data-r="znicz" href="#/znicz" data-znicz hidden>⚽ Znicz</a>
+    <a data-r="prad" href="#/prad">⚡ Tauron</a>
+  </div>
+  <a class="ah-status" id="ah-status" href="#/prad" hidden aria-label="Prąd w Kruszynie – szczegóły">
       <span class="st-dot"></span>
       <span class="st-tx"><b id="st-t">Prąd w Kruszynie</b><span id="st-s">Sprawdzam dane…</span></span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
     </a>
-    <div class="settings" id="settings" hidden role="dialog" aria-label="Ustawienia wyglądu">
+  <div class="settings" id="settings" hidden role="dialog" aria-label="Ustawienia wyglądu">
       <div class="sr"><span>Wygląd</span><span class="sg"><button type="button" data-t="light">Jasny</button><button type="button" data-t="dark">Ciemny</button></span></div>
       <div class="sr"><span>Kolory</span><span class="pal" role="group" aria-label="Wersja kolorystyczna"><button type="button" data-p="green" aria-label="Zielona" title="Zielona"></button><button type="button" data-p="blue" aria-label="Granatowa" title="Granatowa"></button><button type="button" data-p="red" aria-label="Bordowa" title="Bordowa"></button></span></div>
       <div class="sr"><span>Rozmiar tekstu</span><span class="sg"><button id="zm" type="button" aria-label="Mniejszy tekst">A−</button><button id="zp" type="button" aria-label="Większy tekst">A+</button></span></div>
     </div>
-  </div>
 </header>
-
 <div class="wrap">
 
-<!-- EKRAN GŁÓWNY -->
 <section class="view" id="v-home">
   <p class="greet" id="greet" hidden>Dzień dobry</p>
+  <a class="banner2" id="t-imgw" href="#" onclick="return openImgw()" hidden><span class="ico">⚠️</span><span><span class="tt" id="ti-t"></span><span class="ss" id="ti-s"></span></span></a>
+  <a class="banner2 soft" id="t-warn" href="#/pogoda" hidden><span class="ico">🌬️</span><span><span class="tt">Ostrzeżenie pogodowe</span><span class="ss" id="tw-s"></span></span></a>
 
-  <a class="hero night" id="hero" href="#/pogoda" aria-label="Pogoda w Kruszynie – szczegóły">
-    <div class="r1"><div class="date" id="h-date"></div><div class="big"><span class="i" id="h-ico"></span><span class="t" id="h-temp"></span></div></div>
-    <div class="line" id="h-line">Ładuję pogodę…</div>
-      <svg class="sil" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60V44H20V36L30 28L40 36V44H70V38L82 30L94 38V46H130V40H150V46H172V30H178L184 12L190 30H196V46H230V38L244 28L258 38V44H290V36L300 28L310 36V46H345V40L357 32L369 40V44H400V60Z"/></svg>
-  </a>
+  <div class="card wcard" id="hero" data-sky="day">
+    <div class="wc-top"><div><div class="wc-loc">📍 Kruszyn, gm. Bolesławiec · <span id="h-date"></span></div>
+      <div class="wc-big"><span id="h-temp">–</span><span id="wk-txt"></span></div></div><span id="h-ico">⛅</span></div>
+    <p class="wc-sub" id="wk-sub"></p>
+    <p class="wc-sub" id="h-line">Ładuję pogodę…</p>
+    <div class="air" id="t-air" hidden><div class="air-h" id="air-t">Powietrze</div><div class="air-bar"><i id="air-bar"></i></div><p class="wc-sub" id="air-s"></p></div>
+    <div class="wc-h"><span>Prognoza na 5 dni</span><button type="button" id="wk-more">Szczegóły opadów</button></div>
+    <div class="wk" id="wk-days"></div>
+    <div class="wc-h"><span></span><a href="#/pogoda">Godziny i szczegóły ›</a></div>
+  </div>
 
   <div class="notices" id="notices" hidden></div>
 
-  <div class="tiles">
-    <a class="tile soon wide" id="t-warn" href="#/pogoda" hidden>
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2zM12 10v5M12 18h.01"/></svg></span>
-      <span class="txt"><span class="tt">Ostrzeżenie pogodowe</span><span class="ss" id="tw-s"></span></span>
-    </a>
-    <a class="tile soon wide" id="t-imgw" href="#/pogoda" hidden>
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2zM12 10v5M12 18h.01"/></svg></span>
-      <span class="txt"><span class="tt" id="ti-t"></span><span class="ss" id="ti-s"></span></span>
-    </a>
-    <a class="tile t-wyd" id="t-wyd" href="#/wydarzenia">
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M9 15h6"/></svg></span>
-      <span class="txt"><span class="tt" id="wy-t">Wydarzenia</span><span class="ss" id="wy-s">Dodaj wydarzenie do kalendarza wsi</span></span>
-    </a>
-    <a class="tile t-waste" id="t-waste" href="#/smieci">
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg></span>
-      <span class="txt"><span class="tt" id="tr-t">Wywóz śmieci</span><span class="ss" id="tr-s">Ładuję…</span></span>
-    </a>
-    <a class="tile t-znicz" id="t-znicz" href="#/znicz" hidden>
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.8 2.8-1.4 4.4H9.6l-1.4-4.4zM12 7.5V3M15.8 10.3l4.2-1.3M14.4 14.7l2.6 3.5M9.6 14.7l-2.6 3.5M8.2 10.3L4 9"/></svg></span>
-      <span class="txt"><span class="tt" id="zn-t">Znicz Kruszyn</span><span class="ss" id="zn-s"></span></span>
-    </a>
-    <a class="tile t-prad" id="t-prad" href="#/prad">
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
-      <span class="txt"><span class="tt" id="pr-t">Prąd</span><span class="ss" id="pr-s">awarie i wyłączenia</span></span>
-    </a>
-    <a class="tile t-msza" id="t-msza" href="#/msze">
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1.5v4M10 3.5h4M12 5.5l5 4V21H7V9.5zM10 21v-4.5a2 2 0 0 1 4 0V21M3 21h18"/></svg></span>
-      <span class="txt"><span class="tt" id="tm-t">Msze święte</span><span class="ss" id="tm-s"></span></span>
-    </a>
-    <a class="tile t-bus" id="t-bus" href="#/autobusy" hidden>
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v10H3V6a2 2 0 0 1 2-2zM3 11h18M7 16v3M17 16v3M7.5 14h.01M16.5 14h.01"/></svg></span>
-      <span class="txt"><span class="tt" id="bus-t">Autobusy</span><span class="ss" id="bus-s"></span></span>
-    </a>
-    <a class="tile t-apt" id="t-apt" href="#/apteki" hidden>
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zM12 8v8M8 12h8"/></svg></span>
-      <span class="txt"><span class="tt">Apteka całodobowa</span><span class="ss" id="apt-s"></span></span>
-    </a>
-    <a class="tile t-pszok" id="t-pszok" href="#/pszok" hidden>
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6M5 10v10h14V10M9 20v-6h6v6"/></svg></span>
-      <span class="txt"><span class="tt" id="ps-t">PSZOK</span><span class="ss" id="ps-s"></span></span>
-    </a>
-    <div class="tile t-air" id="t-air" hidden>
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/></svg></span>
-      <span class="txt"><span class="tt" id="air-t">Powietrze</span><span class="ss" id="air-s"></span></span>
-    </div>
-    <a class="tile t-tel wide" href="#/telefony">
-      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span>
-      <span class="txt"><span class="tt">Ważne telefony</span><span class="ss">alarmowe, awarie, urząd</span></span>
-    </a>
+  <a class="sc" id="t-waste" href="#/smieci"><span class="h"><span class="ic">🗑️</span><span class="tx"><span class="tt" id="tr-t">Wywóz śmieci</span><span class="ss" id="tr-s">Ładuję…</span></span><span class="go">Harmonogram ›</span></span></a>
+  <a class="sc" id="t-bus" href="#/autobusy" hidden><span class="h"><span class="ic">🚌</span><span class="tx"><span class="tt" id="bus-t">Autobusy PKS</span><span class="ss" id="bus-s"></span></span><span class="go">Rozkład ›</span></span><div class="deps" id="home-pks"></div></a>
+
+  <div class="grid2">
+    <a class="sc" id="t-msza" href="#/msze"><span class="ic">⛪</span><span class="tt" id="tm-t">Msze święte</span><span class="ss" id="tm-s"></span></a>
+    <a class="sc" id="t-prad" href="#/prad"><span class="ic">⚡</span><span class="tt" id="pr-t">Prąd</span><span class="ss" id="pr-s">awarie i wyłączenia</span></a>
+    <a class="sc" id="t-znicz" href="#/znicz" hidden><span class="ic">⚽</span><span class="tt" id="zn-t">Znicz Kruszyn</span><span class="ss" id="zn-s"></span></a>
+    <a class="sc" id="t-apt" href="#/apteki" hidden><span class="ic">💊</span><span class="tt">Apteka całodobowa</span><span class="ss" id="apt-s"></span></a>
+    <a class="sc" id="t-pszok" href="#/pszok" hidden><span class="ic">♻️</span><span class="tt" id="ps-t">PSZOK</span><span class="ss" id="ps-s"></span></a>
+    <a class="sc" id="t-tel" href="#/telefony"><span class="ic">📞</span><span class="tt">Ważne telefony</span><span class="ss">alarmowe, awarie, urząd</span></a>
   </div>
+
+  <a class="sc" id="t-wyd" href="#/wydarzenia"><span class="h"><span class="ic">📅</span><span class="tx"><span class="tt" id="wy-t">Wydarzenia</span><span class="ss" id="wy-s">Dodaj wydarzenie do kalendarza wsi</span></span><span class="go">Wszystkie ›</span></span></a>
+
   <div class="card" id="inst" hidden>
     <h3>Aplikacja w telefonie</h3>
     <p class="sub" id="inst-txt" style="line-height:1.6;margin:0 0 10px"></p>
@@ -483,25 +497,19 @@ details[open] summary::after{content:"−"}
   </div>
 </section>
 
-<!-- POGODA -->
-<section class="view" id="v-pogoda" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Pogoda</h2></div>
-  <div class="card" id="imgw-card" hidden><h3>Ostrzeżenia IMGW dla powiatu bolesławieckiego</h3><div id="imgw-list"></div></div>
-  <div class="card" id="wdetail"><p class="sub">Ładuję pogodę…</p></div>
-</section>
-
-<!-- TELEFONY -->
-<section class="view tab" id="v-telefony" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Ważne telefony</h2></div>
-  <div class="seg" role="tablist"><a href="#/prad">Prąd</a><a href="#/telefony" class="on">Telefony</a></div>
-  <div id="phones"></div>
-</section>
-
-<!-- PRĄD -->
-<section class="view tab" id="v-prad" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Prąd</h2></div>
-  <div class="seg" role="tablist"><a href="#/prad" class="on">Prąd</a><a href="#/telefony">Telefony</a></div>
-  <div class="card">
+<section class="view" id="v-wiecej" hidden>
+  <div class="chips" id="more-chips">
+    <a href="#/msze">⛪ Msze</a><a href="#/prad">⚡ Prąd</a><a href="#/znicz" data-znicz hidden>⚽ Znicz</a><a href="#/apteki">💊 Apteka</a><a href="#/pszok">♻️ PSZOK</a><a href="#/telefony">📞 Telefony</a><a href="#/pogoda">🌦️ Pogoda</a>
+  </div>
+<div class="sec" id="section-msze"><h2 class="sech"><span class="ic">⛪</span>Msze święte i intencje</h2>
+<div class="card"><h3>Kruszyn · św. Jana Chrzciciela</h3><div id="m-kr"></div></div>
+  <div class="card" id="int-card" hidden><h3>Intencje mszalne · Kruszyn</h3><div id="int-list"></div></div>
+  <div class="card"><h3>Łaziska</h3><div id="m-lz"></div></div>
+  <div class="card"><h3>Stały porządek</h3><div id="m-rule" class="sub" style="padding-bottom:10px;line-height:1.6"></div></div>
+  <p class="foot">Źródło: <a href="https://kruszyn.com/porzadek-nabozenstw/">kruszyn.com</a> · <a href="https://kruszyn.com/ogloszenia-parafialne/">intencje mszalne</a><br>W święta i uroczystości godziny mogą się różnić – sprawdź ogłoszenia parafialne lub zadzwoń: <a href="tel:757321414">75 732 14 14</a>.</p>
+</div>
+<div class="sec" id="section-tauron"><h2 class="sech"><span class="ic">⚡</span>Prąd – Tauron</h2>
+<div class="card">
     <h3>Zgłoszone w Kruszynie</h3>
     <div id="prad-list"></div>
   </div>
@@ -513,45 +521,21 @@ details[open] summary::after{content:"−"}
   </div>
   <div class="card"><h3>Gdy zabraknie prądu</h3><div class="sub" style="padding-bottom:10px;line-height:1.6">Sprawdź bezpieczniki w domu i czy prąd mają sąsiedzi. Jeśli nie, zgłoś awarię pod 991. Nie zbliżaj się do zerwanych przewodów.</div></div>
   <p class="foot" id="prad-foot">Wiążące informacje: <a href="https://www.tauron-dystrybucja.pl/wylaczenia">tauron-dystrybucja.pl</a>.</p>
-</section>
-
-<!-- APTEKI -->
-<section class="view" id="v-apteki" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Apteki</h2></div>
-  <div id="apt24"></div>
+</div>
+<div class="sec" id="section-znicz" data-znicz hidden><h2 class="sech"><span class="ic">⚽</span>Znicz Kruszyn</h2>
+<div class="banner" id="zn-banner" hidden></div>
+  <div class="card" id="zn-next-card" hidden><h3>Najbliższe mecze</h3><div id="zn-next"></div></div>
+  <div class="card" id="zn-last-card" hidden><h3>Ostatnie mecze</h3><div id="zn-last"></div></div>
+  <div class="card" id="zn-tab-card" hidden><h3 id="zn-tab-h">Tabela</h3><div style="overflow-x:auto"><table class="tbl" id="zn-tab"></table></div><p class="sub" id="zn-tab-note" style="margin:6px 0 10px"></p></div>
+  <p class="foot" id="zn-foot"></p>
+</div>
+<div class="sec" id="section-apteka"><h2 class="sech"><span class="ic">💊</span>Apteka całodobowa</h2>
+<div id="apt24"></div>
   <div class="card"><h3>Inne apteki w Bolesławcu</h3><div id="aptlist"></div></div>
   <p class="foot">Dyżury nocne i świąteczne wyznacza powiat. Stały dyżur całodobowy ma apteka „U Nelli”, ale przed wyjazdem warto zadzwonić.<br>Sprawdź też: <a href="https://powiatboleslawiecki.pl/dyzury-aptek/">powiatboleslawiecki.pl</a> · <a href="https://www.bolec.info/boleslawiec/apteki">bolec.info</a></p>
-</section>
-
-<!-- MSZE -->
-<section class="view tab" id="v-msze" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Msze święte</h2></div>
-  <div class="seg" role="tablist"><a href="#/wydarzenia">Wydarzenia</a><a href="#/msze" class="on">Msze</a><a href="#/znicz" data-znicz hidden>Mecze Znicz Kruszyn</a></div>
-  <div class="card"><h3>Kruszyn · św. Jana Chrzciciela</h3><div id="m-kr"></div></div>
-  <div class="card" id="int-card" hidden><h3>Intencje mszalne · Kruszyn</h3><div id="int-list"></div></div>
-  <div class="card"><h3>Łaziska</h3><div id="m-lz"></div></div>
-  <div class="card"><h3>Stały porządek</h3><div id="m-rule" class="sub" style="padding-bottom:10px;line-height:1.6"></div></div>
-  <p class="foot">Źródło: <a href="https://kruszyn.com/porzadek-nabozenstw/">kruszyn.com</a> · <a href="https://kruszyn.com/ogloszenia-parafialne/">intencje mszalne</a><br>W święta i uroczystości godziny mogą się różnić – sprawdź ogłoszenia parafialne lub zadzwoń: <a href="tel:757321414">75 732 14 14</a>.</p>
-</section>
-
-<!-- AUTOBUSY -->
-<section class="view tab" id="v-autobusy" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Autobusy</h2></div>
-  <div class="seg bus-tabs" id="bus-tabs" role="group" aria-label="Przystanek"></div>
-  <div class="card">
-    <h3>Najbliższe odjazdy</h3>
-    <div id="bus-next"><p class="sub" style="padding-bottom:10px">Ładuję rozkład…</p></div>
-  </div>
-  <div class="card"><h3>Cały rozkład · <span id="bus-stop-name"></span></h3><p class="bus-note" id="bus-all-note"></p><div id="bus-all"></div></div>
-  <div class="card"><details><summary>Oznaczenia kursów (litery przy godzinach)</summary><ul class="bus-leg" id="bus-leg"></ul></details></div>
-  <p class="foot" id="bus-foot"></p>
-</section>
-
-<!-- PSZOK -->
-<section class="view tab" id="v-pszok" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>PSZOK</h2></div>
-  <div class="seg" role="tablist"><a href="#/smieci">Harmonogram</a><a href="#/pszok" class="on">PSZOK</a></div>
-  <div class="banner" id="ps-banner"></div>
+</div>
+<div class="sec" id="section-pszok"><h2 class="sech"><span class="ic">♻️</span>PSZOK</h2>
+<div class="banner" id="ps-banner"></div>
   <div class="card"><h3>Punkt Selektywnej Zbiórki Odpadów</h3><div id="ps-info"></div></div>
   <div class="card"><h3>Godziny otwarcia</h3><div id="ps-hours"></div></div>
   <div class="card"><h3>Zasady</h3><ul class="plist" id="ps-rules"></ul></div>
@@ -559,47 +543,76 @@ details[open] summary::after{content:"−"}
   <div class="card"><details><summary>Czego NIE przyjmuje</summary><ul class="plist" id="ps-no"></ul></details></div>
   <div class="card"><h3>Zbiórka sprzed domu</h3><p class="sub" id="ps-mob" style="line-height:1.6;padding-bottom:10px"></p><p style="margin:0 0 14px"><a class="btn" href="#/smieci">Zobacz terminy</a></p></div>
   <p class="foot" id="ps-foot"></p>
+</div>
+<div class="sec" id="section-telefony"><h2 class="sech"><span class="ic">📞</span>Ważne telefony</h2>
+<div id="phones"></div>
+</div>
 </section>
 
+<!-- POGODA -->
+<section class="view" id="v-pogoda" hidden>
+  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Pogoda</h2></div>
+  <div class="card" id="imgw-card" hidden><h3>Ostrzeżenia IMGW dla powiatu bolesławieckiego</h3><div id="imgw-list"></div></div>
+  <div class="card" id="wdetail"><p class="sub">Ładuję pogodę…</p></div>
+</section>
+
+<!-- TELEFONY -->
+<!-- PRĄD -->
+<!-- APTEKI -->
+<!-- MSZE -->
+<!-- AUTOBUSY -->
+<section class="view tab" id="v-autobusy" hidden>
+  <div class="bar"><h2>Rozkład jazdy PKS</h2></div>
+  <div class="card">
+    <div class="pks-h"><div><h3>PKS Bolesławiec</h3><p class="sub" style="margin:2px 0 0">Wybierz przystanek w Kruszynie</p></div><span class="clock" id="bus-clock"></span></div>
+    <div class="stops" id="bus-tabs" role="group" aria-label="Przystanek"></div>
+    <div class="chips" id="bus-dirs" role="group" aria-label="Kierunek"></div>
+  </div>
+  <div class="card">
+    <div class="pks-h"><h3>Najbliższe odjazdy</h3><span class="live"><i></i>Odliczanie na żywo</span></div>
+    <div id="bus-next"><p class="sub" style="padding-bottom:10px">Ładuję rozkład…</p></div>
+  </div>
+  <div class="card">
+    <h3>Cały rozkład · <span id="bus-stop-name"></span></h3>
+    <div class="chips" id="bus-days" role="group" aria-label="Dzień"></div>
+    <p class="bus-note" id="bus-all-note"></p><div id="bus-all"></div>
+  </div>
+  <div class="card"><details><summary>Oznaczenia kursów (litery przy godzinach)</summary><ul class="bus-leg" id="bus-leg"></ul></details></div>
+  <p class="foot" id="bus-foot"></p>
+</section>
+
+<!-- PSZOK -->
 <!-- ZNICZ -->
-<section class="view tab" id="v-znicz" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Mecze Znicz Kruszyn</h2></div>
-  <div class="seg" role="tablist"><a href="#/wydarzenia">Wydarzenia</a><a href="#/msze">Msze</a><a href="#/znicz" class="on" data-znicz hidden>Mecze Znicz Kruszyn</a></div>
-  <div class="banner" id="zn-banner" hidden></div>
-  <div class="card" id="zn-next-card" hidden><h3>Najbliższe mecze</h3><div id="zn-next"></div></div>
-  <div class="card" id="zn-last-card" hidden><h3>Ostatnie mecze</h3><div id="zn-last"></div></div>
-  <div class="card" id="zn-tab-card" hidden><h3 id="zn-tab-h">Tabela</h3><div style="overflow-x:auto"><table class="tbl" id="zn-tab"></table></div><p class="sub" id="zn-tab-note" style="margin:6px 0 10px"></p></div>
-  <p class="foot" id="zn-foot"></p>
-</section>
-
 <!-- WYDARZENIA -->
 <section class="view tab" id="v-wydarzenia" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wydarzenia</h2></div>
-  <div class="seg" role="tablist"><a href="#/wydarzenia" class="on">Wydarzenia</a><a href="#/msze">Msze</a><a href="#/znicz" data-znicz hidden>Mecze Znicz Kruszyn</a></div>
-  <div class="card"><h3>Organizujesz coś we wsi?</h3><p class="sub" style="margin:0 0 12px;line-height:1.6">Wypełnij krótki formularz. Wydarzenie pojawi się tutaj po zatwierdzeniu, zwykle w ciągu kilku godzin.</p><p style="margin:0 0 12px"><a class="btn" id="wy-form" href="#" target="_blank" rel="noopener">Dodaj wydarzenie</a></p></div>
-  <div class="card"><h3>Nadchodzące</h3><div id="wy-up"></div></div>
-  <div class="card" id="wy-past-card" hidden><h3>Minione (ostatnie 5)</h3><div id="wy-past"></div></div>
+  <div class="bar"><h2>Wydarzenia</h2></div>
+  <div class="card">
+    <div class="pks-h"><div><h3>Wydarzenia w Kruszynie</h3><p class="sub" style="margin:2px 0 0">Życie sołectwa, świetlicy, KGW i OSP</p></div><a class="btn" id="wy-form" href="#" target="_blank" rel="noopener">+ Dodaj wydarzenie</a></div>
+    <p class="sub" style="margin:8px 0 0;line-height:1.5">Organizujesz coś we wsi? Wypełnij krótki formularz. Wydarzenie pojawi się tutaj po zatwierdzeniu, zwykle w ciągu kilku godzin.</p>
+    <div class="seg2" id="ev-tabs"><button type="button" data-k="up" aria-pressed="true">Nadchodzące (<span id="ev-n-up">0</span>)</button><button type="button" data-k="past" aria-pressed="false">Minione (<span id="ev-n-past">0</span>)</button></div>
+  </div>
+  <div id="wy-up-card"><div id="wy-up"></div></div>
+  <div id="wy-past-card" hidden><div id="wy-past"></div></div>
   <div class="card" id="wy-sub-card" hidden><h3>Kalendarz w telefonie</h3><p class="sub" style="margin:0 0 12px;line-height:1.6">Wszystkie wydarzenia będą same pojawiać się w kalendarzu telefonu.</p><p style="margin:0 0 14px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn" id="wy-web" href="#">Dodaj do kalendarza</a><a class="call alt" id="wy-ics" href="data/kruszyn-wydarzenia.ics" download>Pobierz plik .ics</a></p></div>
   <p class="foot" id="wy-foot">Wydarzenia zgłaszają mieszkańcy, a administrator aplikacji je zatwierdza. Za treść odpowiada organizator.</p>
 </section>
 
 <!-- ŚMIECI -->
 <section class="view tab" id="v-smieci" hidden>
-  <div class="bar"><a class="back" href="#/">‹ Wróć</a><h2>Wywóz śmieci</h2></div>
-  <div class="seg" role="tablist"><a href="#/smieci" class="on">Harmonogram</a><a href="#/pszok">PSZOK</a></div>
+  <div class="bar"><h2>Wywóz śmieci</h2></div>
   <div class="banner" id="walert" hidden></div>
+  <div class="card" id="cal-card" hidden>
+    <div class="pks-h"><h3>Harmonogram odbioru odpadów</h3><span class="badge2">Rejon: Kruszyn</span></div>
+    <p class="sub" style="margin:0 0 12px;line-height:1.5">Dodaj terminy wywozu do kalendarza w telefonie – będą się same aktualizować.</p>
+    <p style="margin:0;display:flex;gap:8px;flex-wrap:wrap"><a class="btn" id="cal-web" href="#">Dodaj do kalendarza</a><a class="call alt" id="cal-ics" href="data/kruszyn-smieci.ics" download>Pobierz plik .ics</a></p>
+  </div>
+  <div class="chips" id="waste-filters"></div>
   <div class="card"><h3>Najbliższe odbiory</h3><div id="list"></div></div>
   <div class="card">
     <h3>Kalendarz odbiorów</h3>
     <div class="nav"><button id="prev" aria-label="Poprzedni miesiąc">‹</button><strong id="mname"></strong><button id="next" aria-label="Następny miesiąc">›</button></div>
     <div class="grid" id="grid"></div>
     <p id="detail"></p>
-  </div>
-  <div class="card" id="cal-card" hidden>
-    <h3>Przypomnienia w telefonie</h3>
-    <p class="sub" style="margin:0 0 12px">Dodaj terminy wywozu do kalendarza w telefonie – będą się same aktualizować.</p>
-    <p style="margin:0 0 12px"><a class="btn" id="cal-web" href="#">Dodaj do kalendarza</a></p>
-    <p class="sub" style="margin:0 0 8px"><a id="cal-ics" href="data/kruszyn-smieci.ics" download>Pobierz plik .ics</a> (jeśli przycisk nie działa)</p>
   </div>
   <p class="foot" id="foot"></p>
 </section>
@@ -616,19 +629,13 @@ details[open] summary::after{content:"−"}
   <p style="margin:14px 0 0"><a id="inst-again" href="#" hidden>📲 Zainstaluj aplikację na telefonie</a></p>
 </footer>
 </div>
-<nav class="bnav" id="bnav" aria-label="Główne menu">
-  <a href="#/wydarzenia" data-nav="wies"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M9 15h6"/></svg></span><span>Wydarzenia</span></a>
-  <a href="#/prad" data-nav="awarie"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 22 20H2zM12 10v5M12 18h.01"/></svg></span><span>Awarie</span></a>
-  <a href="#/" data-nav="home" class="home"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 10v10.5h13V10M10 20.5V15h4v5.5"/></svg></span><span>Start</span></a>
-  <a href="#/autobusy" data-nav="autobusy"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v10H3V6a2 2 0 0 1 2-2zM3 11h18M7 16v3M17 16v3M7.5 14h.01M16.5 14h.01"/></svg></span><span>Autobusy</span></a>
-  <a href="#/smieci" data-nav="smieci"><span class="bn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg></span><span>Odpady</span></a>
-</nav>
+<nav class="bot" id="bnav" aria-label="Główne menu"><a href="#/" data-nav="home"><span class="i">🏠</span><span>Start</span></a><a href="#/smieci" data-nav="smieci"><span class="i">🗑️</span><span>Śmieci</span></a><a href="#/autobusy" data-nav="autobusy"><span class="i">🚌</span><span>PKS</span></a><a href="#/wydarzenia" data-nav="wydarzenia"><span class="i">📅</span><span>Wydarzenia</span></a><a href="#/wiecej" data-nav="wiecej"><span class="i">☰</span><span>Więcej</span></a></nav>
 <script>
 // ---------- Wsparcie autora (buycoffee.to) ----------
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
 if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-22", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -650,19 +657,21 @@ const col = id => `style="--c:var(--c-${esc(id)})"`;
 const bag = id => `<svg class="bag" viewBox="0 0 24 24" ${col(id)} aria-hidden="true"><path d="M9 2h6l-1 3c3 1 6 4 6 9a8 8 0 0 1-16 0c0-5 3-8 6-9z"/></svg>`;
 
 // ---------- nawigacja (#/pogoda, #/smieci) ----------
-const VIEWS = ['home', 'pogoda', 'smieci', 'msze', 'telefony', 'apteki', 'prad', 'pszok', 'znicz', 'wydarzenia', 'autobusy'];
+const VIEWS = ['home', 'pogoda', 'smieci', 'wydarzenia', 'autobusy', 'wiecej'];
 function route() {
   const h = (location.hash || '').replace(/^#\/?/, '');
-  const v = VIEWS.includes(h) ? h : 'home';
+  const SEC = {msze: 'section-msze', prad: 'section-tauron', znicz: 'section-znicz', apteki: 'section-apteka', pszok: 'section-pszok', telefony: 'section-telefony'};
+  const v = SEC[h] ? 'wiecej' : VIEWS.includes(h) ? h : 'home';
   VIEWS.forEach(x => { $('v-' + x).hidden = x !== v; });
-  const NAVKEY = {home: 'home', pogoda: 'home', apteki: 'home', smieci: 'smieci', pszok: 'smieci', autobusy: 'autobusy',
-    wydarzenia: 'wies', msze: 'wies', znicz: 'wies', prad: 'awarie', telefony: 'awarie'}[v];
+  const NAVKEY = {home: 'home', pogoda: 'home', smieci: 'smieci', autobusy: 'autobusy', wydarzenia: 'wydarzenia',
+    wiecej: 'wiecej', apteki: 'wiecej', pszok: 'wiecej', msze: 'wiecej', znicz: 'wiecej', prad: 'wiecej', telefony: 'wiecej'}[v];
+  document.querySelectorAll('#pills a').forEach(a => a.classList.toggle('on', a.dataset.r === (SEC[h] ? h : v)));
   document.querySelectorAll('#bnav a').forEach(a => {
     const on = a.dataset.nav === NAVKEY; a.classList.toggle('on', on);
     if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
   const ft = document.querySelector('footer.contact'); if (ft) ft.hidden = v !== 'home';   // stopka tylko na stronie głównej
-  window.scrollTo(0, 0);
+  if (SEC[h]) setTimeout(() => { const e = $(SEC[h]); if (e) e.scrollIntoView({block: 'start'}); }, 0); else window.scrollTo(0, 0);
 }
 addEventListener('hashchange', route);
 route();
@@ -836,7 +845,7 @@ function renderPszok(P) {
     const L = a <= 20 ? ['bardzo dobra', '#3fcf7a'] : a <= 40 ? ['dobra', '#9ad94a'] : a <= 60 ? ['umiarkowana', '#f0c43a'] : a <= 80 ? ['dostateczna', '#f08c4d'] : a <= 100 ? ['zła', '#ff2a3d'] : ['bardzo zła', '#b3001b'];
     $('air-t').innerHTML = `<i class="aq" style="--c:${L[1]}"></i>Powietrze ${L[0]}`;
     $('air-s').textContent = `PM2,5: ${Math.round(c.pm2_5)} · PM10: ${Math.round(c.pm10)} µg/m³` + (a > 60 ? ' · ogranicz wysiłek na dworze' : '');
-    $('t-air').hidden = false;
+    $('t-air').hidden = false; $('air-bar').style.width = Math.min(100, a) + '%'; $('air-bar').style.background = L[1];
   } catch (_) {}
 })();
 
@@ -880,6 +889,7 @@ function renderPszok(P) {
     $('tr-s').textContent = 'Brak kolejnych terminów. Nowy harmonogram pojawi się na początku roku.';
   }
 
+  if (upcoming.length && diff(upcoming[0].n) <= 1) { $('pill-waste').textContent = diff(upcoming[0].n) === 0 ? 'Dziś' : 'Jutro'; $('pill-waste').hidden = false; }
   // widok szczegółowy: alert, lista, kalendarz
   const names = n => fr.filter(f => f.dates.some(d => diff(d) === n)).map(f => cap(f.label));
   const parts = [];
@@ -888,7 +898,7 @@ function renderPszok(P) {
   if (parts.length) { $('walert').textContent = parts.join(' · '); $('walert').hidden = false; }
 
   const rows = items.slice().sort((a, b) => (a.n ? utc(a.n) : Infinity) - (b.n ? utc(b.n) : Infinity));
-  $('list').innerHTML = rows.map(({f, n}) => {
+  const renderList = flt => { $('list').innerHTML = rows.filter(x => flt === 'all' || x.f.id === flt).map(({f, n}) => {
     let right;
     if (n) {
       const k = diff(n);
@@ -899,7 +909,11 @@ function renderPszok(P) {
       right = `<div class="when sub">brak terminu<br><a href="tel:${esc(f.contact.replace(/\s/g, ''))}">${esc(f.contact)}</a></div>`;
     }
     return `<div class="row"><span class="dot" ${col(f.id)}></span><div class="grow"><div class="name">${esc(f.label)}</div><div class="sub">${esc(f.frequency)}</div></div>${right}</div>`;
-  }).join('');
+  }).join('') || '<p class="sub">Brak terminów.</p>'; };
+  renderList('all');
+  $('waste-filters').innerHTML = '<button type="button" data-f="all" class="on">Wszystkie</button>' + fr.map(f => `<button type="button" data-f="${esc(f.id)}">${esc(cap(f.label))}</button>`).join('');
+  $('waste-filters').onclick = e => { const b = e.target.closest('button[data-f]'); if (!b) return;
+    document.querySelectorAll('#waste-filters button').forEach(x => x.classList.toggle('on', x === b)); renderList(b.dataset.f); };
 
   const byDate = {};
   fr.forEach(f => f.dates.forEach(d => (byDate[d] = byDate[d] || []).push(f)));
@@ -943,7 +957,7 @@ function renderPszok(P) {
 (async function () {
   const LAT = 51.2604, LON = 15.6163, KEY = 'kruszyn-weather';
   const URL = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
-    '&current=temperature_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_gusts_10m,precipitation' +
+    '&current=temperature_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_gusts_10m,precipitation,pressure_msl' +
     '&hourly=temperature_2m,precipitation_probability,weather_code' +
     '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_gusts_10m_max' +
     '&timezone=Europe%2FWarsaw&forecast_days=5';
@@ -980,7 +994,7 @@ function renderPszok(P) {
   const txt = clearNight ? 'Pogodna noc' : txt0;
 
   // karta na ekranie głównym
-  $('hero').className = 'hero ' + (night ? 'night' : code >= 3 ? 'cloud' : 'day');
+  $('hero').dataset.sky = night ? 'night' : code >= 3 ? 'cloud' : 'day';
   $('h-ico').textContent = clearNight ? '🌙' : ico0;
   $('h-temp').textContent = r(c.temperature_2m) + '°';
   $('ah-ico').textContent = clearNight ? '🌙' : ico0;
@@ -1018,6 +1032,9 @@ function renderPszok(P) {
   }).join('');
   html += age > 6e5 ? `<p class="sub">Brak połączenia – dane sprzed ${Math.round(age / 6e4)} min.</p>` : `<p class="sub">Dane: Open-Meteo.com</p>`;
   $('wdetail').innerHTML = html;
+  $('wk-txt').textContent = txt;
+  $('wk-sub').innerHTML = `Odczuwalna <b>${r(c.apparent_temperature)}°C</b> • Wiatr <b>${r(c.wind_speed_10m)} km/h</b>` + (c.pressure_msl != null ? ` • <b>${r(c.pressure_msl)} hPa</b>` : '');
+  $('wk-days').innerHTML = d.time.map((s, i) => `<div><p class="n">${i === 0 ? 'Dziś' : cap(new Intl.DateTimeFormat('pl-PL', {timeZone: 'UTC', weekday: 'short'}).format(new Date(s + 'T00:00:00Z')))}</p><p class="i">${WMO(d.weather_code[i])[1]}</p><p class="hi">${r(d.temperature_2m_max[i])}°</p><p class="lo">${r(d.temperature_2m_min[i])}°</p><p class="pp">${d.precipitation_probability_max[i] ?? 0}%</p></div>`).join('');
 })();
 // ---------- OSTRZEŻENIA IMGW (ostrzezenia.json, odświeżane co godzinę przez robota) ----------
 (async function () {
@@ -1034,7 +1051,7 @@ function renderPszok(P) {
     <div class="sub">${esc(fm(o.od))} – ${esc(fm(o.do))}${o.prawdopodobienstwo ? ' · prawdop. ' + esc(o.prawdopodobienstwo) + '%' : ''}</div>
     ${o.tresc ? `<div class="sub" style="margin-top:4px;color:var(--ink)">${esc(o.tresc)}</div>` : ''}</div></div>`).join('') +
     `<p class="sub" style="margin:8px 0 10px">Źródło: <a href="https://meteo.imgw.pl/">IMGW-PIB</a>${w.updated ? ', stan na ' + esc(stamp(new Date(w.updated))) : ''}.</p>`;
-  $('imgw-card').hidden = false;
+  $('imgw-card').hidden = false; $('imgw-btn').hidden = false;
 })();
 
 // ---------- ustawienia: motyw, kolory, rozmiar tekstu ----------
@@ -1045,7 +1062,7 @@ function renderPszok(P) {
     document.querySelectorAll('[data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t));
     document.querySelectorAll('.pal button').forEach(b => b.setAttribute('aria-pressed', b.dataset.p === p));
     const meta = document.querySelector('meta[name=theme-color]');
-    if (meta) meta.content = getComputedStyle(root).getPropertyValue('--head').trim() || '#2f4a6b';
+    if (meta) meta.content = getComputedStyle(root).getPropertyValue('--card').trim() || '#2f4a6b';
   };
   document.querySelectorAll('[data-t]').forEach(b => { b.onclick = () => {
     root.setAttribute('data-theme', b.dataset.t);
@@ -1195,6 +1212,12 @@ function renderPszok(P) {
   $('wy-up').innerHTML = up.length ? up.map((e, i) => row(e, i, false)).join('') : '<p class="sub" style="padding:4px 0 12px">Brak zaplanowanych wydarzeń. Dodaj pierwsze!</p>';
   if (past.length) { $('wy-past').innerHTML = past.map((e, i) => row(e, i, true)).join(''); $('wy-past-card').hidden = false; }
 
+  $('ev-n-up').textContent = up.length; $('ev-n-past').textContent = past.length;
+  const showEv = k => { $('wy-up-card').hidden = k !== 'up'; $('wy-past-card').hidden = k !== 'past';
+    if (k === 'past' && !past.length) $('wy-past').innerHTML = '<p class="sub">Brak minionych wydarzeń.</p>';
+    document.querySelectorAll('#ev-tabs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === k)); };
+  $('ev-tabs').onclick = e => { const b = e.target.closest('button[data-k]'); if (b) showEv(b.dataset.k); };
+  showEv('up');
   // pojedyncze wydarzenie do kalendarza telefonu (plik .ics tworzony w przeglądarce)
   const ics = e => {
     const z = s => s.replace(/-/g, ''), t = h => h.replace(':', '') + '00', x = s => String(s || '').replace(/[\\;,]/g, m => '\\' + m).replace(/\n/g, '\\n');
@@ -1286,28 +1309,55 @@ if (/^https?:$/.test(location.protocol)) {
   const until = (d0, d, t) => { const diff = Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate(), ...t.split(':').map(Number)) - d0) / 60000);
     return diff <= 0 ? 'teraz' : diff < 60 ? 'za ' + diff + ' min' : diff < 720 ? 'za ' + Math.floor(diff / 60) + ' h ' + (diff % 60 ? (diff % 60) + ' min' : '') : ''; };
 
+  let dir = 'all', dt = 'auto';
+  const refDay = (d0, t) => {                          // dzień wzorcowy dla przełącznika Pon–Pt / Sob / Nd
+    if (t === 'auto') return d0;
+    for (let n = 0; n < 14; n++) { const d = addDays(d0, n), w = d.getDay(), hol = dayInfo(d).hol.has(ymd(d));
+      if (t === 'pn' ? (w >= 1 && w <= 5 && !hol) : t === 'sb' ? (w === 6 && !hol) : (w === 0 || hol)) return d; }
+    return d0; };
   function draw() {
     const d0 = new Date(), stop = B.przystanki[cur];
+    const dirs = [...new Set(stop.kursy.map(k => k.kierunek))];
+    if (dir !== 'all' && !dirs.includes(dir)) dir = 'all';
+    $('bus-clock').textContent = d0.toLocaleTimeString('pl-PL');
     tabs.hidden = B.przystanki.length < 2;
-    tabs.innerHTML = B.przystanki.map((p, i) => `<button type="button" data-i="${i}" aria-pressed="${i === cur}">${esc(p.nazwa)}</button>`).join('');
-    const up = upcoming(stop, d0, 8);
-    $('bus-next').innerHTML = up.length ? up.map(u => { const lab = dayLabel(d0, u.d), un = lab === 'dziś' ? until(d0, u.d, u.t) : '';
+    tabs.innerHTML = B.przystanki.map((p, i) => `<button type="button" data-i="${i}" aria-pressed="${i === cur}"><span class="n">${i + 1}</span><span class="nm">${esc(p.nazwa)}</span><span class="st">${i === cur ? 'Wybrany' : 'Wybierz'}</span></button>`).join('');
+    $('bus-dirs').hidden = dirs.length < 2;
+    $('bus-dirs').innerHTML = ['all', ...dirs].map(k => `<button type="button" data-d="${esc(k)}" aria-pressed="${k === dir}">${k === 'all' ? 'Wszystkie kierunki' : '➔ ' + esc(k)}</button>`).join('');
+    $('bus-days').innerHTML = [['auto', 'Dziś'], ['pn', 'Pon–Pt'], ['sb', 'Sob'], ['nd', 'Nd i święta']].map(([k, l]) => `<button type="button" data-k="${k}" aria-pressed="${k === dt}">${l}</button>`).join('');
+    const upAll = upcoming(stop, d0, 8), up = dir === 'all' ? upAll : upcoming(stop, d0, 8, dir);
+    $('bus-next').innerHTML = up.length ? up.map(u => { const lab = dayLabel(d0, u.d), same = lab === 'dziś';
+      const ts = new Date(u.d.getFullYear(), u.d.getMonth(), u.d.getDate(), ...u.t.split(':').map(Number)).getTime();
       return `<div class="row"><div class="grow"><div class="name">${esc(u.k.kierunek)}</div>${via(u.k) ? `<div class="sub">${esc(via(u.k))}</div>` : ''}${u.szkola ? '<span class="sch-badge">🎒 w dni nauki szkolnej</span>' : ''}</div>
-        <div class="when"><b>${esc(u.t)}</b><span class="s">${esc(un || (lab === 'dziś' ? '' : lab))}</span></div></div>`; }).join('')
+        <div class="when"><b>${esc(u.t)}</b><span class="s cd"${same ? ` data-t="${ts}"` : ''}>${esc(same ? (until(d0, u.d, u.t) || 'dziś') : lab)}</span></div></div>`; }).join('')
       : '<p class="sub" style="padding-bottom:10px">Brak kursów w najbliższych dniach (sprawdź PDF z rozkładem).</p>';
     $('bus-stop-name').textContent = stop.nazwa;
-    $('bus-all-note').textContent = `${B.rodzaj || 'Dni robocze'} – przyciemnione godziny dziś nie kursują. 🎒 = tylko w dni nauki szkolnej.`;
-    $('bus-all').innerHTML = stop.kursy.map(k => `<div class="bus-dir"><div class="name">${esc(k.kierunek)}</div>${via(k) ? `<div class="sub">${esc(via(k))}</div>` : ''}
-      <div class="bus-times" style="padding-top:8px">${k.godziny.map(g => { const {t, c} = split(g), r = runs(c, d0);
+    const ref = refDay(d0, dt);
+    $('bus-all-note').textContent = `${B.rodzaj || 'Dni robocze'} – przyciemnione godziny nie kursują w wybranym dniu${dt === 'auto' ? ' (dziś)' : ''}. 🎒 = tylko w dni nauki szkolnej.`;
+    $('bus-all').innerHTML = stop.kursy.filter(k => dir === 'all' || k.kierunek === dir).map(k => `<div class="bus-dir"><div class="name">${esc(k.kierunek)}</div>${via(k) ? `<div class="sub">${esc(via(k))}</div>` : ''}
+      <div class="bus-times" style="padding-top:8px">${k.godziny.map(g => { const {t, c} = split(g), r = runs(c, ref);
         return `<span class="bt${r ? '' : ' off'}${r && r.szkola ? ' sch' : ''}" title="${esc(c)}">${esc(t)}<small>${esc(c)}</small></span>`; }).join('')}</div></div>`).join('');
-    // kafelek: najbliższy autobus do Bolesławca ze wszystkich przystanków
+    // kafelek na Starcie: najbliższy autobus do Bolesławca ze wszystkich przystanków
     let best = null;
     for (const p of B.przystanki) { const u = upcoming(p, d0, 1, 'Bolesławiec')[0]; if (u && (!best || u.d < best.d || (+u.d === +best.d && mins(u.t) < mins(best.t)))) best = u; }
     if (best) { const lab = dayLabel(d0, best.d);
       $('bus-s').textContent = 'do Bolesławca: ' + best.t + (lab === 'dziś' ? '' : ' (' + lab + ')') + ' · ' + best.stop.nazwa.replace('Kruszyn, ', ''); }
     else $('bus-s').textContent = 'rozkład jazdy PKS';
+    $('home-pks').innerHTML = upAll.slice(0, 2).map(u => { const lab = dayLabel(d0, u.d), un = lab === 'dziś' ? until(d0, u.d, u.t) : lab; return `<div class="dep"><b>${esc(u.t)}</b><span>${esc(u.k.kierunek)}</span><em>${esc(un)}</em></div>`; }).join('');
+    if (upAll[0]) { const l0 = dayLabel(d0, upAll[0].d), u0 = l0 === 'dziś' ? until(d0, upAll[0].d, upAll[0].t) : ''; $('pill-pks').textContent = u0; $('pill-pks').hidden = !u0; }
     $('t-bus').hidden = false;
   }
+  $('bus-dirs').addEventListener('click', e => { const b = e.target.closest('button[data-d]'); if (b) { dir = b.dataset.d; draw(); } });
+  $('bus-days').addEventListener('click', e => { const b = e.target.closest('button[data-k]'); if (b) { dt = b.dataset.k; draw(); } });
+  setInterval(() => {                                   // odliczanie na żywo (co sekundę)
+    if (document.hidden) return;
+    const n = Date.now(); let stale = false; $('bus-clock').textContent = new Date().toLocaleTimeString('pl-PL');
+    document.querySelectorAll('#bus-next .cd[data-t]').forEach(e => { const ms = +e.dataset.t - n;
+      if (ms <= -1000) stale = true; else if (ms <= 0) e.textContent = 'teraz';
+      else if (ms < 36e5) e.textContent = 'za ' + Math.floor(ms / 6e4) + ' min ' + pad(Math.floor(ms % 6e4 / 1e3)) + ' s';
+      else e.textContent = 'za ' + Math.floor(ms / 36e5) + ' h ' + pad(Math.floor(ms % 36e5 / 6e4)) + ' min'; });
+    if (stale) draw();
+  }, 1000);
   tabs.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; cur = +b.dataset.i; try { localStorage.setItem('busStop', B.przystanki[cur].id); } catch (_) {} draw(); });
   $('bus-leg').innerHTML = Object.entries(B.legenda || {}).map(([k, v]) => `<li><b>${esc(k)}</b> ${esc(v)}</li>`).join('');
   $('bus-foot').innerHTML = `Rozkład ważny od <b>${esc(plDate(B.wazny_od))}</b>. Wpisany ręcznie z rozkładów przystankowych ${esc(B.operator || 'PKS')}, ostatnia aktualizacja: <b>${esc(plDate(B.zaktualizowano))}</b>. Aplikacja nie pobiera go automatycznie, więc przed ważną podróżą sprawdź aktualny PDF: `
@@ -1330,5 +1380,19 @@ if (/^https?:$/.test(location.protocol)) {
   addEventListener('pageshow', e => { if (e.persisted) back(); });
 })();
 </script>
+<script>
+(function () {
+  const m = $('modal-imgw'), close = () => { m.hidden = true; };
+  window.openImgw = function () { $('imgw-body').innerHTML = $('imgw-list').innerHTML; m.hidden = false; return false; };
+  $('imgw-x').onclick = close; $('imgw-btn').onclick = window.openImgw;
+  m.addEventListener('click', e => { if (e.target === m) close(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  addEventListener('hashchange', close);
+  $('h-date-top').textContent = $('h-date').textContent;
+  $('wk-more').onclick = () => { const g = $('wk-days'); g.classList.toggle('show'); $('wk-more').textContent = g.classList.contains('show') ? 'Ukryj opady' : 'Szczegóły opadów'; };
+  $('ah-wx').addEventListener('click', e => { if (!location.hash || location.hash === '#/' || location.hash === '#') { e.preventDefault(); $('hero').scrollIntoView({behavior: 'smooth'}); } });
+})();
+</script>
+<div class="modal" id="modal-imgw" hidden role="dialog" aria-label="Ostrzeżenia IMGW"><div class="mbox"><h3>Ostrzeżenia IMGW · powiat bolesławiecki</h3><div id="imgw-body"></div><button class="mbtn" id="imgw-x" type="button">Zamknij</button></div></div>
 </body>
 </html>
