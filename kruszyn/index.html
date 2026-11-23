@@ -774,6 +774,7 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
 .pn-row b{display:block}.pn-row small{color:var(--mute)}
 .pn-row input{width:24px;height:24px;flex:none;accent-color:var(--pri)}
 #pn-topics{margin-top:6px}
+#pn-sum{cursor:pointer;font-weight:700;padding:10px 0;list-style-position:inside}
 #pn-home .sub{margin:0 0 10px}
 </style>
 </head>
@@ -918,13 +919,13 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
   <h3>Powiadomienia</h3>
   <p class="sub" id="pn-txt" style="margin:0 0 10px">Sprawdzam, czy ta przeglądarka obsługuje powiadomienia…</p>
   <p style="margin:0 0 12px"><button class="btn" id="pn-on" type="button" hidden>Włącz powiadomienia</button> <button class="call alt" id="pn-off" type="button" style="font:inherit;font-weight:600;cursor:pointer" hidden>Wyłącz powiadomienia</button></p>
-  <div id="pn-topics" hidden>
+  <details id="pn-topics" hidden open><summary id="pn-sum">Tematy powiadomień</summary>
     <label class="pn-row"><span><b>⚠️ Ostrzeżenia IMGW</b><small>Nowe ostrzeżenia dla powiatu</small></span><input type="checkbox" data-tag="imgw"></label>
     <label class="pn-row"><span><b>📅 Wydarzenia</b><small>Nowe wydarzenia we wsi</small></span><input type="checkbox" data-tag="wydarzenia"></label>
     <label class="pn-row"><span><b>⚽ Znicz</b><small>Dzień przed meczem i wynik</small></span><input type="checkbox" data-tag="znicz"></label>
     <label class="pn-row"><span><b>⚡ Prąd</b><small>Awarie i planowane wyłączenia</small></span><input type="checkbox" data-tag="prad"></label>
     <label class="pn-row"><span><b>🗑️ Śmieci</b><small>Wieczorem przed odbiorem</small></span><input type="checkbox" data-tag="smieci"></label>
-  </div>
+  </details>
   <p class="ms-src">Powiadomienia nie przychodzą w nocy (22:00–7:00); wyjątek to groźne ostrzeżenia IMGW i awarie prądu. Usługę zapewnia OneSignal, który zapisuje anonimowy identyfikator urządzenia i wybrane tematy. Nie zbieramy imienia ani numeru telefonu.</p>
 </div>
 <div class="sec ms-card" id="section-telefony">
@@ -1019,7 +1020,7 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
 if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-23", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -1565,9 +1566,9 @@ window.OneSignalDeferred = window.OneSignalDeferred || [];
       : 'Ta przeglądarka nie obsługuje powiadomień. Spróbuj w Chrome lub zainstaluj aplikację.';
     return;
   }
-  let no = false; try { no = localStorage.getItem('kr-pn-no') === '1'; } catch (_) {}
+  let no = false; try { const v = localStorage.getItem('kr-pn-no'); if (v === '1') { localStorage.setItem('kr-pn-no', String(Date.now())); no = true; } else if (v) no = Date.now() - Number(v) < 30 * 864e5; } catch (_) {}   // „Nie teraz” chowa kartę na 30 dni
   const dbg = document.createElement('p'); dbg.className = 'ms-src'; dbg.id = 'pn-dbg'; dbg.style.wordBreak = 'break-word'; dbg.hidden = true; txt.after(dbg);
-  const log = (m, bad) => { dbg.textContent += (dbg.textContent ? ' | ' : 'Diagnostyka: ') + m; if (bad) dbg.hidden = false; };   // widoczna tylko przy błędzie
+  const log = (m, bad) => { dbg.textContent += (dbg.textContent ? ' | ' : 'Diagnostyka: ') + m; if (bad && /[?&]debug=1/.test(location.search)) dbg.hidden = false; };   // widoczna tylko z adresem ?debug=1
   fetch('/OneSignalSDKWorker.js', {cache: 'no-store'}).then(r => log('worker HTTP ' + r.status, r.status !== 200)).catch(() => log('worker: brak połączenia', true));
   addEventListener('error', e => log('błąd: ' + (e.message || '?'), true));
   addEventListener('unhandledrejection', e => log('odrzucone: ' + ((e.reason && (e.reason.message || e.reason)) || '?'), true));
@@ -1585,13 +1586,16 @@ window.OneSignalDeferred = window.OneSignalDeferred || [];
     log('init OK');
     const subscribed = () => OneSignal.Notifications.permission && OneSignal.User.PushSubscription.optedIn;
     const readTags = () => { let t = {}; try { t = JSON.parse(localStorage.getItem('kr-pn-tags') || '{}'); } catch (_) {} return t; };
+    const count = () => { const t = readTags(), n = box.querySelectorAll('input').length, k = TAGS.filter(x => t[x] === '1').length; $('pn-sum').textContent = `Tematy powiadomień (wybrano ${k} z ${n})`; };
+    try { if (localStorage.getItem('kr-pn-open') === '0') box.open = false; } catch (_) {}
+    box.addEventListener('toggle', () => { try { localStorage.setItem('kr-pn-open', box.open ? '1' : '0'); } catch (_) {} });
     const render = () => {
       const sub = !!subscribed(), denied = Notification.permission === 'denied';
       on.hidden = sub || denied; off.hidden = !sub; box.hidden = !sub;
       txt.textContent = denied ? 'Powiadomienia są zablokowane w ustawieniach przeglądarki. Odblokuj je dla tej strony, aby je włączyć.'
         : sub ? 'Powiadomienia są włączone. Zaznacz, o czym chcesz być informowany.'
         : 'Włącz powiadomienia i wybierz tematy. Domyślnie żadne nie jest zaznaczone.';
-      const t = readTags(); box.querySelectorAll('input').forEach(i => { i.checked = t[i.dataset.tag] === '1'; });
+      const t = readTags(); box.querySelectorAll('input').forEach(i => { i.checked = t[i.dataset.tag] === '1'; }); count();
       home.hidden = sub || denied || no || location.hash.indexOf('powiadomienia') > -1;
     };
     on.onclick = async () => {
@@ -1610,8 +1614,9 @@ window.OneSignalDeferred = window.OneSignalDeferred || [];
       const i = e.target, t = readTags(); t[i.dataset.tag] = i.checked ? '1' : '0';
       try { localStorage.setItem('kr-pn-tags', JSON.stringify(t)); } catch (_) {}
       try { OneSignal.User.addTags({[i.dataset.tag]: t[i.dataset.tag]}); } catch (_) {}
+      count();
     });
-    $('pn-no').onclick = () => { no = true; try { localStorage.setItem('kr-pn-no', '1'); } catch (_) {} render(); };
+    $('pn-no').onclick = () => { no = true; try { localStorage.setItem('kr-pn-no', String(Date.now())); } catch (_) {} render(); };
     OneSignal.User.PushSubscription.addEventListener('change', render);
     addEventListener('hashchange', render);
     render();
