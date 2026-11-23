@@ -7,6 +7,11 @@ on:
     - cron: "17 3,9,15,21 * * *"   # śmieci + prąd, godziny w UTC
     - cron: "7 * * * *"            # co godzinę: tylko prąd
   workflow_dispatch:
+    inputs:
+      test_push:
+        description: "Wyślij testowe powiadomienie push (do osób z tagiem imgw=1)"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths-ignore: ["**/README.md"]
@@ -87,8 +92,10 @@ jobs:
         continue-on-error: true
         env:
           ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
-          PUSH_DRY_RUN: "0"   # "1" = tryb próbny (tylko log), "0" = prawdziwa wysyłka
-        run: python scripts/powiadomienia.py
+          PUSH_TEST: ${{ github.event.inputs.test_push }}
+          PUSH_DRY_RUN: "1"   # "1" = tryb próbny (tylko log), "0" = prawdziwa wysyłka
+        run: |
+          if [ "$PUSH_TEST" = "true" ]; then python scripts/powiadomienia.py --test; else python scripts/powiadomienia.py; fi
 
       - name: Zbuduj kalendarz .ics
         run: python scripts/make_ics.py
