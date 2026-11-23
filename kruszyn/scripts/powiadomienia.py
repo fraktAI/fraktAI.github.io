@@ -4,6 +4,7 @@
 
 Użycie (z folderu kruszyn):
   python3 scripts/powiadomienia.py             # normalny przebieg
+  python3 scripts/powiadomienia.py --test      # jednorazowy test do osób z tagiem imgw=1
   python3 scripts/powiadomienia.py --selftest
 
 Zmienne środowiskowe:
@@ -66,6 +67,10 @@ def message(it):
 def send(it, api_key):
     """Wysyła do osób z tagiem imgw=1. Zwraca odpowiedź API; przy błędzie rzuca wyjątek."""
     title, body = message(it)
+    return push(title, body, str(uuid.uuid5(uuid.NAMESPACE_URL, key(it))), api_key)
+
+
+def push(title, body, idem, api_key):
     payload = {
         "app_id": APP_ID,
         "target_channel": "push",
@@ -74,7 +79,7 @@ def send(it, api_key):
         "contents": {"en": body, "pl": body},
         "url": SITE + "#/pogoda",
         "ttl": 43200,
-        "idempotency_key": str(uuid.uuid5(uuid.NAMESPACE_URL, key(it))),
+        "idempotency_key": idem,
     }
     req = urllib.request.Request(API, data=json.dumps(payload).encode("utf-8"), method="POST", headers={
         "Authorization": "Key " + api_key, "Content-Type": "application/json; charset=utf-8", "Accept": "application/json"})
@@ -148,6 +153,16 @@ def selftest():
 def main():
     if "--selftest" in sys.argv:
         return selftest()
+    if "--test" in sys.argv:        # jednorazowy test: nic nie zapisuje w pamięci wysłanych
+        api_key = os.environ.get("ONESIGNAL_API_KEY", "")
+        if not api_key:
+            raise SystemExit("Brak ONESIGNAL_API_KEY (sekret GitHuba).")
+        res = push("🔔 Test powiadomień", "Jeśli to widzisz, powiadomienia z aplikacji Mój Kruszyn działają.",
+                   str(uuid.uuid4()), api_key)
+        print("Wysłano test do osób z tagiem imgw=1:", json.dumps(res, ensure_ascii=False)[:300])
+        if not res.get("id"):
+            raise SystemExit("OneSignal nie przyjął powiadomienia (brak id, zapewne brak subskrybentów z tagiem imgw=1).")
+        return
     dry = os.environ.get("PUSH_DRY_RUN") == "1"
     api_key = os.environ.get("ONESIGNAL_API_KEY", "")
     if not api_key and not dry:
