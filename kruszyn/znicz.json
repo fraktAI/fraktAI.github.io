@@ -231,6 +231,15 @@
    "rezultat": "W"
   }
  ],
- "najblizsze": [],
- "bez_terminu": 13
+"najblizsze": [
+    {
+      "data": "2026-11-29",
+      "godz": "11:00",
+      "rozgrywki": "Klasa B",
+      "gospodarz": "Bóbr Dąbrowa Bolesławiecka",
+      "gosc": "Znicz Kruszyn",
+      "wynik": null
+    }
+  ],
+  "bez_terminu": 2
 }
