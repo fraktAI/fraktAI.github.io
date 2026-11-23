@@ -769,6 +769,13 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
   .grid .day:not(.empty):hover{border-color:color-mix(in srgb,var(--pri) 40%,transparent)}
 }
 </style>
+<style>
+.pn-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.pn-row b{display:block}.pn-row small{color:var(--mute)}
+.pn-row input{width:24px;height:24px;flex:none;accent-color:var(--pri)}
+#pn-topics{margin-top:6px}
+#pn-home .sub{margin:0 0 10px}
+</style>
 </head>
 <body>
 <header class="top" id="top">
@@ -839,11 +846,16 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
     <p class="sub" id="inst-txt" style="margin:0 0 10px"></p>
     <p style="margin:0 0 12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="inst-btn" type="button" hidden>Zainstaluj aplikację</button><button class="call alt" id="inst-no" type="button" style="font:inherit;font-weight:600;cursor:pointer">Nie teraz</button></p>
   </div>
+  <div class="card" id="pn-home" hidden>
+    <h3>Powiadomienia</h3>
+    <p class="sub">Ostrzeżenia pogodowe, wywóz śmieci, awarie prądu i wydarzenia. Wybierzesz tylko to, co chcesz.</p>
+    <p style="margin:0 0 12px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="#/powiadomienia">Włącz powiadomienia</a><button class="call alt" id="pn-no" type="button" style="font:inherit;font-weight:600;cursor:pointer">Nie teraz</button></p>
+  </div>
 </section>
 
 <section class="view" id="v-wiecej" hidden>
   <div class="chips" id="more-chips">
-    <a href="#/msze">⛪ Msze</a><a href="#/prad">⚡ Prąd</a><a href="#/znicz" data-znicz hidden>⚽ Znicz</a><a href="#/apteki">💊 Apteka</a><a href="#/pszok">♻️ PSZOK</a><a href="#/telefony">📞 Telefony</a><a href="#/pogoda">🌦️ Pogoda</a>
+    <a href="#/msze">⛪ Msze</a><a href="#/prad">⚡ Prąd</a><a href="#/znicz" data-znicz hidden>⚽ Znicz</a><a href="#/apteki">💊 Apteka</a><a href="#/pszok">♻️ PSZOK</a><a href="#/telefony">📞 Telefony</a><a href="#/powiadomienia">🔔 Powiadomienia</a><a href="#/pogoda">🌦️ Pogoda</a>
   </div>
 <div class="sec ms-card" id="section-msze">
   <div class="ms-head"><span class="ic">⛪</span><div><h2>Msze święte i intencje</h2><p>Parafia pw. św. Jana Chrzciciela w Kruszynie</p></div></div>
@@ -901,6 +913,19 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
   <p class="ps-text" id="ps-mob"></p>
   <p style="margin:0 0 4px"><a class="ph-btn" href="#/smieci">Zobacz terminy</a></p>
   <p class="foot" id="ps-foot"></p>
+</div>
+<div class="card" id="section-powiadomienia">
+  <h3>Powiadomienia</h3>
+  <p class="sub" id="pn-txt" style="margin:0 0 10px">Sprawdzam, czy ta przeglądarka obsługuje powiadomienia…</p>
+  <p style="margin:0 0 12px"><button class="btn" id="pn-on" type="button" hidden>Włącz powiadomienia</button> <button class="call alt" id="pn-off" type="button" style="font:inherit;font-weight:600;cursor:pointer" hidden>Wyłącz powiadomienia</button></p>
+  <div id="pn-topics" hidden>
+    <label class="pn-row"><span><b>⚠️ Ostrzeżenia IMGW</b><small>Nowe ostrzeżenia dla powiatu</small></span><input type="checkbox" data-tag="imgw"></label>
+    <label class="pn-row"><span><b>📅 Wydarzenia</b><small>Nowe wydarzenia we wsi</small></span><input type="checkbox" data-tag="wydarzenia"></label>
+    <label class="pn-row"><span><b>⚽ Znicz</b><small>Dzień przed meczem i wynik</small></span><input type="checkbox" data-tag="znicz"></label>
+    <label class="pn-row"><span><b>⚡ Prąd</b><small>Awarie i planowane wyłączenia</small></span><input type="checkbox" data-tag="prad"></label>
+    <label class="pn-row"><span><b>🗑️ Śmieci</b><small>Wieczorem przed odbiorem</small></span><input type="checkbox" data-tag="smieci"></label>
+  </div>
+  <p class="ms-src">Powiadomienia nie przychodzą w nocy (22:00–7:00); wyjątek to groźne ostrzeżenia IMGW i awarie prądu. Usługę zapewnia OneSignal, który zapisuje anonimowy identyfikator urządzenia i wybrane tematy. Nie zbieramy imienia ani numeru telefonu.</p>
 </div>
 <div class="sec ms-card" id="section-telefony">
   <div class="ms-head"><span class="ic">📞</span><div class="grow"><h2>Ważne telefony</h2><p>Alarmowe, awarie i nasza wieś</p></div></div>
@@ -994,7 +1019,7 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
 if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-23", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -1019,11 +1044,11 @@ const bag = id => `<svg class="bag" viewBox="0 0 24 24" ${col(id)} aria-hidden="
 const VIEWS = ['home', 'pogoda', 'smieci', 'wydarzenia', 'autobusy', 'wiecej'];
 function route() {
   const h = (location.hash || '').replace(/^#\/?/, '');
-  const SEC = {msze: 'section-msze', prad: 'section-tauron', znicz: 'section-znicz', apteki: 'section-apteka', pszok: 'section-pszok', telefony: 'section-telefony'};
+  const SEC = {msze: 'section-msze', prad: 'section-tauron', znicz: 'section-znicz', apteki: 'section-apteka', pszok: 'section-pszok', telefony: 'section-telefony', powiadomienia: 'section-powiadomienia'};
   const v = SEC[h] ? 'wiecej' : VIEWS.includes(h) ? h : 'home';
   VIEWS.forEach(x => { $('v-' + x).hidden = x !== v; });
   const NAVKEY = {home: 'home', pogoda: 'home', smieci: 'smieci', autobusy: 'autobusy', wydarzenia: 'wydarzenia',
-    wiecej: 'wiecej', apteki: 'wiecej', pszok: 'wiecej', msze: 'wiecej', znicz: 'wiecej', prad: 'wiecej', telefony: 'wiecej'}[v];
+    wiecej: 'wiecej', apteki: 'wiecej', pszok: 'wiecej', msze: 'wiecej', znicz: 'wiecej', prad: 'wiecej', telefony: 'wiecej', powiadomienia: 'wiecej'}[v];
   document.querySelectorAll('#pills a').forEach(a => a.classList.toggle('on', a.dataset.r === (SEC[h] ? h : v)));
   document.querySelectorAll('#bnav a').forEach(a => {
     const on = a.dataset.nav === NAVKEY; a.classList.toggle('on', on);
@@ -1523,6 +1548,62 @@ function renderPszok(P) {
     $('zn-tab-card').hidden = false;
   }
   $('zn-foot').innerHTML = `Źródło: <a href="${esc(w.source || 'https://regiowyniki.pl')}">regiowyniki.pl</a>${w.updated ? ', stan na ' + esc(stamp(new Date(w.updated))) : ''}.`;
+})();
+
+// ---------- POWIADOMIENIA PUSH (OneSignal) ----------
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+(function () {
+  const APP_ID = 'ff8708b2-789c-4754-9d47-405cb7f08145';
+  const TAGS = ['imgw', 'wydarzenia', 'znicz', 'prad', 'smieci'];
+  const txt = $('pn-txt'), on = $('pn-on'), off = $('pn-off'), box = $('pn-topics'), home = $('pn-home');
+  const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const ok = /^https?:$/.test(location.protocol) && 'serviceWorker' in navigator && 'Notification' in window && 'PushManager' in window;
+  if (!ok) {
+    txt.textContent = ios && !standalone
+      ? 'Na iPhonie powiadomienia działają po dodaniu aplikacji do ekranu początkowego (iOS 16.4 lub nowszy). W Safari kliknij Udostępnij, wybierz „Do ekranu początkowego”, otwórz aplikację z ikony i wróć tutaj.'
+      : 'Ta przeglądarka nie obsługuje powiadomień. Spróbuj w Chrome lub zainstaluj aplikację.';
+    return;
+  }
+  let no = false; try { no = localStorage.getItem('kr-pn-no') === '1'; } catch (_) {}
+  const s = document.createElement('script');
+  s.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js'; s.defer = true; document.head.appendChild(s);
+  OneSignalDeferred.push(async function (OneSignal) {
+    try {
+      await OneSignal.init({
+        appId: APP_ID,
+        serviceWorkerPath: '/kruszyn/push/OneSignalSDKWorker.js',        // osobny worker, żeby nie kolidował z sw.js
+        serviceWorkerParam: {scope: '/kruszyn/push/'},
+        notifyButton: {enable: false},
+        allowLocalhostAsSecureOrigin: true
+      });
+    } catch (_) { txt.textContent = 'Nie udało się uruchomić powiadomień. Spróbuj później.'; return; }
+    const subscribed = () => OneSignal.Notifications.permission && OneSignal.User.PushSubscription.optedIn;
+    const readTags = () => { let t = {}; try { t = JSON.parse(localStorage.getItem('kr-pn-tags') || '{}'); } catch (_) {} return t; };
+    const render = () => {
+      const sub = !!subscribed(), denied = Notification.permission === 'denied';
+      on.hidden = sub || denied; off.hidden = !sub; box.hidden = !sub;
+      txt.textContent = denied ? 'Powiadomienia są zablokowane w ustawieniach przeglądarki. Odblokuj je dla tej strony, aby je włączyć.'
+        : sub ? 'Powiadomienia są włączone. Zaznacz, o czym chcesz być informowany.'
+        : 'Włącz powiadomienia i wybierz tematy. Domyślnie żadne nie jest zaznaczone.';
+      const t = readTags(); box.querySelectorAll('input').forEach(i => { i.checked = t[i.dataset.tag] === '1'; });
+      home.hidden = sub || denied || no || location.hash.indexOf('powiadomienia') > -1;
+    };
+    on.onclick = async () => {
+      try { await OneSignal.Notifications.requestPermission(); if (Notification.permission === 'granted') await OneSignal.User.PushSubscription.optIn(); } catch (_) {}
+      render();
+    };
+    off.onclick = async () => { try { await OneSignal.User.PushSubscription.optOut(); } catch (_) {} render(); };
+    box.addEventListener('change', e => {
+      const i = e.target, t = readTags(); t[i.dataset.tag] = i.checked ? '1' : '0';
+      try { localStorage.setItem('kr-pn-tags', JSON.stringify(t)); } catch (_) {}
+      try { OneSignal.User.addTags({[i.dataset.tag]: t[i.dataset.tag]}); } catch (_) {}
+    });
+    $('pn-no').onclick = () => { no = true; try { localStorage.setItem('kr-pn-no', '1'); } catch (_) {} render(); };
+    OneSignal.User.PushSubscription.addEventListener('change', render);
+    addEventListener('hashchange', render);
+    render();
+  });
 })();
 
 // ---------- INSTALACJA JAKO APLIKACJA (PWA) i praca offline ----------
