@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T07:16:03+00:00",
+ "updated": "2026-11-23T07:28:23+00:00",
  "source": "https://regiowyniki.pl/druzyna/Pilka_Nozna/Dolnoslaskie/Znicz_Kruszyn/",
  "source_table": "https://regiowyniki.pl/druzyna/Pilka_Nozna/Dolnoslaskie/Znicz_Kruszyn/tabela/",
  "druzyna": "Znicz Kruszyn",
@@ -231,15 +231,6 @@
    "rezultat": "W"
   }
  ],
-"najblizsze": [
-    {
-      "data": "2026-11-29",
-      "godz": "11:00",
-      "rozgrywki": "Klasa B",
-      "gospodarz": "Bóbr Dąbrowa Bolesławiecka",
-      "gosc": "Znicz Kruszyn",
-      "wynik": null
-    }
-  ],
-  "bez_terminu": 2
+ "najblizsze": [],
+ "bez_terminu": 13
 }
