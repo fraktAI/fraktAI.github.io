@@ -93,7 +93,7 @@ jobs:
         env:
           ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
           PUSH_TEST: ${{ github.event.inputs.test_push }}
-          PUSH_DRY_RUN: "1"   # "0" = tryb próbny (tylko log), "0" = prawdziwa wysyłka
+          PUSH_DRY_RUN: "0"   # "1" = tryb próbny (tylko log), "0" = prawdziwa wysyłka
         run: |
           if [ "$PUSH_TEST" = "true" ]; then python scripts/powiadomienia.py --test; else python scripts/powiadomienia.py; fi
 
