@@ -180,7 +180,6 @@ a:focus-visible, button:focus-visible{outline:3px solid var(--accent);outline-of
 .apt24{background:var(--card);border:1.5px solid color-mix(in srgb,var(--pri) 45%,var(--line));border-radius:var(--r);padding:18px;margin-top:14px;box-shadow:var(--shadow)}
 .apt24 .badge{display:inline-block;background:var(--pri);color:var(--onpri);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:4px 12px}
 .apt24 h3{margin:10px 0 2px;font-size:22px;text-transform:none;letter-spacing:0;color:var(--ink)}
-.apt24 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 details summary{cursor:pointer;font-weight:700;font-size:17px;padding:6px 0 10px;list-style:none}
 details summary::-webkit-details-marker{display:none}
 details summary::after{content:"＋";float:right;color:var(--accent)}
@@ -190,14 +189,6 @@ details[open] summary::after{content:"－"}
 .res{flex:none;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;font-weight:700;font-size:14px;color:#fff;background:#8a8f98}
 .res.w{background:#2f9e6e}
 .res.p{background:#d4284a}
-.tbl{width:100%;border-collapse:collapse;font-size:15px}
-.tbl th{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);text-align:right;padding:4px 6px}
-.tbl th:nth-child(2), .tbl td:nth-child(2){text-align:left}
-.tbl td{padding:9px 6px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
-.tbl td:nth-child(2){white-space:normal}
-.tbl tr.me td{background:color-mix(in srgb,var(--pri) 14%,var(--card));font-weight:700}
-.tbl tr.me td:first-child{border-radius:10px 0 0 10px}
-.tbl tr.me td:last-child{border-radius:0 10px 10px 0}
 .dbadge{flex:none;width:54px;border-radius:16px;background:color-mix(in srgb,var(--pri) 12%,var(--card));text-align:center;padding:7px 0;line-height:1.1}
 .dbadge b{display:block;font-size:21px}
 .dbadge span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
@@ -278,8 +269,6 @@ details[open] summary::after{content:"−"}
 .sch-badge{display:inline-block;margin-top:5px;padding:2px 10px;border-radius:999px;background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber-ink);font-size:12px;font-weight:600;line-height:1.5}
 .frm{flex-wrap:wrap;align-items:center}
 .frm em{flex:0 0 100%;font-style:normal;font-size:12.5px;font-weight:500;opacity:.9;margin-bottom:1px}
-.row.btns{flex-wrap:wrap;gap:10px}
-.row.btns .call{flex:1 1 140px}
 .call{max-width:100%}
 .evt-t b{font-size:16px}
 .evt summary{gap:10px}
@@ -417,15 +406,11 @@ body{font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",Ro
 .seg2 button{border:0;border-radius:12px;padding:9px;font:inherit;font-size:12.5px;font-weight:700;background:transparent;color:var(--mute);cursor:pointer}
 .seg2 button[aria-pressed=true]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
 .evt{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);margin-bottom:12px;padding:12px}
-.sech{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800;margin:22px 2px 10px}
-.sech .ic{width:34px;height:34px;border-radius:12px;background:var(--tile);display:grid;place-items:center;font-size:17px;flex:none}
 .sec{scroll-margin-top:130px}
 .sec[hidden]{display:none}
 #more-chips{margin-top:2px}
 .chips a{flex:none;border-radius:12px;padding:8px 12px;font-size:12px;font-weight:700;background:var(--tile);color:var(--ink);text-decoration:none}
 .chips a[hidden]{display:none}
-
-/* ===== Msze święte i intencje (wg wzorca) ===== */
 .ms-card{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:16px;margin:6px 0 14px}
 .ms-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .ms-head .ic{width:36px;height:36px;border-radius:16px;background:#fffbeb;color:#b45309;display:grid;place-items:center;font-size:18px;flex:none}
@@ -442,13 +427,118 @@ body{font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",Ro
 .ms-day{background:var(--inner);border:1px solid var(--line);border-radius:18px;padding:10px 12px;margin-bottom:8px;font-size:12.5px}
 .ms-hl{background:rgba(236,253,245,.7);border-color:#a7f3d0}
 .ms-dh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
-.ms-d{font-weight:800}.ms-hl .ms-d{color:#065f46}
+.ms-d{font-weight:800}
+.ms-hl .ms-d{color:#065f46}
 .ms-cap{font-size:10px;font-weight:700;background:#15803d;color:#fff;padding:2px 8px;border-radius:999px}
 .ms-i{margin:3px 0 0;line-height:1.45}
-.ms-empty,.ms-src{font-size:12px;color:var(--mute);line-height:1.5;margin:8px 0 0}
+.ms-empty, .ms-src{font-size:12px;color:var(--mute);line-height:1.5;margin:8px 0 0}
 :root[data-theme="dark"] .ms-hl{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.35)}
 :root[data-theme="dark"] .ms-hl .ms-d{color:#6ee7b7}
 :root[data-theme="dark"] .ms-head .ic{background:rgba(245,158,11,.15);color:#fbbf24}
+.zn-head .grow{flex:1;min-width:0}
+.zn-head .ic{background:#f0fdf4;color:#15803d}
+.zn-pos{font-size:12px;font-weight:800;color:#15803d;background:#f0fdf4;padding:4px 10px;border-radius:999px;flex:none}
+.zn-next, .zn-idle{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;border-radius:18px;padding:14px;margin-bottom:14px}
+.zn-top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;color:#cbd5e1;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
+.zn-pill{background:#16a34a;color:#fff;font-weight:700;padding:2px 8px;border-radius:999px;text-transform:none;letter-spacing:0;flex:none}
+.zn-pill.away{background:#d97706}
+.zn-vs{display:flex;align-items:center;text-align:center;gap:6px;margin:6px 0}
+.zn-vs>div{flex:1;min-width:0}
+.zn-vs .n{margin:0;font-size:13px;font-weight:800;overflow-wrap:anywhere}
+.zn-vs .r{margin:0;font-size:10px;color:#94a3b8}
+.zn-vs .v{font-size:14px;font-weight:800;background:rgba(255,255,255,.1);padding:4px 12px;border-radius:12px}
+.zn-when{margin:8px 0 0;text-align:center;font-size:11.5px;font-weight:600;color:#fcd34d}
+.zn-idle{display:flex;gap:12px;align-items:center}
+.zn-idle[hidden]{display:none}
+.zn-idle .i{font-size:24px}
+.zn-idle b{display:block;font-size:13px;margin-bottom:2px}
+.zn-idle span{font-size:12px;color:#cbd5e1;line-height:1.45}
+.zr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--inner);border-radius:14px;padding:9px 12px;margin-bottom:6px}
+.zr-t{min-width:0}
+.zr-m{font-size:12.5px;font-weight:500;overflow-wrap:anywhere}
+.zr-m strong{font-weight:800}
+.zr-s{font-size:11px;color:var(--mute);margin-top:2px}
+.zr-r{display:flex;align-items:center;gap:8px;flex:none}
+.zr-r b{font-size:13px;font-weight:800;white-space:nowrap}
+.zr-b{width:20px;height:20px;border-radius:6px;color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center;background:#059669}
+.zr-b.r{background:#f59e0b}
+.zr-b.p{background:#dc2626}
+#zn-last-card{margin-bottom:14px}
+.zn-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px}
+.zn-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.zn-tbl th{background:var(--tile);color:var(--mute);font-size:10px;text-transform:uppercase;padding:8px;text-align:left}
+.zn-tbl td{padding:8px;border-top:1px solid var(--line)}
+.zn-tbl th:nth-child(n+3), .zn-tbl td:nth-child(n+3){text-align:center}
+.zn-tbl td:nth-child(2){font-weight:600}
+.zn-tbl td:nth-child(4){font-weight:800}
+.zn-tbl tr.me td{background:rgba(236,253,245,.9);font-weight:800;color:#065f46}
+:root[data-theme="dark"] .zn-head .ic, :root[data-theme="dark"] .zn-pos{background:rgba(16,185,129,.15);color:#6ee7b7}
+:root[data-theme="dark"] .zn-tbl tr.me td{background:rgba(16,185,129,.14);color:#6ee7b7}
+.ms-head .grow{flex:1;min-width:0}
+.ms-head .ic.rose{background:#fff1f2;color:#e11d48}
+.ms-head .ic.grn{background:#f0fdf4;color:#15803d}
+.pcap{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;flex:none;background:#ecfdf5;color:#047857}
+.pcap.open{background:#d1fae5;color:#065f46}
+.pcap.warn{background:#fef3c7;color:#92400e}
+.pcap.bad, .pcap.closed{background:#fee2e2;color:#b91c1c}
+.pcap:empty, .pcap[hidden]{display:none}
+.pw-box{padding:12px;border-radius:16px;font-size:12.5px;font-weight:500;line-height:1.45;margin-bottom:12px;background:rgba(236,253,245,.7);border:1px solid #a7f3d0;color:#065f46}
+.pw-box.bad{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+.pw{padding:12px;border-radius:16px;margin-bottom:8px;border:1px solid #fde68a;background:rgba(255,251,235,.8)}
+.pw.bad{border-color:#fecaca;background:#fef2f2}
+.pw-h{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.pw-d{font-size:12.5px;font-weight:800;color:#78350f}
+.pw.bad .pw-d{color:#991b1b}
+.pw-d small{font-weight:500;color:var(--mute)}
+.pw-t{font-size:11px;font-weight:700;background:rgba(253,230,138,.8);color:#451a03;padding:2px 8px;border-radius:8px}
+.pw.bad .pw-t{background:#fecaca;color:#7f1d1d}
+.pw-b{margin:6px 0 0;font-size:12.5px;line-height:1.5}
+.pl-r, .ph-r{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.pl-r:first-child, .ph-g>.ph-r:first-of-type, #aptlist>.ph-r:first-child{border-top:0}
+.ph-t{min-width:0;flex:1}
+.ph-n{font-size:12.5px;font-weight:800}
+.ph-n.sos{color:#be123c}
+.ph-s{font-size:11px;color:var(--mute);margin-top:2px}
+.ph-btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;flex:none;border-radius:12px;padding:8px 12px;background:#f0fdf4;color:#166534;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}
+.ph-btn.alt{background:var(--tile);color:var(--ink)}
+.ph-btn.sos{background:#e11d48;color:#fff;font-weight:800}
+.pw-sos{display:flex;align-items:center;gap:10px;padding:12px;border-radius:16px;background:#fef2f2;border:1px solid #fecaca;text-decoration:none;color:inherit;margin-top:6px}
+.pw-sos b{display:block;font-size:12.5px;color:#9f1239}
+.pw-sos small{display:block;font-size:11px;color:var(--mute)}
+.pw-sos .dot{font-size:18px}
+.ps-text{margin:0 0 10px;font-size:12.5px;line-height:1.6;color:var(--mute)}
+.ap-box{background:var(--inner);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:8px}
+.ap-btns, .ps-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#apt24, #phones{margin:0;column-count:1}
+.ps-loc{background:var(--inner);border:1px solid var(--line);border-radius:16px;padding:12px}
+.ps-adr{margin:0;font-size:12.5px;font-weight:800}
+.ps-op{margin:3px 0 0;font-size:11.5px;color:var(--mute)}
+.ps-tel2{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0 14px;font-size:12px;color:var(--mute)}
+.ps-btns{margin-bottom:12px}
+.ps-hours{margin-bottom:14px}
+.ps-h{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:12px;font-size:12.5px;text-transform:capitalize}
+.ps-h b{text-transform:none}
+.ps-h em{font-style:normal;color:var(--mute);font-weight:400}
+.ps-h.now{background:rgba(236,253,245,.9);color:#065f46;font-weight:800}
+.ps-list{margin:0 0 12px;padding-left:18px;font-size:12.5px;line-height:1.55}
+.ps-det{background:var(--inner);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;font-size:12.5px}
+.ps-det summary{font-weight:700;cursor:pointer}
+.ps-det .ps-list{margin:8px 0 0}
+.ph-g{margin-bottom:12px}
+:root[data-theme="dark"] .pw-box{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.35);color:#6ee7b7}
+:root[data-theme="dark"] .pw-box.bad, :root[data-theme="dark"] .pw.bad, :root[data-theme="dark"] .pw-sos{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:#fca5a5}
+:root[data-theme="dark"] .pw{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)}
+:root[data-theme="dark"] .pw-d{color:#fcd34d}
+:root[data-theme="dark"] .pw.bad .pw-d, :root[data-theme="dark"] .pw-sos b, :root[data-theme="dark"] .ph-n.sos{color:#fca5a5}
+:root[data-theme="dark"] .pw-t{background:rgba(245,158,11,.25);color:#fde68a}
+:root[data-theme="dark"] .ph-btn{background:rgba(16,185,129,.15);color:#6ee7b7}
+:root[data-theme="dark"] .ph-btn.alt{background:var(--tile);color:var(--ink)}
+:root[data-theme="dark"] .ph-btn.sos{background:#e11d48;color:#fff}
+:root[data-theme="dark"] .ps-h.now{background:rgba(16,185,129,.14);color:#6ee7b7}
+:root[data-theme="dark"] .pcap{background:rgba(16,185,129,.15);color:#6ee7b7}
+:root[data-theme="dark"] .pcap.warn{background:rgba(245,158,11,.2);color:#fcd34d}
+:root[data-theme="dark"] .pcap.bad, :root[data-theme="dark"] .pcap.closed{background:rgba(239,68,68,.18);color:#fca5a5}
+:root[data-theme="dark"] .ms-head .ic.rose{background:rgba(244,63,94,.15);color:#fda4af}
 </style>
 </head>
 <body>
@@ -540,44 +630,52 @@ body{font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",Ro
   <div id="int-card"><div id="int-list"><p class="ms-empty">Intencje na bieżący tydzień pojawią się po opublikowaniu ogłoszeń parafialnych.</p></div></div>
   <p class="foot">Źródło: <a href="https://kruszyn.com/porzadek-nabozenstw/">kruszyn.com</a> · <a href="https://kruszyn.com/ogloszenia-parafialne/">intencje mszalne</a><br>W święta i uroczystości godziny mogą się różnić – sprawdź ogłoszenia parafialne lub zadzwoń: <a href="tel:757321414">75 732 14 14</a>.</p>
 </div>
-<div class="sec" id="section-tauron"><h2 class="sech"><span class="ic">⚡</span>Prąd – Tauron</h2>
-<div class="card">
-    <h3>Zgłoszone w Kruszynie</h3>
-    <div id="prad-list"></div>
+<div class="sec ms-card" id="section-tauron">
+  <div class="ms-head"><span class="ic">⚡</span><div class="grow"><h2>Prąd – Tauron Dystrybucja</h2><p>Obszar: Kruszyn (gm. Bolesławiec)</p></div><span class="pcap" id="prad-cap"></span></div>
+  <div class="pw-box" id="prad-box">Ładuję dane o awariach i wyłączeniach…</div>
+  <div id="prad-list"></div>
+  <p class="ms-lab" style="margin-top:14px">Sprawdź na Tauron Dystrybucja</p>
+  <div class="pl-rows">
+    <div class="pl-r"><div class="ph-t"><div class="ph-n">Awarie i planowane wyłączenia</div><div class="ph-s">wpisz miejscowość, ulicę i numer</div></div><a class="ph-btn" href="https://www.tauron-dystrybucja.pl/wylaczenia">Otwórz</a></div>
+    <div class="pl-r"><div class="ph-t"><div class="ph-n">Powiadomienia SMS / e-mail</div><div class="ph-s">Tauron wyśle info o wyłączeniu pod Twój adres</div></div><a class="ph-btn alt" href="https://www.tauron-dystrybucja.pl/powiadomienia">Zapisz się</a></div>
   </div>
-  <div class="card">
-    <h3>Sprawdź na Tauron Dystrybucja</h3>
-    <div class="row"><div class="grow"><div class="name">Awarie i planowane wyłączenia</div><div class="sub">wpisz miejscowość, ulicę i numer</div></div><a class="call" href="https://www.tauron-dystrybucja.pl/wylaczenia">Otwórz</a></div>
-    <div class="row"><div class="grow"><div class="name">Powiadomienia SMS / e-mail</div><div class="sub">Tauron wyśle info o wyłączeniu pod Twój adres</div></div><a class="call alt" href="https://www.tauron-dystrybucja.pl/powiadomienia">Zapisz się</a></div>
-    <div class="row sos"><span class="dot"></span><div class="grow"><div class="name">Pogotowie energetyczne</div><div class="sub">awaria, zerwany przewód, zagrożenie</div></div><a class="call" href="tel:991">991</a></div>
-  </div>
-  <div class="card"><h3>Gdy zabraknie prądu</h3><div class="sub" style="padding-bottom:10px;line-height:1.6">Sprawdź bezpieczniki w domu i czy prąd mają sąsiedzi. Jeśli nie, zgłoś awarię pod 991. Nie zbliżaj się do zerwanych przewodów.</div></div>
+  <a class="pw-sos" href="tel:991"><span class="dot">☎️</span><span class="ph-t"><b>Pogotowie energetyczne</b><small>awaria, zerwany przewód, zagrożenie</small></span><span class="ph-btn sos">991</span></a>
+  <p class="ms-lab" style="margin-top:14px">Gdy zabraknie prądu</p>
+  <p class="ps-text">Sprawdź bezpieczniki w domu i czy prąd mają sąsiedzi. Jeśli nie, zgłoś awarię pod 991. Nie zbliżaj się do zerwanych przewodów.</p>
   <p class="foot" id="prad-foot">Wiążące informacje: <a href="https://www.tauron-dystrybucja.pl/wylaczenia">tauron-dystrybucja.pl</a>.</p>
 </div>
-<div class="sec" id="section-znicz" data-znicz hidden><h2 class="sech"><span class="ic">⚽</span>Znicz Kruszyn</h2>
-<div class="banner" id="zn-banner" hidden></div>
-  <div class="card" id="zn-next-card" hidden><h3>Najbliższe mecze</h3><div id="zn-next"></div></div>
-  <div class="card" id="zn-last-card" hidden><h3>Ostatnie mecze</h3><div id="zn-last"></div></div>
-  <div class="card" id="zn-tab-card" hidden><h3 id="zn-tab-h">Tabela</h3><div style="overflow-x:auto"><table class="tbl" id="zn-tab"></table></div><p class="sub" id="zn-tab-note" style="margin:6px 0 10px"></p></div>
+<div class="sec ms-card" id="section-znicz" data-znicz hidden>
+  <div class="ms-head zn-head"><span class="ic">⚽</span><div class="grow"><h2 id="zn-name">Znicz Kruszyn</h2><p id="zn-sub"></p></div><span class="zn-pos" id="zn-pos" hidden></span></div>
+  <div class="zn-idle" id="zn-banner" hidden></div>
+  <div id="zn-next-card" hidden><div id="zn-next"></div></div>
+  <div id="zn-last-card" hidden><p class="ms-lab">Ostatnie wyniki</p><div id="zn-last"></div></div>
+  <div id="zn-tab-card" hidden><p class="ms-lab" id="zn-tab-h">Tabela</p><div class="zn-wrap"><table class="zn-tbl" id="zn-tab"></table></div><p class="ms-src" id="zn-tab-note"></p></div>
   <p class="foot" id="zn-foot"></p>
 </div>
-<div class="sec" id="section-apteka"><h2 class="sech"><span class="ic">💊</span>Apteka całodobowa</h2>
-<div id="apt24"></div>
-  <div class="card"><h3>Inne apteki w Bolesławcu</h3><div id="aptlist"></div></div>
+<div class="sec ms-card" id="section-apteka">
+  <div class="ms-head"><span class="ic rose">💊</span><div class="grow"><h2>Apteka całodobowa (dyżur 24h)</h2><p>Bolesławiec</p></div><span class="pcap open" id="apt-cap" hidden>Otwarta 24h</span></div>
+  <div id="apt24"></div>
+  <p class="ms-lab" style="margin-top:14px">Inne apteki w Bolesławcu</p>
+  <div id="aptlist"></div>
   <p class="foot">Dyżury nocne i świąteczne wyznacza powiat. Stały dyżur całodobowy ma apteka „U Nelli”, ale przed wyjazdem warto zadzwonić.<br>Sprawdź też: <a href="https://powiatboleslawiecki.pl/dyzury-aptek/">powiatboleslawiecki.pl</a> · <a href="https://www.bolec.info/boleslawiec/apteki">bolec.info</a></p>
 </div>
-<div class="sec" id="section-pszok"><h2 class="sech"><span class="ic">♻️</span>PSZOK</h2>
-<div class="banner" id="ps-banner"></div>
-  <div class="card"><h3>Punkt Selektywnej Zbiórki Odpadów</h3><div id="ps-info"></div></div>
-  <div class="card"><h3>Godziny otwarcia</h3><div id="ps-hours"></div></div>
-  <div class="card"><h3>Zasady</h3><ul class="plist" id="ps-rules"></ul></div>
-  <div class="card"><details><summary>Co przyjmuje PSZOK</summary><ul class="plist" id="ps-yes"></ul></details></div>
-  <div class="card"><details><summary>Czego NIE przyjmuje</summary><ul class="plist" id="ps-no"></ul></details></div>
-  <div class="card"><h3>Zbiórka sprzed domu</h3><p class="sub" id="ps-mob" style="line-height:1.6;padding-bottom:10px"></p><p style="margin:0 0 14px"><a class="btn" href="#/smieci">Zobacz terminy</a></p></div>
+<div class="sec ms-card" id="section-pszok">
+  <div class="ms-head"><span class="ic grn">♻️</span><div class="grow"><h2>PSZOK</h2><p>Punkt Selektywnej Zbiórki Odpadów</p></div><span class="pcap" id="ps-banner"></span></div>
+  <div id="ps-info"></div>
+  <p class="ms-lab">Godziny otwarcia</p>
+  <div class="ps-hours" id="ps-hours"></div>
+  <p class="ms-lab">Zasady</p>
+  <ul class="plist ps-list" id="ps-rules"></ul>
+  <details class="ps-det"><summary>Co przyjmuje PSZOK</summary><ul class="plist ps-list" id="ps-yes"></ul></details>
+  <details class="ps-det"><summary>Czego NIE przyjmuje</summary><ul class="plist ps-list" id="ps-no"></ul></details>
+  <p class="ms-lab" style="margin-top:14px">Zbiórka sprzed domu</p>
+  <p class="ps-text" id="ps-mob"></p>
+  <p style="margin:0 0 4px"><a class="ph-btn" href="#/smieci">Zobacz terminy</a></p>
   <p class="foot" id="ps-foot"></p>
 </div>
-<div class="sec" id="section-telefony"><h2 class="sech"><span class="ic">📞</span>Ważne telefony</h2>
-<div id="phones"></div>
+<div class="sec ms-card" id="section-telefony">
+  <div class="ms-head"><span class="ic">📞</span><div class="grow"><h2>Ważne telefony</h2><p>Alarmowe, awarie i nasza wieś</p></div></div>
+  <div id="phones"></div>
 </div>
 </section>
 
@@ -667,7 +765,7 @@ body{font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",Ro
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
 if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-23", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -787,11 +885,11 @@ function renderPszok(P) {
   }
   $('ps-t').textContent = title; $('ps-s').textContent = sub; $('t-pszok').hidden = false;
   if (open) $('t-pszok').classList.add('soon');
-  $('ps-banner').textContent = open ? 'Teraz otwarty – do ' + td[1] : 'Teraz zamknięty';
-  $('ps-info').innerHTML = `<div class="row"><div class="grow"><div class="name">${esc(P.adres)}</div><div class="sub">prowadzi: ${esc(P.operator || '')}</div></div></div>
-    <div class="row btns"><a class="call" href="${esc(tel(P.tel))}">Zadzwoń ${esc(P.tel)}</a><a class="call alt" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(P.mapa || P.adres)}">Mapa</a></div>` +
-    (P.tel2 ? `<div class="row"><div class="grow"><div class="sub">Telefon komórkowy</div></div><a class="call alt" href="${esc(tel(P.tel2))}">${esc(P.tel2)}</a></div>` : '');
-  $('ps-hours').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(d => `<div class="row"><div class="grow name" style="text-transform:capitalize${d === dow ? ';color:var(--accent)' : ''}">${dn[d]}</div><div class="when"><b>${H[d] ? esc(H[d][0] + ' – ' + H[d][1]) : '<span class="sub" style="font-weight:400">nieczynne</span>'}</b></div></div>`).join('');
+  $('ps-banner').textContent = open ? 'Teraz otwarty – do ' + td[1] : 'Teraz zamknięty'; $('ps-banner').className = 'pcap ' + (open ? 'open' : 'closed');
+  $('ps-info').innerHTML = `<div class="ps-loc"><p class="ps-adr">📍 ${esc(P.adres)}</p>${P.operator ? `<p class="ps-op">Prowadzi: ${esc(P.operator)}</p>` : ''}</div>
+    <div class="ps-btns">${P.tel ? `<a class="ph-btn" href="${esc(tel(P.tel))}">📞 Zadzwoń ${esc(P.tel)}</a>` : ''}<a class="ph-btn alt" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(P.mapa || P.adres)}">🗺️ Mapa</a></div>` +
+    (P.tel2 ? `<div class="ps-tel2"><span>Telefon komórkowy</span><a class="ph-btn alt" href="${esc(tel(P.tel2))}">${esc(P.tel2)}</a></div>` : '');
+  $('ps-hours').innerHTML = [1, 2, 3, 4, 5, 6, 0].map(d => `<div class="ps-h${d === dow ? ' now' : ''}"><span>${dn[d]}${d === dow ? ' (dziś)' : ''}</span><b>${H[d] ? esc(H[d][0] + ' – ' + H[d][1]) : '<em>nieczynne</em>'}</b></div>`).join('');
   const ul = a => (a || []).map(x => `<li>${esc(x)}</li>`).join('');
   $('ps-rules').innerHTML = ul(P.zasady); $('ps-yes').innerHTML = ul(P.przyjmuje); $('ps-no').innerHTML = ul(P.nie_przyjmuje);
   $('ps-mob').textContent = P.zbiorki || '';
@@ -813,8 +911,8 @@ function renderPszok(P) {
   }
   const groups = [];
   (w.telefony || []).forEach(p => { let g = groups.find(x => x.n === p.grupa); if (!g) groups.push(g = {n: p.grupa, l: []}); g.l.push(p); });
-  $('phones').innerHTML = groups.map(g => `<div class="card"><h3>${esc(g.n)}</h3>` + g.l.map(p =>
-    `<div class="row${p.sos ? ' sos' : ''}"><div class="grow"><div class="name">${esc(p.nazwa)}</div>${p.opis ? `<div class="sub">${esc(p.opis)}</div>` : ''}</div><a class="call" href="${esc(tel(p.tel))}" aria-label="Zadzwoń: ${esc(p.nazwa)}">${esc(p.tel)}</a></div>`).join('') + '</div>').join('');
+  $('phones').innerHTML = groups.map(g => `<div class="ph-g"><p class="ms-lab">${esc(g.n)}</p>` + g.l.map(p =>
+    `<div class="ph-r"><div class="ph-t"><div class="ph-n${p.sos ? ' sos' : ''}">${esc(p.nazwa)}</div>${p.opis ? `<div class="ph-s">${esc(p.opis)}</div>` : ''}</div><a class="ph-btn${p.sos ? ' sos' : ''}" href="${esc(tel(p.tel))}" aria-label="Zadzwoń: ${esc(p.nazwa)}">${esc(p.tel)}</a></div>`).join('') + '</div>').join('');
   // prąd: wpisy z wies.json
   let auto = {items: [], updated: null};
   try { const r = await fetch('wylaczenia.json', {cache: 'no-cache'}); if (r.ok) auto = await r.json(); } catch (_) {}
@@ -828,11 +926,16 @@ function renderPszok(P) {
   const stale = !upd || (Date.now() - upd.getTime()) > 36 * 36e5;
   $('prad-foot').innerHTML = (upd ? `Dane z Tauron Dystrybucja pobierane automatycznie co godzinę (ostatnio: ${esc(stamp(upd))}).` : 'Automatyczne pobieranie danych z Tauron nie jest jeszcze włączone.') +
     (stale && upd ? ' <b>Dane mogą być nieaktualne.</b>' : '') + ' Wiążące informacje: <a href="https://www.tauron-dystrybucja.pl/wylaczenia">tauron-dystrybucja.pl</a>.';
-  $('prad-list').innerHTML = pr.length ? pr.map(p => {
-    const k = diff(p.dzien), aw = p.typ === 'awaria';
-    const when = k < 0 ? 'trwa' : rel(k);
-    return `<div class="row${aw ? ' sos' : ''}"><div class="grow"><div class="name">${esc(p.gdzie)}</div><div class="sub">${aw ? 'awaria' : 'planowane wyłączenie'}${p.godz ? ' · ' + esc(p.godz) : ''}${p.koniec ? ' · koniec ok. ' + esc(p.koniec) : ''}</div></div><div class="when"><b class="${k <= 1 ? 's' : ''}">${esc(dList(p.dzien))}</b><span class="sub">${when}</span></div></div>`;
-  }).join('') : '<p class="sub" style="padding:4px 0 10px">Brak wpisów. Sprawdź swój adres w Tauron poniżej.</p>';
+  {
+    const awr = pr.filter(p => p.typ === 'awaria'), plan = pr.filter(p => p.typ !== 'awaria');
+    const card = p => { const k = diff(p.dzien), aw = p.typ === 'awaria', when = k < 0 ? 'trwa' : rel(k);
+      return `<div class="pw${aw ? ' bad' : ''}"><div class="pw-h"><span class="pw-d">${esc(cap(dList(p.dzien)))}<small> · ${esc(when)}</small></span>${p.godz ? `<span class="pw-t">${esc(p.godz)}</span>` : ''}</div><p class="pw-b"><strong>${aw ? 'Awaria:' : 'Zakres wyłączenia:'}</strong> ${esc(p.gdzie)}${p.koniec ? ' · koniec ok. ' + esc(p.koniec) : ''}</p></div>`; };
+    $('prad-cap').className = 'pcap ' + (awr.length ? 'bad' : plan.length ? 'warn' : '');
+    $('prad-cap').textContent = awr.length ? 'Awaria' : plan.length ? 'Planowane prace' : 'Brak zgłoszeń';
+    $('prad-box').className = 'pw-box' + (awr.length ? ' bad' : '');
+    $('prad-box').textContent = awr.length ? `⚠️ Zgłoszone awarie nieplanowane w Kruszynie: ${awr.length}.` : pr.length ? '✅ Brak zgłoszonych awarii nieplanowanych w Kruszynie.' : '✅ Brak wpisów o awariach i wyłączeniach. Sprawdź swój adres w Tauron poniżej.';
+    $('prad-list').innerHTML = (awr.length ? '<p class="ms-lab">Awarie</p>' + awr.map(card).join('') : '') + (plan.length ? '<p class="ms-lab">Planowane wyłączenia</p>' + plan.map(card).join('') : '');
+  }
   const soonP = pr.filter(p => diff(p.dzien) <= 1);
   if (soonP.length) {
     const p = soonP[0], k = diff(p.dzien);
@@ -857,8 +960,9 @@ function renderPszok(P) {
   // apteki
   const map = a => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a.nazwa.replace(/[„”]/g, '') + ' ' + a.adres);
   const ap = w.apteki || [], a24 = ap.filter(a => a.cala_doba), rest = ap.filter(a => !a.cala_doba);
-  $('apt24').innerHTML = a24.map(a => `<div class="apt24"><span class="badge">całodobowo</span><h3>${esc(a.nazwa)}</h3><div class="sub">${esc(a.adres)}</div><div class="btns"><a class="call" href="${esc(tel(a.tel))}">Zadzwoń ${esc(a.tel)}</a><a class="call alt" href="${esc(map(a))}">Mapa</a></div></div>`).join('');
-  $('aptlist').innerHTML = rest.map(a => `<div class="row"><div class="grow"><div class="name">${esc(a.nazwa)}</div><div class="sub">${esc(a.adres)}</div></div><a class="call" href="${esc(tel(a.tel))}" aria-label="Zadzwoń: ${esc(a.nazwa)}">${esc(a.tel)}</a></div>`).join('');
+  $('apt24').innerHTML = a24.map(a => `<div class="ap-box"><div class="ph-t"><div class="ph-n">${esc(a.nazwa)}</div><div class="ph-s">${esc(a.adres)}</div></div><div class="ap-btns"><a class="ph-btn alt" href="${esc(tel(a.tel))}">📞 Zadzwoń ${esc(a.tel)}</a><a class="ph-btn alt" href="${esc(map(a))}">🗺️ Mapa</a></div></div>`).join('');
+  $('apt-cap').hidden = !a24.length;
+  $('aptlist').innerHTML = rest.map(a => `<div class="ph-r"><div class="ph-t"><div class="ph-n">${esc(a.nazwa)}</div><div class="ph-s">${esc(a.adres)}</div></div><a class="ph-btn" href="${esc(tel(a.tel))}" aria-label="Zadzwoń: ${esc(a.nazwa)}">${esc(a.tel)}</a></div>`).join('');
   if (a24.length) { $('apt-s').textContent = a24[0].nazwa.replace(/^Apteka\s*/, '').replace(/[„”]/g, '') + ' · ' + a24[0].adres.split(',')[0]; $('t-apt').hidden = false; }
 })();
 
@@ -1161,19 +1265,31 @@ function renderPszok(P) {
   $('zn-t').textContent = title; $('zn-s').innerHTML = sub; $('t-znicz').hidden = false;
   document.querySelectorAll('[data-znicz]').forEach(e => { e.hidden = false; });
 
-  // widok szczegółowy
-  const banner = $('zn-banner');
-  if (next) banner.textContent = `Następny mecz: ${dlong(next.data)}${next.godz ? ', ' + next.godz : ''} · ${mine(next) ? 'u siebie z ' : 'wyjazd do '}${opp(next)}`;
-  else if (w.bez_terminu) banner.textContent = `Terminy kolejnych meczów (${w.bez_terminu}) nie są jeszcze ustalone.`;
-  if (banner.textContent) banner.hidden = false;
-  const row = (m, badge) => `<div class="row">${badge ? `<span class="res ${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : ''}">${esc(m.rezultat)}</span>` : ''}<div class="grow"><div class="name">${esc(m.gospodarz)} ${m.wynik ? '<b>' + esc(m.wynik) + '</b> ' : '– '}${esc(m.gosc)}</div><div class="sub">${esc(dshort(m.data))}${m.godz ? ', ' + esc(m.godz) : ''}${m.rozgrywki ? ' · ' + esc(m.rozgrywki) : ''}${mine(m) ? ' · u siebie' : ' · wyjazd'}</div></div></div>`;
+  // widok szczegółowy (wg wzorca; dane i logika bez zmian)
+  $('zn-name').textContent = T;
+  $('zn-sub').textContent = [w.liga, w.sezon].filter(Boolean).join(' • ');
+  if (pos && pos.poz != null) { $('zn-pos').textContent = pos.poz + '. miejsce'; $('zn-pos').hidden = false; }
+  const nm = n => n === T ? `<strong>${esc(n)}</strong>` : esc(n);
+  const meta = m => `${esc(dshort(m.data))}${m.godz ? ', ' + esc(m.godz) : ''}${m.rozgrywki ? ' · ' + esc(m.rozgrywki) : ''} · ${mine(m) ? 'u siebie' : 'wyjazd'}`;
+  const row = (m, badge) => `<div class="zr-row"><div class="zr-t"><div class="zr-m">${nm(m.gospodarz)} – ${nm(m.gosc)}</div><div class="zr-s">${meta(m)}</div></div><div class="zr-r">${m.wynik ? `<b>${esc(m.wynik)}</b>` : ''}${badge && m.rezultat ? `<span class="zr-b ${m.rezultat === 'W' ? 'w' : m.rezultat === 'P' ? 'p' : 'r'}">${esc(m.rezultat)}</span>` : ''}</div></div>`;
   const nx = (w.najblizsze || []).filter(m => m.data >= today);
-  if (nx.length) { $('zn-next').innerHTML = nx.map(m => row(m, false)).join(''); $('zn-next-card').hidden = false; }
+  const noDate = w.bez_terminu ? `Terminy kolejnych meczów (${esc(w.bez_terminu)}) nie są jeszcze ustalone.` : '';
+  if (next) {
+    $('zn-next').innerHTML = `<div class="zn-next"><div class="zn-top"><span>Następny mecz${next.rozgrywki ? ' • ' + esc(next.rozgrywki) : ''}</span><span class="zn-pill${mine(next) ? '' : ' away'}">${mine(next) ? 'U siebie' : 'Wyjazd'}</span></div>
+      <div class="zn-vs"><div><p class="n">${esc(next.gospodarz)}</p><p class="r">Gospodarz</p></div><span class="v">VS</span><div><p class="n">${esc(next.gosc)}</p><p class="r">Gość</p></div></div>
+      <p class="zn-when">📅 ${esc(dlong(next.data))}${next.godz ? ' • godz. ' + esc(next.godz) : ''}</p></div>` +
+      (nx.length > 1 ? '<p class="ms-lab" style="margin-top:4px">Kolejne mecze</p>' + nx.slice(1).map(m => row(m, false)).join('') : '') +
+      (noDate ? `<p class="ms-src" style="margin:4px 0 14px">${noDate}</p>` : '');
+    $('zn-next-card').hidden = false;
+  } else {
+    $('zn-banner').innerHTML = `<span class="i">⏳</span><div><b>Następny mecz</b><span>${noDate || 'Brak ustalonych terminów kolejnych meczów.'}</span></div>`;
+    $('zn-banner').hidden = false;
+  }
   if ((w.ostatnie || []).length) { $('zn-last').innerHTML = w.ostatnie.map(m => row(m, true)).join(''); $('zn-last-card').hidden = false; }
   if ((w.tabela || []).length) {
     $('zn-tab-h').textContent = `Tabela · ${w.liga || ''} · ${w.sezon || ''}`;
-    $('zn-tab').innerHTML = '<tr><th>#</th><th>Drużyna</th><th>M</th><th>Pkt</th><th>Bramki</th></tr>' + w.tabela.map(r =>
-      `<tr class="${r.druzyna === T ? 'me' : ''}"><td>${r.poz}</td><td>${esc(r.druzyna)}</td><td>${r.m}</td><td><b>${r.pkt}</b></td><td>${esc(r.bramki)}</td></tr>`).join('');
+    $('zn-tab').innerHTML = '<thead><tr><th>#</th><th>Drużyna</th><th>M</th><th>Pkt</th><th>Bramki</th></tr></thead><tbody>' + w.tabela.map(r =>
+      `<tr class="${r.druzyna === T ? 'me' : ''}"><td>${r.poz}</td><td>${esc(r.druzyna)}</td><td>${r.m}</td><td>${r.pkt}</td><td>${esc(r.bramki)}</td></tr>`).join('') + '</tbody>';
     $('zn-tab-note').textContent = 'M – mecze, Pkt – punkty. Tabela może różnić się o ostatnią kolejkę.';
     $('zn-tab-card').hidden = false;
   }
