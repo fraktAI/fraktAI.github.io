@@ -726,6 +726,48 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
 .zn-tbl td:nth-child(2){font-weight:var(--fw-med)}
 .zn-tbl td:nth-child(4){font-weight:var(--fw-semi)}
 .zn-tbl tr.me td{font-weight:var(--fw-semi)}
+
+/* ===================================================================
+   KOMPUTER – poprawki układu (tylko ≥700 px; telefon bez zmian)
+   =================================================================== */
+@media (min-width:700px){
+  /* kolumny: karty nie mogą się łamać w połowie, pasek skrótów na całą szerokość */
+  .ms-card, .evt, .sc, .row, .pw, .ph-g{break-inside:avoid}
+  .view:not(#v-home)>.chips{column-span:all}
+  /* nagłówek ma tę samą szerokość co treść */
+  .top>*{max-width:828px}
+  .top>.settings{right:max(16px,calc((100% - 828px)/2))}
+  /* dolny pasek: pływająca kapsuła, nie pasek na całą szerokość */
+  .bot{left:50%;right:auto;transform:translateX(-50%);width:min(560px,calc(100% - 32px));bottom:14px;padding:6px 8px;
+    border:1px solid var(--line);border-radius:28px;box-shadow:0 10px 30px rgba(15,23,42,.14)}
+  .bot a{max-width:none}
+  /* widok pogody: jedna kolumna, wyśrodkowana */
+  #v-pogoda{column-count:1;max-width:640px;margin:0 auto}
+  /* strzałki kalendarza */
+  .nav button{width:44px;height:40px;border-radius:12px;font-size:18px}
+  .pills{scrollbar-width:thin}
+}
+@media (min-width:1100px){
+  .top>*{max-width:1116px}
+  .top>.settings{right:max(16px,calc((100% - 1116px)/2))}
+  /* ekran główny: karta pogody po lewej (przyklejona), kafelki po prawej, bez pustych dziur */
+  #v-home{grid-template-rows:repeat(7,auto) 1fr}
+  #v-home>*{grid-column:2}
+  #v-home>#hero{grid-column:1;grid-row:1/span 8;align-self:start;position:sticky;top:132px;margin-top:0}
+  #v-home>.notices{grid-column:2;grid-row:auto}
+  #v-home>#inst{grid-column:1/-1;grid-row:auto}
+}
+/* hover i kursor – tylko urządzenia z myszką */
+@media (hover:hover) and (pointer:fine){
+  .sc, .row, .evt, .ph-btn, .chips button, .chips a, .seg2 button, .stops button, .pills a, .call, .btn, .cx, .cbtn, .nav button, .bot a{transition:border-color .15s,box-shadow .15s,background-color .15s,filter .15s}
+  .sc:hover{border-color:color-mix(in srgb,var(--pri) 45%,var(--line));box-shadow:0 6px 18px -6px rgba(15,23,42,.18)}
+  .ph-btn:hover, .chips button:hover, .chips a:hover, .pills a:hover, .stops button:hover, .nav button:not(:disabled):hover{filter:brightness(.96)}
+  .seg2 button:not([aria-pressed=true]):hover{color:var(--ink)}
+  .bot a:not(.on):hover{background:color-mix(in srgb,var(--pri) 7%,transparent)}
+  .cx:hover, .cbtn:hover{filter:brightness(.97)}
+  .chips button, .seg2 button, .stops button, .nav button, .grid .day{cursor:pointer}
+  .grid .day:not(.empty):hover{border-color:color-mix(in srgb,var(--pri) 40%,transparent)}
+}
 </style>
 </head>
 <body>
@@ -952,7 +994,7 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
 const SHOW_COFFEE = true;                                    // true = pokaż link na dole strony, false = ukryj
 const COFFEE_URL  = 'https://buycoffee.to/fraktai';
 if (SHOW_COFFEE && COFFEE_URL) { document.getElementById('coffee-a').href = COFFEE_URL; document.getElementById('coffee-a').hidden = false; }
-const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-23", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
+const FALLBACK = /*WASTE_DATA_START*/{"village": "Kruszyn", "commune": "Gmina Bolesławiec", "source": "http://www.com-d.pl/komunalne/harm/boleslawiec-2026r-gmina/kruszyn", "mode": "live", "fetched": "2026-11-18", "phone": "76 870 21 68", "fractions": [{"id": "zmieszane", "label": "Odpady zmieszane", "frequency": "Co dwa tygodnie (nieparzyste)", "dates": ["2026-01-12", "2026-01-26", "2026-02-09", "2026-02-23", "2026-03-09", "2026-03-23", "2026-04-02", "2026-04-20", "2026-05-04", "2026-05-18", "2026-06-01", "2026-06-15", "2026-06-29", "2026-07-13", "2026-07-27", "2026-08-10", "2026-08-24", "2026-09-07", "2026-09-21", "2026-10-05", "2026-10-19", "2026-11-02", "2026-11-16", "2026-11-30", "2026-12-14", "2026-12-28"]}, {"id": "bio", "label": "Bioodpady", "frequency": "Co dwa tygodnie (parzyste)", "dates": ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16", "2026-03-30", "2026-04-13", "2026-04-27", "2026-05-11", "2026-05-25", "2026-06-08", "2026-06-22", "2026-07-06", "2026-07-20", "2026-08-03", "2026-08-17", "2026-08-31", "2026-09-14", "2026-09-28", "2026-10-12", "2026-10-26", "2026-11-09", "2026-11-23", "2026-12-07", "2026-12-21"]}, {"id": "plastik", "label": "Plastik", "frequency": "Co 4 tygodnie", "dates": ["2026-01-05", "2026-02-02", "2026-03-02", "2026-03-30", "2026-04-27", "2026-05-25", "2026-06-22", "2026-07-20", "2026-08-17", "2026-09-14", "2026-10-12", "2026-11-09", "2026-12-07"]}, {"id": "szklo", "label": "Szkło", "frequency": "Co 8 tygodni", "dates": ["2026-01-19", "2026-03-16", "2026-05-11", "2026-07-06", "2026-08-31", "2026-10-26", "2026-12-21"]}, {"id": "makulatura", "label": "Makulatura", "frequency": "Co 8 tygodni", "dates": ["2026-02-16", "2026-04-13", "2026-06-08", "2026-08-03", "2026-09-28", "2026-11-23"]}, {"id": "odziez", "label": "Odzież i tekstylia", "frequency": "odzież i tekstylia 2x w roku", "dates": ["2026-03-02", "2026-11-16"]}, {"id": "gabaryty", "label": "Gabaryty, RTV, opony", "frequency": "WGB, RTV, OPONY 2x w roku", "dates": ["2026-03-07", "2026-08-01"]}]}/*WASTE_DATA_END*/;
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
