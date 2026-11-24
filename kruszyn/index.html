@@ -778,6 +778,80 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
 #pn-sum{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;font-weight:700;font-size:16px;padding:6px 0 10px}
 #pn-sum::after{float:none;flex:none}   /* kółko ze znakiem +/− nie wchodzi w pierwszy wiersz */
 #pn-home .sub{margin:0 0 10px}
+#pn-sum{font-size:var(--fs-md);font-weight:var(--fw-semi)}
+#pn-sum .pn-t{min-width:0}
+.nw{white-space:nowrap}   /* „(wybrano 5 z 5)” nie łamie się w środku */
+</style>
+<style>
+/* ===================================================================
+   UI v2 – tylko warstwa wizualna (bez zmian w danych i logice)
+   =================================================================== */
+
+/* --- 1. „Więcej”: lista kart w treści zamiast drugiego paska pigułek --- */
+#more-chips{display:none!important}                 /* zostaje w DOM (zgodność), ale nie jest pokazywany */
+#v-wiecej>[id^="section-"]{display:none}            /* domyślnie widać tylko listę */
+#v-wiecej[data-sub="msze"]>#section-msze,
+#v-wiecej[data-sub="prad"]>#section-tauron,
+#v-wiecej[data-sub="znicz"]>#section-znicz:not([hidden]),
+#v-wiecej[data-sub="apteki"]>#section-apteka,
+#v-wiecej[data-sub="pszok"]>#section-pszok,
+#v-wiecej[data-sub="telefony"]>#section-telefony,
+#v-wiecej[data-sub="powiadomienia"]>#section-powiadomienia{display:block}
+#v-wiecej:not([data-sub=""])>#more-menu{display:none}
+#v-wiecej[data-sub=""] #more-bar .back{display:none}
+#v-wiecej .bar .back{flex:none}
+#more-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#more-menu{margin-top:0;padding:4px 16px}
+.menu a{min-height:66px;padding:12px 0;border-radius:0}
+.menu a::after{content:"›";flex:none;margin-left:auto;padding-left:6px;font-size:24px;line-height:1;color:var(--mute)}
+.menu .tx{flex:1;min-width:0}
+.menu a:active{background:var(--tile)}
+@media (min-width:700px){
+  section#v-wiecej.view{column-count:1;max-width:640px;margin:0 auto}
+}
+@media (hover:hover) and (pointer:fine){
+  .menu a:hover{background:var(--inner)}
+}
+
+/* --- 2. Poziome przewijanie: gradient przy krawędziach + brak uciętych liter --- */
+@property --fl{syntax:"<length>";inherits:false;initial-value:0px}
+@property --fr{syntax:"<length>";inherits:false;initial-value:0px}
+.pills,.chips{
+  --fl:0px;--fr:0px;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 var(--fl),#000 calc(100% - var(--fr)),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 var(--fl),#000 calc(100% - var(--fr)),transparent 100%);
+  transition:--fl .2s,--fr .2s;
+  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+  scroll-padding-inline:16px;
+}
+.pills.fade-l,.chips.fade-l{--fl:30px}
+.pills.fade-r,.chips.fade-r{--fr:30px}
+.pills a{padding:8px 13px}
+.pills{padding-bottom:4px}
+/* rzędy przewijają się do samej krawędzi ekranu (telefon), a nie urywają się 16 px wcześniej */
+@media (max-width:560px){
+  .top>.pills,#waste-filters{
+    margin-left:calc(-1 * max(16px,env(safe-area-inset-left)));margin-right:calc(-1 * max(16px,env(safe-area-inset-right)));
+    padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));
+    scroll-padding-inline:max(16px,env(safe-area-inset-left));
+  }
+}
+@media (prefers-reduced-motion:reduce){.pills,.chips{transition:none}}
+
+/* --- 2b. Dolny odstęp: pasek nawigacji nie zasłania treści --- */
+html{scroll-padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.wrap{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+
+/* --- 4. Spójne stany aktywne: wybrany element = kolor główny we wszystkich rzędach --- */
+.pills a.on{background:var(--pri);color:var(--onpri);font-weight:var(--fw-semi);box-shadow:0 2px 8px -2px color-mix(in srgb,var(--pri) 55%,transparent)}
+.chips button,.chips a{color:var(--ink)}
+.chips button[aria-pressed=true],.chips button.on{background:var(--pri);color:var(--onpri);box-shadow:0 2px 8px -2px color-mix(in srgb,var(--pri) 55%,transparent)}
+.seg2 button{color:var(--ink)}
+.seg2 button[aria-pressed=true]{background:var(--pri);color:var(--onpri);box-shadow:0 2px 8px -2px color-mix(in srgb,var(--pri) 55%,transparent)}
+.bot a.on{background:color-mix(in srgb,var(--pri) 16%,transparent);color:var(--accent);font-weight:var(--fw-bold)}
+.bot a.on .i{transform:translateY(-1px)}
+.grid .day.today{border-color:color-mix(in srgb,var(--pri) 55%,transparent);font-weight:var(--fw-bold)}
+.grid .day.sel{outline:0;border-color:var(--pri);background:color-mix(in srgb,var(--pri) 14%,var(--card));font-weight:var(--fw-bold)}
 </style>
 </head>
 <body>
@@ -856,8 +930,19 @@ details summary{font-size:var(--fs-base);font-weight:var(--fw-semi)}
   </div>
 </section>
 
-<section class="view" id="v-wiecej" hidden>
-  <div class="chips" id="more-chips">
+<section class="view" id="v-wiecej" data-sub="" hidden>
+  <div class="bar" id="more-bar"><a class="back" href="#/wiecej">‹ Więcej</a><h2 id="more-title">Więcej</h2></div>
+  <nav class="card menu" id="more-menu" aria-label="Więcej – podsekcje">
+    <a href="#/msze"><span class="ic">⛪</span><span class="tx"><b>Msze święte i intencje</b><small>Godziny nabożeństw, intencje na ten tydzień</small></span></a>
+    <a href="#/prad"><span class="ic">⚡</span><span class="tx"><b>Prąd – awarie i wyłączenia</b><small>Tauron Dystrybucja, pogotowie 991</small></span></a>
+    <a href="#/znicz" data-znicz hidden><span class="ic">⚽</span><span class="tx"><b>Znicz Kruszyn</b><small>Mecze, wyniki i tabela</small></span></a>
+    <a href="#/apteki"><span class="ic">💊</span><span class="tx"><b>Apteka całodobowa</b><small>Dyżur 24h i inne apteki w Bolesławcu</small></span></a>
+    <a href="#/pszok"><span class="ic">♻️</span><span class="tx"><b>PSZOK</b><small>Godziny otwarcia, zasady, co przyjmuje</small></span></a>
+    <a href="#/telefony"><span class="ic">📞</span><span class="tx"><b>Ważne telefony</b><small>Alarmowe, awarie, urząd</small></span></a>
+    <a href="#/powiadomienia"><span class="ic">🔔</span><span class="tx"><b>Powiadomienia</b><small>Wybierz, o czym chcesz być informowany</small></span></a>
+    <a href="#/pogoda"><span class="ic">🌦️</span><span class="tx"><b>Pogoda</b><small>Prognoza godzinowa i ostrzeżenia IMGW</small></span></a>
+  </nav>
+  <div class="chips" id="more-chips" aria-hidden="true">
     <a href="#/msze">⛪ Msze</a><a href="#/prad">⚡ Prąd</a><a href="#/znicz" data-znicz hidden>⚽ Znicz</a><a href="#/apteki">💊 Apteka</a><a href="#/pszok">♻️ PSZOK</a><a href="#/telefony">📞 Telefony</a><a href="#/powiadomienia">🔔 Powiadomienia</a><a href="#/pogoda">🌦️ Pogoda</a>
   </div>
 <div class="sec ms-card" id="section-msze">
@@ -1058,7 +1143,11 @@ function route() {
     if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
   const ft = document.querySelector('footer.contact'); if (ft) ft.hidden = v !== 'home';   // stopka tylko na stronie głównej
-  if (SEC[h]) setTimeout(() => { const e = $(SEC[h]); if (e) e.scrollIntoView({block: 'start'}); }, 0); else window.scrollTo(0, 0);
+  // „Więcej”: lista podsekcji albo jedna wybrana podsekcja (nagłówek + powrót do listy) – tylko prezentacja
+  const MT = {msze: 'Msze święte', prad: 'Prąd', znicz: 'Znicz Kruszyn', apteki: 'Apteka całodobowa', pszok: 'PSZOK', telefony: 'Ważne telefony', powiadomienia: 'Powiadomienia'};
+  $('v-wiecej').dataset.sub = SEC[h] ? h : '';
+  $('more-title').textContent = SEC[h] ? MT[h] : 'Więcej';
+  window.scrollTo(0, 0);
 }
 addEventListener('hashchange', route);
 route();
@@ -1231,7 +1320,7 @@ function renderPszok(P) {
     clearTimeout(to); if (!r.ok) throw 0;
     const c = (await r.json()).current; if (c.european_aqi == null) throw 0;
     const a = c.european_aqi;
-    const L = a <= 20 ? ['bardzo dobra', '#3fcf7a'] : a <= 40 ? ['dobra', '#9ad94a'] : a <= 60 ? ['umiarkowana', '#f0c43a'] : a <= 80 ? ['dostateczna', '#f08c4d'] : a <= 100 ? ['zła', '#ff2a3d'] : ['bardzo zła', '#b3001b'];
+    const L = a <= 20 ? ['bardzo dobre', '#3fcf7a'] : a <= 40 ? ['dobre', '#9ad94a'] : a <= 60 ? ['umiarkowane', '#f0c43a'] : a <= 80 ? ['dostateczne', '#f08c4d'] : a <= 100 ? ['złe', '#ff2a3d'] : ['bardzo złe', '#b3001b'];
     $('air-t').innerHTML = `<i class="aq" style="--c:${L[1]}"></i>Powietrze ${L[0]}`;
     $('air-s').textContent = `PM2,5: ${Math.round(c.pm2_5)} · PM10: ${Math.round(c.pm10)} µg/m³` + (a > 60 ? ' · ogranicz wysiłek na dworze' : '');
     $('t-air').hidden = false; $('air-bar').style.width = Math.min(100, a) + '%'; $('air-bar').style.background = L[1];
@@ -1588,7 +1677,7 @@ window.OneSignalDeferred = window.OneSignalDeferred || [];
     log('init OK');
     const subscribed = () => OneSignal.Notifications.permission && OneSignal.User.PushSubscription.optedIn;
     const readTags = () => { let t = {}; try { t = JSON.parse(localStorage.getItem('kr-pn-tags') || '{}'); } catch (_) {} return t; };
-    const count = () => { const t = readTags(), n = box.querySelectorAll('input').length, k = TAGS.filter(x => t[x] === '1').length; $('pn-sum').textContent = `Tematy powiadomień (wybrano ${k} z ${n})`; };
+    const count = () => { const t = readTags(), n = box.querySelectorAll('input').length, k = TAGS.filter(x => t[x] === '1').length; $('pn-sum').innerHTML = `<span class="pn-t">Tematy powiadomień <span class="nw">(wybrano ${k} z ${n})</span></span>`; };
     try { if (localStorage.getItem('kr-pn-open') === '0') box.open = false; } catch (_) {}
     box.addEventListener('toggle', () => { try { localStorage.setItem('kr-pn-open', box.open ? '1' : '0'); } catch (_) {} });
     const render = () => {
@@ -1667,14 +1756,17 @@ window.OneSignalDeferred = window.OneSignalDeferred || [];
   const past = all.filter(e => end(e) < today).sort((a, b) => (a.data + (a.godz || '')) < (b.data + (b.godz || '')) ? 1 : -1).slice(0, 5);
   const wd = s => cap(fmt(s, {weekday: 'long'}));
   const dm = s => dShort(s);
+  // tylko wyświetlanie: poprawna pisownia/odmiana znanych tytułów (dane w arkuszu i plik .ics bez zmian)
+  const TITLE_FIX = {'konkurs na najpiękniejszą kartkę bożonarodzeniowa': 'Konkurs na najpiękniejszą kartkę bożonarodzeniową'};
+  const ttl = n => TITLE_FIX[String(n).trim().toLowerCase()] || n;
   const line = e => [e.data_do ? `${dm(e.data)} – ${dm(e.data_do)}` : cap(dList(e.data)), e.godz, e.miejsce].filter(Boolean).join(' · ');
 
   // kafelek
   const nx = up[0];
   if (nx) {
     const k = diff(nx.data), on = k <= 0;
-    $('wy-t').textContent = on ? 'Dziś: ' + nx.nazwa : k === 1 ? 'Jutro' + (nx.godz ? ', ' + nx.godz : '') : cap(dList(nx.data)) + (nx.godz ? ', ' + nx.godz : '');
-    $('wy-s').textContent = on ? [nx.godz, nx.miejsce].filter(Boolean).join(' · ') : nx.nazwa + (nx.miejsce ? ' · ' + nx.miejsce : '');
+    $('wy-t').textContent = on ? 'Dziś: ' + ttl(nx.nazwa) : k === 1 ? 'Jutro' + (nx.godz ? ', ' + nx.godz : '') : cap(dList(nx.data)) + (nx.godz ? ', ' + nx.godz : '');
+    $('wy-s').textContent = on ? [nx.godz, nx.miejsce].filter(Boolean).join(' · ') : ttl(nx.nazwa) + (nx.miejsce ? ' · ' + nx.miejsce : '');
     if (k <= 1) $('t-wyd').classList.add('soon');
   }
 
@@ -1683,7 +1775,7 @@ window.OneSignalDeferred = window.OneSignalDeferred || [];
   const row = (e, i, isPast) => {
     const phone = e.telefon ? `<p>Tel.: <a href="tel:${esc(e.telefon.replace(/[^0-9+]/g, ''))}">${esc(e.telefon)}</a></p>` : '';
     const link = /^https?:\/\//i.test(e.link || '') ? `<p><a href="${esc(e.link)}" target="_blank" rel="noopener">Więcej informacji</a></p>` : '';
-    return `<details class="evt${isPast ? ' past' : ''}"><summary>${badge(e.data)}<span class="evt-t"><b>${esc(e.nazwa)}</b><span class="sub">${esc(line(e))}</span></span></summary>
+    return `<details class="evt${isPast ? ' past' : ''}"><summary>${badge(e.data)}<span class="evt-t"><b>${esc(ttl(e.nazwa))}</b><span class="sub">${esc(line(e))}</span></span></summary>
       <div class="evt-b">${e.kategoria ? `<p class="sub">${esc(e.kategoria)}${e.organizator ? ' · ' + esc(e.organizator) : ''}</p>` : ''}${e.opis ? `<p>${esc(e.opis)}</p>` : ''}${phone}${link}
       ${isPast ? '' : `<p><button class="btn" data-ics="${i}" type="button">Dodaj do kalendarza</button></p>`}</div></details>`;
   };
@@ -1880,6 +1972,36 @@ if (/^https?:$/.test(location.protocol)) {
     goatcounter.count({path: '/' + (location.hash.replace(/^#\/?/, '') || 'start')});
   addEventListener('load', track);
   addEventListener('hashchange', track);
+</script>
+<script>
+// Warstwa UI: gradienty przy poziomo przewijanych rzędach + wyśrodkowanie aktywnej pigułki (nie dotyka danych)
+(function () {
+  const upd = el => {
+    const max = el.scrollWidth - el.clientWidth, x = el.scrollLeft;
+    el.classList.toggle('fade-l', max > 4 && x > 4);
+    el.classList.toggle('fade-r', max > 4 && x < max - 4);
+  };
+  const ro = 'ResizeObserver' in window ? new ResizeObserver(es => es.forEach(e => upd(e.target))) : null;
+  const mo = new MutationObserver(ms => ms.forEach(m => { const el = m.target.closest && m.target.closest('.pills, .chips'); if (el) upd(el); }));
+  const all = () => document.querySelectorAll('.pills, .chips').forEach(upd);
+  document.querySelectorAll('.pills, .chips').forEach(el => {
+    el.addEventListener('scroll', () => upd(el), {passive: true});
+    if (ro) ro.observe(el);
+    mo.observe(el, {childList: true, subtree: true, attributes: true, attributeFilter: ['hidden']});
+  });
+  addEventListener('resize', all);
+  addEventListener('load', all);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(all);
+  const mark = smooth => {
+    const p = document.getElementById('pills'); if (!p) return;
+    p.querySelectorAll('a').forEach(a => { if (a.classList.contains('on')) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    const a = p.querySelector('a.on'); if (!a) return;
+    const r = a.getBoundingClientRect(), pr = p.getBoundingClientRect();
+    p.scrollBy({left: r.left - pr.left - (pr.width - r.width) / 2, behavior: smooth && !matchMedia('(prefers-reduced-motion:reduce)').matches ? 'smooth' : 'auto'});
+  };
+  addEventListener('hashchange', () => mark(true));   // po obsłudze trasy (jej listener jest zarejestrowany wcześniej)
+  mark(false); all();
+})();
 </script>
   
 </body>
