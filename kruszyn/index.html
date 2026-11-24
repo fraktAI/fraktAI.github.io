@@ -1756,17 +1756,14 @@ window.OneSignalDeferred = window.OneSignalDeferred || [];
   const past = all.filter(e => end(e) < today).sort((a, b) => (a.data + (a.godz || '')) < (b.data + (b.godz || '')) ? 1 : -1).slice(0, 5);
   const wd = s => cap(fmt(s, {weekday: 'long'}));
   const dm = s => dShort(s);
-  // tylko wyświetlanie: poprawna pisownia/odmiana znanych tytułów (dane w arkuszu i plik .ics bez zmian)
-  const TITLE_FIX = {'konkurs na najpiękniejszą kartkę bożonarodzeniowa': 'Konkurs na najpiękniejszą kartkę bożonarodzeniową'};
-  const ttl = n => TITLE_FIX[String(n).trim().toLowerCase()] || n;
   const line = e => [e.data_do ? `${dm(e.data)} – ${dm(e.data_do)}` : cap(dList(e.data)), e.godz, e.miejsce].filter(Boolean).join(' · ');
 
   // kafelek
   const nx = up[0];
   if (nx) {
     const k = diff(nx.data), on = k <= 0;
-    $('wy-t').textContent = on ? 'Dziś: ' + ttl(nx.nazwa) : k === 1 ? 'Jutro' + (nx.godz ? ', ' + nx.godz : '') : cap(dList(nx.data)) + (nx.godz ? ', ' + nx.godz : '');
-    $('wy-s').textContent = on ? [nx.godz, nx.miejsce].filter(Boolean).join(' · ') : ttl(nx.nazwa) + (nx.miejsce ? ' · ' + nx.miejsce : '');
+    $('wy-t').textContent = on ? 'Dziś: ' + nx.nazwa : k === 1 ? 'Jutro' + (nx.godz ? ', ' + nx.godz : '') : cap(dList(nx.data)) + (nx.godz ? ', ' + nx.godz : '');
+    $('wy-s').textContent = on ? [nx.godz, nx.miejsce].filter(Boolean).join(' · ') : nx.nazwa + (nx.miejsce ? ' · ' + nx.miejsce : '');
     if (k <= 1) $('t-wyd').classList.add('soon');
   }
 
@@ -1775,7 +1772,7 @@ window.OneSignalDeferred = window.OneSignalDeferred || [];
   const row = (e, i, isPast) => {
     const phone = e.telefon ? `<p>Tel.: <a href="tel:${esc(e.telefon.replace(/[^0-9+]/g, ''))}">${esc(e.telefon)}</a></p>` : '';
     const link = /^https?:\/\//i.test(e.link || '') ? `<p><a href="${esc(e.link)}" target="_blank" rel="noopener">Więcej informacji</a></p>` : '';
-    return `<details class="evt${isPast ? ' past' : ''}"><summary>${badge(e.data)}<span class="evt-t"><b>${esc(ttl(e.nazwa))}</b><span class="sub">${esc(line(e))}</span></span></summary>
+    return `<details class="evt${isPast ? ' past' : ''}"><summary>${badge(e.data)}<span class="evt-t"><b>${esc(e.nazwa)}</b><span class="sub">${esc(line(e))}</span></span></summary>
       <div class="evt-b">${e.kategoria ? `<p class="sub">${esc(e.kategoria)}${e.organizator ? ' · ' + esc(e.organizator) : ''}</p>` : ''}${e.opis ? `<p>${esc(e.opis)}</p>` : ''}${phone}${link}
       ${isPast ? '' : `<p><button class="btn" data-ics="${i}" type="button">Dodaj do kalendarza</button></p>`}</div></details>`;
   };
